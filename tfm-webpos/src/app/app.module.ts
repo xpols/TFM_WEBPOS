@@ -12,9 +12,12 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 
 
@@ -33,6 +36,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
     MatIconModule,
     MatToolbarModule,
     MatButtonModule,
+    MatSelectModule,
     TranslateModule.forRoot({
       defaultLanguage: 'es',
       loader: {
@@ -40,6 +44,12 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
         useFactory: translateFactory,
         deps: [HttpClient]
       }
+    }),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
     })
   ],
   providers: [{

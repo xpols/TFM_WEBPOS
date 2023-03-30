@@ -13,12 +13,18 @@
     </mat-sidenav>
     <mat-sidenav-content class="sidenav-content">
       <mat-toolbar class="toolbar" color="primary" [class.app-is-mobile]="mobileQuery.matches">
-        <button mat-icon-button (click)="lnav.toggle()" aria-label="Menu">
+        <button *ngIf="this.authService.loggedIn.value" mat-icon-button (click)="lnav.toggle()" aria-label="">
           <mat-icon>menu</mat-icon>
         </button>
         {{title}}
         <div class="fill-space"></div>
-        <span whoami></span>
+        <span class="example-spacer"></span>
+        <button *ngIf="this.authService.loggedIn.value" mat-icon-button class="" aria-label="" (click)="goToLogout()">
+          <mat-icon>logout</mat-icon>
+        </button>
+        <button *ngIf="!this.authService.loggedIn.value" mat-icon-button class="" aria-label="" (click)="goToLogin()">
+          <mat-icon>account_circle</mat-icon>
+        </button>
       </mat-toolbar>
       <mat-drawer-container class="sidenav-container">
         <mat-drawer mode="push">

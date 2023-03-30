@@ -15,6 +15,8 @@ import {MatTableModule} from '@angular/material/table';
 import {MatIconModule} from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { ConfigComponent } from './config/config.component';
+import { MatSelectModule } from '@angular/material/select';
 
 
 
@@ -23,6 +25,7 @@ import { TranslateModule } from '@ngx-translate/core';
     LoginComponent,
     SecureComponent,
     NotFoundComponent,
+    ConfigComponent,
     
   ],
   imports: [
@@ -38,6 +41,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatButtonModule,
     MatCardModule,
     MatFormFieldModule,
+    MatSelectModule,
     RouterModule,
     TranslateModule
   ]

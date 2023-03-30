@@ -1,0 +1,33 @@
+<div class="wp-container mat-elevation-z8">
+    <mat-card class="wp-card">
+        <form [formGroup]="configForm" (ngSubmit)="saveConfig()">
+            <h2>Configuracion</h2>
+            <mat-form-field class="wp-full-width">
+                <mat-label>{{'Tienda' | translate}}</mat-label>
+                <mat-select formControlName="tiendasFC" (selectionChange)="shopChange()">
+                    <mat-option *ngFor="let tienda of tiendas" [value]="tienda.id">
+                        {{tienda.codigo}} - {{tienda.descripcion}}
+                    </mat-option>
+                </mat-select>
+                <mat-error>
+                    <span *ngIf="!configForm.get('tiendasFC')">{{'Please select Shop' | translate}}</span>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="wp-full-width">
+                <mat-label>{{'TPV' | translate}}</mat-label>
+                <mat-select formControlName="tpvsFC">
+                    <mat-option *ngFor="let tpv of tpvs" [value]="tpv.id">
+                        {{tpv.codigo}} - {{tpv.descripcion}}
+                    </mat-option>
+                </mat-select>
+                <mat-error>
+                    <span *ngIf="!configForm.get('tpvsFC')">{{'Please select TPV' | translate}}</span>
+                </mat-error>
+            </mat-form-field>
+            <div class="button-row" align="center">
+                <button type="submit" [disabled]="!configForm.valid" mat-flat-button
+                    color="primary"><mat-icon>save</mat-icon>{{'Guardar' | translate}}</button>
+            </div>
+        </form>
+    </mat-card>
+</div>

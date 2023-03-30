@@ -1,26 +1,27 @@
-<div class="example-container mat-elevation-z8">
-    <div class="example-loading-shade" *ngIf="isLoadingResults">
+<div class="wp-container mat-elevation-z8">
+    <div class="wp-loading-shade" *ngIf="isLoadingResults">
         <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
     </div>
-    <mat-card class="example-card" *ngIf="!isLoadingResults">
+    <mat-card class="wp-card" *ngIf="!isLoadingResults">
         <form [formGroup]="loginForm" (ngSubmit)="onFormSubmit()">
-            <h2>Log In</h2>
-            <mat-form-field class="example-full-width">
+            <h2>{{'Log In' | translate}}</h2>
+            <mat-form-field class="wp-full-width">
                 <label>
-                    <input matInput placeholder="Username" formControlName="username" [errorStateMatcher]="matcher">
-                </label>
-                <mat-error>
-                    <span *ngIf="!loginForm.get('username')">Please enter Username</span>
-                </mat-error>
-            </mat-form-field>
-            <mat-form-field class="example-full-width">
-                <label>
-                    <input type="password" matInput placeholder="Password" formControlName="password"
+                    <input matInput placeholder="{{'Username' | translate}}" formControlName="username"
                         [errorStateMatcher]="matcher">
                 </label>
                 <mat-error>
-                    <span *ngIf="!loginForm.get('password') && loginForm.get('password')">Please enter
-                        Password</span>
+                    <span *ngIf="!loginForm.get('username')">{{'Please enter Username' | translate}}</span>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="wp-full-width">
+                <label>
+                    <input type="password" matInput placeholder="{{'Password' | translate}}" formControlName="password"
+                        [errorStateMatcher]="matcher">
+                </label>
+                <mat-error>
+                    <span *ngIf="!loginForm.get('password') && loginForm.get('password')">{{'Please enter Password' |
+                        translate}}</span>
                 </mat-error>
             </mat-form-field>
             <div class="button-row" align="center">

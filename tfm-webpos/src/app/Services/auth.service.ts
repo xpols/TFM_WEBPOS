@@ -20,7 +20,7 @@ const HTTP_OPTIONS = {
 })
 export class AuthService {
 
-  private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   get isLoggedIn() {
     return this.loggedIn.asObservable();
@@ -78,6 +78,7 @@ export class AuthService {
         tap(res => {
           this.tokenService.saveToken(res.access_token);
           this.tokenService.saveRefreshToken(res.refresh_token);
+          this.loggedIn.next(true);
         }),
         catchError(AuthService.handleError)
       );
@@ -89,8 +90,11 @@ export class AuthService {
     this.loggedIn.next(false);
   }
 
-  secured(): Observable<any> {
+  loginLogico(): Observable<any> {
     return this.http.get<any>(API_URL + 'loginLogico')
-      .pipe(catchError(AuthService.handleError));
+      .pipe(tap(res => {
+        return res;
+      }),
+      catchError(AuthService.handleError));
   }
 }

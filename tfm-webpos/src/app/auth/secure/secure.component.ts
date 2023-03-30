@@ -9,19 +9,11 @@ import { AuthService } from 'src/app/Services/auth.service';
 })
 export class SecureComponent implements OnInit {
 
-  message = '';
-  isLoadingResults = false;
 
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    this.isLoadingResults = true;
-    this.authService.secured()
-      .subscribe((data: any) => {
-        this.message = data;
-        console.log(data);
-        this.isLoadingResults = false;
-      });
+    this.logout();
   }
 
   logout(): void {

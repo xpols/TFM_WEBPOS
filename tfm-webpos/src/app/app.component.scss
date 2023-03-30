@@ -1,21 +1,21 @@
-.example-container {
+.wp-container {
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
   
-.example-form {
+.wp-form {
     min-width: 150px;
     max-width: 500px;
     width: 100%;
 }
   
-.example-full-width {
+.wp-full-width {
     width: 100%;
 }
   
-.example-full-width:nth-last-child(0) {
+.wp-full-width:nth-last-child(0) {
     margin-bottom: 10px;
 }
   
@@ -29,4 +29,8 @@
 .mat-flat-button {
     width: 120px;
     margin: 5px;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
 }
