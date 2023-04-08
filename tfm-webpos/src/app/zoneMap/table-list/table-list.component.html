@@ -1,0 +1,5 @@
+<mat-grid-list cols="{{breakpoint}}" rowHeight="3:1" [gutterSize]="'10px'">
+    <mat-grid-tile *ngFor="let mesa of mesas">
+        <table-item [tableId]="mesa.id" [tableName]="mesa.nombre" [tableTicketId]="mesa.idTicketAbierto"></table-item>
+    </mat-grid-tile>
+</mat-grid-list>

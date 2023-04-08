@@ -1,0 +1,12 @@
+<h1 mat-dialog-title class="diners-title">{{'Mesa' | translate}} {{data.tableName}}</h1>
+<div mat-dialog-content>
+    <span class="diners-label">{{'Nº Comensales' | translate}}</span>
+    <button mat-mini-fab class="mat-elevation-z0 button-qty button-minus" (click)="minus()">-</button>
+    <input class="qty" type="text" pattern="[0-9]*" maxlength="2" [(ngModel)]="data.numDiners">
+    <button mat-mini-fab class="mat-elevation-z0 button-qty button-plus" (click)="plus()">+</button>
+</div>
+<div mat-dialog-actions align="center" class="actions-container">
+    <button mat-fab class="button-action button-minus" (click)="onNoClick()"><mat-icon>close</mat-icon></button>
+    <button mat-fab class="button-action button-plus" [mat-dialog-close]="data.numDiners"
+        cdkFocusInitial><mat-icon>check</mat-icon></button>
+</div>

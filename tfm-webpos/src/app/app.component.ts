@@ -22,7 +22,7 @@ export class AppComponent {
     },
     {
       'title': 'TPV',
-      'path': '/tpv',
+      'path': '/sales',
       'icon':'fa-cash-register'
     },
     {
@@ -63,6 +63,7 @@ export class AppComponent {
     if(this.tokenService.getRefreshToken()!=null) {
       this.authService.refreshToken(this.tokenService.getRefreshToken());
     }
+    this.authService.updateloggedIn();
   }
   
   toggleMobileNav(nav: MatSidenav) {

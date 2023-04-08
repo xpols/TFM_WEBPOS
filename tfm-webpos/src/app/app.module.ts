@@ -18,6 +18,9 @@ import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatDialogModule } from '@angular/material/dialog';
+
 
 
 
@@ -37,6 +40,8 @@ import { environment } from '../environments/environment';
     MatToolbarModule,
     MatButtonModule,
     MatSelectModule,
+    MatDialogModule,
+    LayoutModule,
     TranslateModule.forRoot({
       defaultLanguage: 'es',
       loader: {

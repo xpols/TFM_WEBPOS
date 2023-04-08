@@ -50,10 +50,8 @@ export class AuthInterceptor implements HttpInterceptor {
             console.log(error.error.error);
             if (error.status === 401) {
               if (error.error.error === 'invalid_token') {
-                this.authService.refreshToken({refresh_token: refreshToken})
-                  .subscribe(() => {
-                    location.reload();
-                  });
+                  this.authService.logout();
+                  this.router.navigate(['/login']).then(_ => console.log('Logout'));
               } else {
                 this.router.navigate(['login']).then(_ => console.log('redirect to login'));
               }

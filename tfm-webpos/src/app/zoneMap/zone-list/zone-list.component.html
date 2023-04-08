@@ -1,0 +1,4 @@
+<mat-nav-list *ngFor="let zona of zonas" class="list-horizontal">
+    <zone-item [zoneId]="zona.id" [zoneName]="zona.descripcion" [zoneCode]="zona.codigo" [zoneSelected]="zona.selected"
+        (zoneSelectedChange)="zoneSelected($event)"></zone-item>
+</mat-nav-list>

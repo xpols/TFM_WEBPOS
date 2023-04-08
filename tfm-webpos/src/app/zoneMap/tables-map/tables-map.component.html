@@ -1,0 +1,4 @@
+<div class="zone-list-container">
+    <zone-list (zoneChange)="zoneChange($event)"></zone-list>
+</div>
+<table-list [events]="eventsZoneToTableList.asObservable()"></table-list>

@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-
-const ACCESS_TOKEN = 'access_token';
-const REFRESH_TOKEN = 'refresh_token';
+import { LocalStorageConstants } from '../constants/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -11,26 +9,26 @@ export class TokenService {
   constructor() { }
 
   getToken(): string|null {
-    return localStorage.getItem(ACCESS_TOKEN);
+    return localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN);
   }
 
   getRefreshToken(): string|null {
-    return localStorage.getItem(REFRESH_TOKEN);
+    return localStorage.getItem(LocalStorageConstants.REFRESH_TOKEN);
   }
 
   saveToken(token: string): void {
-    localStorage.setItem(ACCESS_TOKEN, token);
+    localStorage.setItem(LocalStorageConstants.ACCESS_TOKEN, token);
   }
 
   saveRefreshToken(refreshToken: string): void {
-    localStorage.setItem(REFRESH_TOKEN, refreshToken);
+    localStorage.setItem(LocalStorageConstants.REFRESH_TOKEN, refreshToken);
   }
 
   removeToken(): void {
-    localStorage.removeItem(ACCESS_TOKEN);
+    localStorage.removeItem(LocalStorageConstants.ACCESS_TOKEN);
   }
 
   removeRefreshToken(): void {
-    localStorage.removeItem(REFRESH_TOKEN);
+    localStorage.removeItem(LocalStorageConstants.REFRESH_TOKEN);
   }
 }

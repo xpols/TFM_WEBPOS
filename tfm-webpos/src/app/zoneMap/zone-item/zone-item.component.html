@@ -1,0 +1,8 @@
+<mat-list-item class="item-zone" (click)="eventZoneSelected()">
+    <mat-card class="card-zone" (click)="eventZoneSelected()"
+        [ngClass]="zoneSelected == true ? 'zona-seleccionada' : ''">
+        <mat-card-content class="card-zone-content">
+            <span>{{zoneCode}}-{{zoneName}}</span>
+        </mat-card-content>
+    </mat-card>
+</mat-list-item>

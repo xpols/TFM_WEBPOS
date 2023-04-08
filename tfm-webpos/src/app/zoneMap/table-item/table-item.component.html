@@ -1,0 +1,6 @@
+<mat-card class="dashboard-card card-mesa" (click)="goToSaleScreen()"
+    [ngClass]="tableTicketId != null ? 'mesa-ocupada' : 'mesa-libre'">
+    <mat-card-content class="dashboard-card-content">
+        <span>{{tableName}}</span>
+    </mat-card-content>
+</mat-card>

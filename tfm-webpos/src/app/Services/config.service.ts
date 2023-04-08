@@ -3,18 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, firstValueFrom, throwError } from 'rxjs';
 import { TiendaDTO } from '../models/tienda.dto';
 import { TpvDTO } from '../models/tpv.dto';
-
-const API_URL = 'https://nextt1.pre-api.nexttdirector.net:8443/NexttDirector_NexttApi/';
-//const API_URL = 'http://nextt1.pre-api.nexttdirector.net:8080/NexttDirector_NexttApi/';
+import { APIConstants, LocalStorageConstants } from '../constants/constants';
 
 const HTTP_OPTIONS = {
   headers: new HttpHeaders({
     'Content-Type': 'application/x-www-form-urlencoded'
   })
 };
-
-const ID_TIENDA = 'id_tienda';
-const ID_TPV = 'id_tpv';
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +32,7 @@ export class ConfigService {
 
   getTiendas(): Promise<TiendaDTO[]|undefined> {
     return this.http
-      .get<TiendaDTO[]>(API_URL + 'tiendas')
+      .get<TiendaDTO[]>(APIConstants.API_URL + 'tiendas')
       .toPromise();
   }
 
@@ -49,12 +44,12 @@ export class ConfigService {
     params = params.append('max', 1000);
     params = params.append('offset', 0);
     return this.http
-      .get<TpvDTO[]>(API_URL + 'tpvs', {params: params})
+      .get<TpvDTO[]>(APIConstants.API_URL + 'tpvs', {params: params})
       .toPromise();
   }
 
   saveConfig(idTienda: string, idTPV: string): void {
-    localStorage.setItem(ID_TIENDA, idTienda);
-    localStorage.setItem(ID_TPV, idTPV);
+    localStorage.setItem(LocalStorageConstants.ID_TIENDA, idTienda);
+    localStorage.setItem(LocalStorageConstants.ID_TPV, idTPV);
   }
 }

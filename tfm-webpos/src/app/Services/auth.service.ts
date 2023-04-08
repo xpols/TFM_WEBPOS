@@ -2,12 +2,8 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, catchError, tap, throwError } from 'rxjs';
 import { TokenService } from './token.service';
+import { APIConstants } from '../constants/constants';
 
-const OAUTH_CLIENT = 'express-client';
-const OAUTH_SECRET = 'express-secret';
-const CLIENT_ID = 'nexttdirector';
-const API_URL = 'https://nextt1.pre-api.nexttdirector.net:8443/NexttDirector_NexttApi/';
-//const API_URL = 'http://nextt1.pre-api.nexttdirector.net:8080/NexttDirector_NexttApi/';
 
 const HTTP_OPTIONS = {
   headers: new HttpHeaders({
@@ -47,16 +43,14 @@ export class AuthService {
   }
 
   login(loginData: any): Observable<any> {
-    this.tokenService.removeToken();
-    this.tokenService.removeRefreshToken();
     const body = new HttpParams()
       .set('username', loginData.username)
       .set('password', loginData.password)
-      .set('client_id', CLIENT_ID)
+      .set('client_id', APIConstants.CLIENT_ID)
       .set('scope', 'read')
       .set('grant_type', 'password');
 
-    return this.http.post<any>(API_URL + 'oauth/token', body, HTTP_OPTIONS)
+    return this.http.post<any>(APIConstants.API_URL + 'oauth/token', body, HTTP_OPTIONS)
       .pipe(
         tap(res => {
           this.tokenService.saveToken(res.access_token);
@@ -68,12 +62,10 @@ export class AuthService {
   }
 
   refreshToken(refreshData: any): Observable<any> {
-    this.tokenService.removeToken();
-    this.tokenService.removeRefreshToken();
     const body = new HttpParams()
       .set('refresh_token', refreshData.refresh_token)
       .set('grant_type', 'refresh_token');
-    return this.http.post<any>(API_URL + 'oauth/token', body, HTTP_OPTIONS)
+    return this.http.post<any>(APIConstants.API_URL + 'oauth/token', body, HTTP_OPTIONS)
       .pipe(
         tap(res => {
           this.tokenService.saveToken(res.access_token);
@@ -91,10 +83,16 @@ export class AuthService {
   }
 
   loginLogico(): Observable<any> {
-    return this.http.get<any>(API_URL + 'loginLogico')
+    return this.http.get<any>(APIConstants.API_URL + 'loginLogico')
       .pipe(tap(res => {
         return res;
       }),
       catchError(AuthService.handleError));
+  }
+
+  updateloggedIn(): void {
+    if (this.tokenService.getRefreshToken()) {
+      this.loggedIn.next(true);
+    }
   }
 }
