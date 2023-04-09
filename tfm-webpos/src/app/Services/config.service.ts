@@ -48,8 +48,11 @@ export class ConfigService {
       .toPromise();
   }
 
-  saveConfig(idTienda: string, idTPV: string): void {
+  saveConfig(idTienda: string, idTPV: string, codigoTienda: string | undefined): void {
     localStorage.setItem(LocalStorageConstants.ID_TIENDA, idTienda);
+    if(codigoTienda != undefined) {
+      localStorage.setItem(LocalStorageConstants.CODIGO_TIENDA, codigoTienda);
+    }
     localStorage.setItem(LocalStorageConstants.ID_TPV, idTPV);
   }
 }

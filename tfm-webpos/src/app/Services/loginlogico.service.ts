@@ -17,6 +17,7 @@ export class LoginlogicoService {
   }
 
   saveDominio(dominio: string): void {
+    console.log("SAVE DOMINIO :: " + dominio);
     localStorage.setItem(LocalStorageConstants.DOMINIO_USUARIO, dominio);
   }
 

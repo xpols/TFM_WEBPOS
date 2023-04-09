@@ -5,6 +5,9 @@ import { CategoriesComponent } from './categories/categories.component';
 import { SubcategoriesComponent } from './subcategories/subcategories.component';
 import { ProductsComponent } from './products/products.component';
 import { TicketComponent } from './ticket/ticket.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatListModule } from '@angular/material/list';
+
 
 
 
@@ -17,7 +20,9 @@ import { TicketComponent } from './ticket/ticket.component';
     TicketComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    MatPaginatorModule,
+    MatListModule
   ]
 })
 export class SalesModule { }

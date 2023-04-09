@@ -1,1 +1,21 @@
-<p>categories works!</p>
+<div *ngFor="let categoria of categorias">
+    {{categoria.nombre}}
+</div>
+
+<!--<mat-paginator [length]="categorias?.length" pageSize="filasFamilias" (page)="getPaginatorData($event)"
+    [pageSizeOptions]="[filasFamilias]" showFirstLastButtons="false">
+</mat-paginator>
+<mat-list>
+    <div *ngFor="let categoria of (categorias | slice: lowValue : highValue)" [newspaper]="paper">
+    </div>
+</mat-list>-->
+
+<mat-paginator [length]="categorias?.length" [pageSize]="filasFamilias" [pageSizeOptions]="[filasFamilias]"
+    [showFirstLastButtons]="true">
+</mat-paginator>
+
+<mat-list role="list">
+    <mat-list-item class="mat-list" role="listitem" *ngFor='let i of dataSource'>
+        {{i.nombre}}
+    </mat-list-item>
+</mat-list>

@@ -77,15 +77,17 @@ export class ConfigComponent implements OnInit {
   private async loadUserConfig(): Promise<void> {
     this.authService.loginLogico().subscribe((res) => {
       console.log("LOGIN LOGICO SUBSCRIBE :: " + JSON.stringify(res));
-      this.loginlogicoService.saveDominio(res.idDominioUsuario);
-      this.loginlogicoService.saveImageBasePath(res.imagenesWebBasePath);
+      console.log("LOGIN LOGICO SUBSCRIBE :: DOMINIO " + res[0].idDominioUsuario);
+      this.loginlogicoService.saveDominio(res[0].idDominioUsuario);
+      this.loginlogicoService.saveImageBasePath(res[0].imagenesWebBasePath);
     }, (err: any) => {
       console.log(err);
     });
   }
 
   public saveConfig() {
-    this.configService.saveConfig(this.tiendasFC.value, this.tpvsFC.value);
+    let tiendaSeleccionada = this.tiendas?.find(tienda => tienda.id == this.tiendasFC.value);
+    this.configService.saveConfig(this.tiendasFC.value, this.tpvsFC.value, tiendaSeleccionada?.codigo);
     this.router.navigate(['/tables']).then(_ => console.log('Config finish'));
   }
 

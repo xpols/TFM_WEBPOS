@@ -1,0 +1,41 @@
+#main-sales-conatiner {
+    content: "";
+    display: table;
+    clear: both;
+    width: 100%;
+
+    #main-sales-conatiner-left-column {
+        float: left;
+        width: 20%;
+        background-color: red;
+    }
+
+    #main-sales-conatiner-right-column {
+        float: right;
+        width: 80%;
+        background-color: blue;
+
+        #main-sales-conatiner-right-column-subcategories {
+            background-color: yellow;
+        }
+
+        #main-sales-conatiner-right-column-panel {
+            content: "";
+            display: table;
+            clear: both;
+            width: 100%;
+            
+            #main-sales-conatiner-right-column-panel-products {
+                background-color: green;
+                float: left;
+                width: 70%;
+            }
+
+            #main-sales-conatiner-right-column-panel-ticket {
+                background-color: blueviolet;
+                float: right;
+                width: 30%;
+            }
+        }
+    }
+}
