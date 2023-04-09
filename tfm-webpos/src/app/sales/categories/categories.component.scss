@@ -1,0 +1,19 @@
+mat-card {
+    width: 100%;
+    height: inherit;
+    box-sizing: border-box;
+    cursor: pointer;
+    margin: auto 1rem;
+}
+
+mat-card:hover {
+    background-color: gray;
+}
+
+.button-w50 {
+    width: 50%;
+}
+
+.paginator {
+    margin: 0 1rem;
+}

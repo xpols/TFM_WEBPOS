@@ -7,6 +7,10 @@ import { ProductsComponent } from './products/products.component';
 import { TicketComponent } from './ticket/ticket.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCardModule } from '@angular/material/card';
 
 
 
@@ -22,7 +26,11 @@ import { MatListModule } from '@angular/material/list';
   imports: [
     CommonModule,
     MatPaginatorModule,
-    MatListModule
+    MatListModule,
+    MatIconModule,
+    MatButtonModule,
+    MatGridListModule,
+    MatCardModule
   ]
 })
 export class SalesModule { }

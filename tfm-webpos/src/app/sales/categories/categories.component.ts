@@ -1,7 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { merge, of, startWith, switchMap } from 'rxjs';
-import { CategoriasDTO } from 'src/app/models/categorias.dto';
+import { AfterViewInit, Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FamiliasCPDTO } from 'src/app/models/configProductos.dto';
 
 @Component({
@@ -9,11 +6,15 @@ import { FamiliasCPDTO } from 'src/app/models/configProductos.dto';
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.scss']
 })
-export class CategoriesComponent implements OnInit, AfterViewInit {
+export class CategoriesComponent implements OnInit {
 
   @Input() categorias: FamiliasCPDTO[] | undefined = [];
-  @Input() filasFamilias: number = 15;
-  dataSource: any[] | undefined;
+  @Input() filasFamilias: number = 0;
+  categoriasCurrent: FamiliasCPDTO[] | undefined = [];
+  pageIndex: number = 0;
+  maxPageIndex: number = 0;
+
+
 
   constructor() { }
 
@@ -21,35 +22,50 @@ export class CategoriesComponent implements OnInit, AfterViewInit {
     
   }
 
-  //@ViewChild(MatPaginator) paginator: MatPaginator | undefined;
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator | undefined;
-
-  ngAfterViewInit() {
-    this.paginator?.page.subscribe(
-      (event) => console.log("EVENT :: " + event)
-    );
-    if(this.paginator !== undefined) {
-      const from = this.paginator.pageIndex * this.filasFamilias;
-      const to = from + this.filasFamilias;
-      this.dataSource = this.categorias?.slice(from, to);
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes["categorias"].currentValue != changes["categorias"].previousValue && changes["categorias"].currentValue.length > 0) {
+      console.log("CATEGORIAS CHANGE " + changes["categorias"].currentValue);
+      this.setMaxPageIndex();
+      this.setCurrentData();
+    }
+    if(changes["filasFamilias"]?.currentValue != changes["filasFamilias"]?.previousValue) {
+      console.log("FILAS FAMILIAS CHANGE " + changes["filasFamilias"].currentValue);
+      this.setMaxPageIndex();
+      this.setCurrentData();
+    }
+    if(changes["pageIndex"]?.currentValue != changes["pageIndex"]?.previousValue) {
+      console.log("PAGE INDEX CHANGE " + changes["pageIndex"].currentValue);
+      this.setCurrentData();
     }
   }
 
-  // this method will link data to paginator
-  linkListToPaginator() {
-    console.log("LINKS TO");
-    merge(this.paginator?.page).pipe(
-        startWith({}),
-        switchMap(() => {
-          return of(this.categorias);
-  }))
-  .subscribe(res => {
-    console.log("LINSKT TO PAGINATOR");
-    if(this.paginator !== undefined) {
-      const from = this.paginator.pageIndex * this.filasFamilias;
-      const to = from + this.filasFamilias;
-      this.dataSource = res?.slice(from, to);
+  setMaxPageIndex(): void {
+    if(this.filasFamilias != 0 && this.categorias != undefined && this.categorias.length !== 0) {
+      this.maxPageIndex = Math.ceil(this.categorias.length / this.filasFamilias) - 1;
     }
-  });
+  }
+
+  setCurrentData(): void {
+    let from: number = this.pageIndex * this.filasFamilias;
+    let to: number = from + this.filasFamilias;
+    console.log("FROM :: " + from);
+    console.log("TO :: " + to);
+    console.log("SLICE  :: " + this.categorias?.slice(from, to));
+    this.categoriasCurrent = this.categorias?.slice(from, to);
+  }
+
+  updatePage(incrementar: boolean): void {
+    console.log("updatePage");
+    if(incrementar) {
+      if(this.pageIndex < this.maxPageIndex) {
+        this.pageIndex++;
+        this.setCurrentData();
+      }
+    } else {
+      if(this.pageIndex >= 1) {
+        this.pageIndex--;
+        this.setCurrentData();
+      }
+    }
   }
 }
