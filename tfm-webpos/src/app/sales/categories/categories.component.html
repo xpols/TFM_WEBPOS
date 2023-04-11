@@ -2,7 +2,8 @@
     <mat-grid-tile *ngFor="let categoria of categoriasCurrent">
         <mat-card class="card-category" *ngIf="categoria.guardada != null">
             <mat-card-content class="card-category-content">
-                <span>{{categoria.nombre}}</span>
+                <img class="category-icon" [src]="categoria?.imagen">
+                <p>{{categoria.nombre}}</p>
             </mat-card-content>
         </mat-card>
     </mat-grid-tile>

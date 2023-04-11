@@ -11,7 +11,7 @@ export class CategoriasDTO {
     esFamiliaPorDefecto: boolean;
     esPromocionDirecta: boolean;
     mostrarPlusMenus: boolean;
-    idGrupoImagenes_imagenes: GruposImagenesDTO;
+    idGrupoImagenes_imagenes: GruposImagenesDTO[];
   
     constructor(
         id: string,
@@ -24,7 +24,7 @@ export class CategoriasDTO {
         esFamiliaPorDefecto: boolean,
         esPromocionDirecta: boolean,
         mostrarPlusMenus: boolean,
-        idGrupoImagenes_imagenes: GruposImagenesDTO
+        idGrupoImagenes_imagenes: GruposImagenesDTO[]
     ) {
         this.id = id;
         this.codigo = codigo;

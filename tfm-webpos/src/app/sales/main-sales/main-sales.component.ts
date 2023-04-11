@@ -4,6 +4,7 @@ import { MainSalesService } from 'src/app/Services/main-sales.service';
 import { LocalStorageConstants } from 'src/app/constants/constants';
 import { CategoriasDTO } from 'src/app/models/categorias.dto';
 import { ConfigProductosDTO, FamiliasCPDTO } from 'src/app/models/configProductos.dto';
+import { GruposImagenesDTO } from 'src/app/models/gruposImagenes.dto';
 import { UbicacionDTO } from 'src/app/models/ubicacion.dto';
 import { UbicacionesDTO } from 'src/app/models/ubicaciones.dto';
 
@@ -73,6 +74,10 @@ export class MainSalesComponent implements OnInit {
         if(familia.guardada !== null && this.categorias != null) {
           let categoriaEncontrada = this.categorias.find(categoria => Number(categoria.id) == familia.guardada);
           familia.nombre = categoriaEncontrada?.nombre;
+          if(categoriaEncontrada?.idGrupoImagenes_imagenes != undefined ) {
+            console.log("CATEGORIA ENCONTRADA IMAGEN :: " + JSON.stringify(categoriaEncontrada?.idGrupoImagenes_imagenes[0]));
+            familia.imagen = localStorage.getItem(LocalStorageConstants.IMAGE_BASE_PATH) + categoriaEncontrada?.idGrupoImagenes_imagenes[0].ficheroUid + ".png";
+          }
         }
         return familia;
       });

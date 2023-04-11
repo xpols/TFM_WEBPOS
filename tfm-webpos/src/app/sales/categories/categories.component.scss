@@ -4,10 +4,22 @@ mat-card {
     box-sizing: border-box;
     cursor: pointer;
     margin: auto 1rem;
+    padding-top: 0.75rem;
+    border: 1px solid rgba(0,0,0,.12);
+
+    .card-category-content {
+        display: inline-flex;
+
+        p {
+            margin-top: 0;
+            line-height: 26px;
+            margin-left: 0.5rem;
+        }
+    }
 }
 
 mat-card:hover {
-    background-color: gray;
+    background-color: rgba(0,0,0,.12);
 }
 
 .button-w50 {
@@ -16,4 +28,8 @@ mat-card:hover {
 
 .paginator {
     margin: 0 1rem;
+}
+
+.category-icon {
+    max-height: 24px;
 }

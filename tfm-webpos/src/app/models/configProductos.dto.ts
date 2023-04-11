@@ -1,3 +1,5 @@
+import { GruposImagenesDTO } from "./gruposImagenes.dto";
+
 export class ConfigProductosDTO {
     familias: FamiliasCPDTO[]
     medidas: MedidaCPDTO;
@@ -17,6 +19,7 @@ export class FamiliasCPDTO {
     guardada: number;
     productos: ProuctoCPDTO[][];
     subfamilias: SubfamiliasCPDTO[];
+    imagen: string | undefined;
 
     constructor(
         id: string,
