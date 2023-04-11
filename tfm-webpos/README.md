@@ -1,27 +1,20 @@
 # TfmWebpos
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.3.
+Aquest projecte ha estat generatamb [Angular CLI](https://github.com/angular/angular-cli) versio 13.3.3.
 
-## Development server
+## Instal·lació
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+El primer pas es executar la instal·lació de totes les dependencies per mitja de `npm install` desde la carpeta arrel del projecte.
 
-## Code scaffolding
+Posteriorment es podra executar la comanda `ng serve` per arrancar en local el servidor de desenvolupament, al que es podra accedir navegant a `http://localhost:4100`.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Es pot generar una versio de produccio per mitja del la comanda `ng build --base-href ./`, aixo genera versio de l'aplicacio per poder pujar a un servidor de produccio.
 
-## Build
+Tot el codi de l'aplicació esta en un repositori de Github public : `https://github.com/xpols/TFM_WEBPOS.git`
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+El projecte tambe es accesible en una versio de deploy sobre netlify: `https://funny-griffin-9928b9.netlify.app/login`. Aquesta versio pot no ser estable en alguns moments del desnevolupament.
 
-## Running unit tests
+Per poder realitzar login a l'aplicacio s'han generat unes credencials sadmin / Sigfrid2019.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
