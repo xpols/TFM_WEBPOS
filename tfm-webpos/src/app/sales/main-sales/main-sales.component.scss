@@ -6,8 +6,9 @@
 
     #main-sales-conatiner-left-column {
         float: left;
-        width: 20%;
-        padding-top: 1rem;
+        width: calc(20% - 2px - 0.5rem);
+        padding-top: .5rem;
+        border-right: 1px solid rgba(0,0,0,.12);
     }
 
     #main-sales-conatiner-right-column {
@@ -15,7 +16,7 @@
         width: 80%;
 
         #main-sales-conatiner-right-column-subcategories {
-            
+            border-bottom: 1px solid rgba(0,0,0,.12);
         }
 
         #main-sales-conatiner-right-column-panel {
@@ -27,6 +28,7 @@
             #main-sales-conatiner-right-column-panel-products {
                 float: left;
                 width: 70%;
+                padding-top: .5rem;
             }
 
             #main-sales-conatiner-right-column-panel-ticket {
