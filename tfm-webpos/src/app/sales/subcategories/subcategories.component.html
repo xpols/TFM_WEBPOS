@@ -1,1 +1,24 @@
-<p>subcategories works!</p>
+<div class="subcategories-container">
+    <div mat-dialog-actions align="center" class="paginator">
+        <button mat-stroked-button class="button-action button-minus mat-elevation-z0 button-w100"
+            (click)="updatePage(false)"><mat-icon>arrow_back_ios</mat-icon></button>
+    </div>
+    <div class="subcategories-central">
+        <mat-grid-list cols="{{filasSubfamilias}}" rowHeight="35px" gutterSize="15px">
+            <mat-grid-tile *ngFor="let subcategoria of subcategoriasCurrent"
+                (click)="selectSubCategory(subcategoria?.id)">
+                <mat-card class="card-category" *ngIf="subcategoria.guardada != null"
+                    [ngClass]="{'categoria-selecionada': subcategoriaSelecionadaActual == subcategoria?.id}">
+                    <mat-card-content class="card-category-content">
+                        <img class="category-icon" [src]="subcategoria?.imagen">
+                        <p>{{subcategoria.nombre}}</p>
+                    </mat-card-content>
+                </mat-card>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+    <div mat-dialog-actions align="center" class="paginator">
+        <button mat-stroked-button class="button-action button-minus mat-elevation-z0 button-w100"
+            (click)="updatePage(true)"><mat-icon>arrow_forward_ios</mat-icon></button>
+    </div>
+</div>

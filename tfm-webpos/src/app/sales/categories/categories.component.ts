@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FamiliasCPDTO } from 'src/app/models/configProductos.dto';
 
 @Component({
@@ -10,9 +10,11 @@ export class CategoriesComponent implements OnInit {
 
   @Input() categorias: FamiliasCPDTO[] | undefined = [];
   @Input() filasFamilias: number = 0;
+  @Output() categoriaSelecionada = new EventEmitter<string>();
   categoriasCurrent: FamiliasCPDTO[] | undefined = [];
   pageIndex: number = 0;
   maxPageIndex: number = 0;
+  categoriaSelecionadaActual: string | undefined;
 
 
 
@@ -67,5 +69,11 @@ export class CategoriesComponent implements OnInit {
         this.setCurrentData();
       }
     }
+  }
+
+  selectCategory(idCategory: string | undefined) {
+    console.log("Categoria seleccionada :: " + idCategory);
+    this.categoriaSelecionada.emit(idCategory);
+    this.categoriaSelecionadaActual = idCategory;
   }
 }

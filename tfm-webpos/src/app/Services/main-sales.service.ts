@@ -5,6 +5,7 @@ import { UbicacionesDTO } from '../models/ubicaciones.dto';
 import { UbicacionDTO } from '../models/ubicacion.dto';
 import { ConfigProductosDTO } from '../models/configProductos.dto';
 import { CategoriasDTO } from '../models/categorias.dto';
+import { ProductosDTO } from '../models/productos.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -53,4 +54,18 @@ export class MainSalesService {
       .get<CategoriasDTO[]>(APIConstants.API_URL + 'categoriasPlataformasVenta/', {params: params})
       .toPromise();
   }
+
+  getProductos(idDominio: string): Promise<ProductosDTO[]|undefined> {
+    let params = new HttpParams();
+    params = params.append('max', 1000);
+    params = params.append('offset', 0);
+    params = params.append('contador', true);
+    params = params.append('idDominio', idDominio);
+    
+    return this.http
+      .get<ProductosDTO[]>(APIConstants.API_URL + 'productos/', {params: params})
+      .toPromise();
+  }
+
+  
 }

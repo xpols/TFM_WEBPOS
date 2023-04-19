@@ -1,1 +1,16 @@
-<p>products works!</p>
+<mat-grid-list cols="4" rowHeight="50px" gutterSize="5px">
+    <mat-grid-tile *ngFor="let product of productosCurrent">
+        <mat-card class="card-product">
+            <mat-card-content class="card-product-content">
+                <img class="product-icon" [src]="product?.imagen">
+                <p>{{product.nombre}}</p>
+            </mat-card-content>
+        </mat-card>
+    </mat-grid-tile>
+</mat-grid-list>
+<div mat-dialog-actions align="center" class="paginator">
+    <button mat-stroked-button class="button-action button-minus mat-elevation-z0 button-w50"
+        (click)="updatePage(false)"><mat-icon>arrow_back_ios</mat-icon></button>
+    <button mat-stroked-button class="button-action button-minus mat-elevation-z0 button-w50"
+        (click)="updatePage(true)"><mat-icon>arrow_forward_ios</mat-icon></button>
+</div>

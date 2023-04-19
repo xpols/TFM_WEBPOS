@@ -1,0 +1,46 @@
+.subcategories-container {
+    display: inline-flex;
+    width: 100%;
+    margin: 0.5rem 0;
+}
+
+.paginator {
+    width: 10vw;
+    margin: 0 1rem;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.subcategories-central {
+    width: 70vw;
+}
+
+mat-card {
+    width: 100%;
+    height: inherit;
+    box-sizing: border-box;
+    cursor: pointer;
+    margin: auto 1rem;
+    padding-top: 4px;
+    border: 1px solid rgba(0,0,0,.12);
+
+    .card-category-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        p {
+            margin-top: 0;
+            line-height: 26px;
+        }
+    }
+}
+
+mat-card:hover, .categoria-selecionada {
+    background-color: rgba(0,0,0,.12);
+}
+
+.button-w100 {
+    width: 100%;
+}

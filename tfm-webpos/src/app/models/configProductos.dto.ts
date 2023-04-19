@@ -38,9 +38,10 @@ export class FamiliasCPDTO {
 
 export class SubfamiliasCPDTO {
     id: string;
-    nombre: string;
+    nombre: string | undefined;
     guardada: number;
     productos: ProuctoCPDTO[][];
+    imagen: string | undefined;
 
     constructor(
         id: string,
@@ -57,8 +58,9 @@ export class SubfamiliasCPDTO {
 
 export class ProuctoCPDTO {
     id: string;
-    nombre: string;
+    nombre: string | undefined;
     guardada: number;
+    imagen: string | undefined;
 
     constructor(
         id: string,
