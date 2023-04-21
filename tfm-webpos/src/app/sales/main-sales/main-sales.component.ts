@@ -6,6 +6,7 @@ import { CategoriasDTO } from 'src/app/models/categorias.dto';
 import { ConfigProductosDTO, FamiliasCPDTO, ProuctoCPDTO, SubfamiliasCPDTO } from 'src/app/models/configProductos.dto';
 import { GruposImagenesDTO } from 'src/app/models/gruposImagenes.dto';
 import { ProductosDTO } from 'src/app/models/productos.dto';
+import { TarifasVentaDTO } from 'src/app/models/tarifasVenta.dto';
 import { UbicacionDTO } from 'src/app/models/ubicacion.dto';
 import { UbicacionesDTO } from 'src/app/models/ubicaciones.dto';
 
@@ -36,6 +37,9 @@ export class MainSalesComponent implements OnInit {
   filasProductos: number = 10;
   columnasProductos: number = 10;
   productosTodos: ProductosDTO[] | undefined = [];
+
+  tarifa: TarifasVentaDTO | undefined;
+  filteredTarifasArray: TarifasVentaDTO[] | undefined;
 
   constructor(private route: ActivatedRoute, private mainSalesService: MainSalesService) { }
 
@@ -88,12 +92,48 @@ export class MainSalesComponent implements OnInit {
       let idDominio = localStorage.getItem(LocalStorageConstants.DOMINIO_USUARIO);
       if(idDominio != undefined) {
         this.productosTodos = await this.mainSalesService.getProductos(idDominio);
+        await this.loadTarifas();
+        console.log("TARIFA CARGADA :: " + this.tarifa);
         this.matchProducts();
       }
     } catch (error: any) {
       errorResponse = error.error;
     }
   }
+
+  private async loadTarifas(): Promise<void> {
+    let errorResponse: any;
+    try {
+      let idDominio = localStorage.getItem(LocalStorageConstants.DOMINIO_USUARIO);
+      let codigoTienda = localStorage.getItem(LocalStorageConstants.CODIGO_TIENDA);
+      if(idDominio != undefined) {
+        let tarifasTodas = await this.mainSalesService.getTarifas(idDominio, codigoTienda);
+        if(tarifasTodas != undefined) {
+          const fechaNow = new Date();
+          console.log("TARIFA CARGADA :: fechaNow " + fechaNow);
+          this.filteredTarifasArray = tarifasTodas.filter(tarifa => {
+            return (fechaNow >= this.convertirFecha(tarifa.fechaInicial) && (tarifa.fechaFinal == null || tarifa.fechaFinal == undefined || fechaNow <= this.convertirFecha(tarifa.fechaFinal) )) ? tarifa : null; //;
+          });
+          this.tarifa = this.filteredTarifasArray[0];
+          console.log("TARIFA CARGADA :: load" + JSON.stringify(this.tarifa));
+        }
+      }
+    } catch (error: any) {
+      errorResponse = error.error;
+    }
+  }
+
+  convertirFecha(fechaString: string): Date {
+    const partes = fechaString.split(" ");
+    const fechaPartes = partes[0].split("/");
+    const horaPartes = partes[1].split(":");
+    const fecha = new Date(Number(fechaPartes[2]), Number(fechaPartes[1]) - 1, Number(fechaPartes[0]), Number(horaPartes[0]), Number(horaPartes[1]));
+    console.log("FECHA STRING :: " + fechaString);
+    console.log("FECHA CONVERTIDA :: " + fecha);
+    return fecha;
+  }
+
+
 
   private matchCategories(): void {
     if(this.ubicacionConfig != undefined && this.ubicacionConfig?.length !== 0) {

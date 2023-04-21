@@ -6,6 +6,7 @@ import { UbicacionDTO } from '../models/ubicacion.dto';
 import { ConfigProductosDTO } from '../models/configProductos.dto';
 import { CategoriasDTO } from '../models/categorias.dto';
 import { ProductosDTO } from '../models/productos.dto';
+import { TarifasVentaDTO } from '../models/tarifasVenta.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class MainSalesService {
   getUbicaciones(codigoTienda: string | null): Promise<UbicacionesDTO[]|undefined> {
     let params = new HttpParams();
     params = params.append('filters', '[{"field":"idTipoAgrupacion.codigo","type":"codigo","op":"equals","listValues":[{"value":"002"}]}]');
-    params = params.append('filtersHijos', '[{"field":"tiendas.codigo","type":"codigo","op":"equals","listValues":[{"value":"999"}]}]');
+    params = params.append('filtersHijos', '[{"field":"tiendas.codigo","type":"codigo","op":"equals","listValues":[{"value":"'+codigoTienda+'"}]}]');
     params = params.append('option','fields');
     params = params.append('fields', 'id,codigo');
     params = params.append('max', 1000);
@@ -64,6 +65,22 @@ export class MainSalesService {
     
     return this.http
       .get<ProductosDTO[]>(APIConstants.API_URL + 'productos/', {params: params})
+      .toPromise();
+  }
+
+  getTarifas(idDominio: string, codigoTienda: string | null): Promise<TarifasVentaDTO[]|undefined> {
+    let params = new HttpParams();
+    params = params.append('max', 1000);
+    params = params.append('offset', 0);
+    params = params.append('contador', false);
+    params = params.append('idDominio', idDominio);
+    params = params.append('filters','[{"field":"activa","type":"boolean","op":"equals","listValues":[{"value":true}]}]');
+    params = params.append('filtersHijos','[{"field":"tiendas.codigo","type":"codigo","op":"like","listValues":[{"value":"'+codigoTienda+'"}]}]');
+    params = params.append('grupoTiendaSeleccionada', 'A');
+    params = params.append('orders', '[{"order":[{"field":"fechaInicial","value":"desc"}]}]');
+    
+    return this.http
+      .get<TarifasVentaDTO[]>(APIConstants.API_URL + 'tarifasVenta/', {params: params})
       .toPromise();
   }
 
