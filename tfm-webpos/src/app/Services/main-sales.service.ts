@@ -7,6 +7,7 @@ import { ConfigProductosDTO } from '../models/configProductos.dto';
 import { CategoriasDTO } from '../models/categorias.dto';
 import { ProductosDTO } from '../models/productos.dto';
 import { TarifasVentaDTO } from '../models/tarifasVenta.dto';
+import { TarifasVentaPreciosDTO } from '../models/tarifasVentaPrecios.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -81,6 +82,18 @@ export class MainSalesService {
     
     return this.http
       .get<TarifasVentaDTO[]>(APIConstants.API_URL + 'tarifasVenta/', {params: params})
+      .toPromise();
+  }
+
+  getTarifaPrecios(idDominio: string, idTarifa: string | null): Promise<TarifasVentaPreciosDTO[]|undefined> {
+    let params = new HttpParams();
+    params = params.append('max', 1000);
+    params = params.append('offset', 0);
+    params = params.append('idDominio', idDominio);
+    params = params.append('filtrosComplementarios', '[{"field":"idTarifa.id","type":"numeric","op":"equals","listValues":[{"value":'+idTarifa+'}]}]');
+    
+    return this.http
+      .get<TarifasVentaPreciosDTO[]>(APIConstants.API_URL + 'tarifasPreciosVenta/', {params: params})
       .toPromise();
   }
 

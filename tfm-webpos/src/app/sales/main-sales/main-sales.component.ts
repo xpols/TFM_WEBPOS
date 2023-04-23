@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MainSalesService } from 'src/app/Services/main-sales.service';
+import { SharedService } from 'src/app/Services/shared.service';
 import { LocalStorageConstants } from 'src/app/constants/constants';
 import { CategoriasDTO } from 'src/app/models/categorias.dto';
 import { ConfigProductosDTO, FamiliasCPDTO, ProuctoCPDTO, SubfamiliasCPDTO } from 'src/app/models/configProductos.dto';
 import { GruposImagenesDTO } from 'src/app/models/gruposImagenes.dto';
 import { ProductosDTO } from 'src/app/models/productos.dto';
 import { TarifasVentaDTO } from 'src/app/models/tarifasVenta.dto';
+import { TarifasVentaPreciosDTO } from 'src/app/models/tarifasVentaPrecios.dto';
 import { UbicacionDTO } from 'src/app/models/ubicacion.dto';
 import { UbicacionesDTO } from 'src/app/models/ubicaciones.dto';
 
@@ -18,7 +20,9 @@ import { UbicacionesDTO } from 'src/app/models/ubicaciones.dto';
 export class MainSalesComponent implements OnInit {
 
   tableTicketId: string | null = null;
-  numDiners: number | undefined;
+  numDiners: number = 0;
+  tableId: string | undefined;
+  tableName: string | undefined;
   ubicaciones: UbicacionesDTO[] | undefined = [];
   ubicacion: UbicacionDTO | undefined;
   ubicacionConfig: ConfigProductosDTO[] | undefined;
@@ -40,8 +44,11 @@ export class MainSalesComponent implements OnInit {
 
   tarifa: TarifasVentaDTO | undefined;
   filteredTarifasArray: TarifasVentaDTO[] | undefined;
+  precios: TarifasVentaPreciosDTO[] | undefined;
 
-  constructor(private route: ActivatedRoute, private mainSalesService: MainSalesService) { }
+  isLoadingResults = false;
+
+  constructor(private route: ActivatedRoute, private mainSalesService: MainSalesService, private sharedService: SharedService) { }
 
   ngOnInit(): void {
     this.route.queryParams
@@ -49,12 +56,22 @@ export class MainSalesComponent implements OnInit {
         console.log("PARAMS :: " + JSON.stringify(params));
         this.tableTicketId = params["tableTicketId"];
         this.numDiners = params["numDiners"];
+        this.tableId = params["tableId"];
+        this.tableName = params["tableName"];
+        
         this.loadConfigUbicacion();
       }
     );
   }
 
+  ngAfterViewInit() {
+    console.log("PONEMOS VALOR :: " + this.tableName);
+    this.sharedService.setTableName(this.tableName);
+    this.sharedService.setNumDiners(this.numDiners);
+  }
+
   private async loadConfigUbicacion(): Promise<void> {
+    this.isLoadingResults = true;
     let errorResponse: any;
     try {
       this.ubicaciones = await this.mainSalesService.getUbicaciones(localStorage.getItem(LocalStorageConstants.CODIGO_TIENDA));
@@ -93,8 +110,9 @@ export class MainSalesComponent implements OnInit {
       if(idDominio != undefined) {
         this.productosTodos = await this.mainSalesService.getProductos(idDominio);
         await this.loadTarifas();
-        console.log("TARIFA CARGADA :: " + this.tarifa);
+        console.log("TARIFA CARGADA :: " + this.tarifa?.id);
         this.matchProducts();
+        this.isLoadingResults = false;
       }
     } catch (error: any) {
       errorResponse = error.error;
@@ -110,17 +128,20 @@ export class MainSalesComponent implements OnInit {
         let tarifasTodas = await this.mainSalesService.getTarifas(idDominio, codigoTienda);
         if(tarifasTodas != undefined) {
           const fechaNow = new Date();
-          console.log("TARIFA CARGADA :: fechaNow " + fechaNow);
           this.filteredTarifasArray = tarifasTodas.filter(tarifa => {
             return (fechaNow >= this.convertirFecha(tarifa.fechaInicial) && (tarifa.fechaFinal == null || tarifa.fechaFinal == undefined || fechaNow <= this.convertirFecha(tarifa.fechaFinal) )) ? tarifa : null; //;
           });
           this.tarifa = this.filteredTarifasArray[0];
-          console.log("TARIFA CARGADA :: load" + JSON.stringify(this.tarifa));
+          await this.loadPrecios(idDominio, this.tarifa.id);
         }
       }
     } catch (error: any) {
       errorResponse = error.error;
     }
+  }
+
+  private async loadPrecios(idDominio: string, idTarifa: string): Promise<void> {
+    this.precios = await this.mainSalesService.getTarifaPrecios(idDominio, idTarifa);
   }
 
   convertirFecha(fechaString: string): Date {
@@ -175,15 +196,16 @@ export class MainSalesComponent implements OnInit {
       this.ubicacionConfig[0].familias.map( (familia) => {
         if(familia.guardada !== null && this.categorias != null) {
           familia.productos.map( (productosFila: ProuctoCPDTO[]) => {
-            console.log("PRODUCTOS FILA :: " + JSON.stringify(productosFila));
+            //console.log("PRODUCTOS FILA :: " + JSON.stringify(productosFila));
             productosFila.map( (producto) =>  {
-              console.log("PRODUCTO :: " +  JSON.stringify(producto));
+              //console.log("PRODUCTO :: " +  JSON.stringify(producto));
               if(producto !== null && this.productosTodos != null) {
                 let productoEncontrado = this.productosTodos.find(prod => Number(prod.id) == producto.guardada);
                 producto.nombre = productoEncontrado?.nombre;
-                console.log("PRODUCTO NOMBRE :: " + producto.nombre);
+                producto.precio = this.findProductPrice(producto.guardada);
+                //console.log("PRODUCTO NOMBRE :: " + producto.nombre);
                 if(productoEncontrado?.idGrupoImagenes_imagenes != undefined && productoEncontrado?.idGrupoImagenes_imagenes.length > 0) {
-                  console.log("PRODUCTO ENCONTRADO IMAGEN :: " + JSON.stringify(productoEncontrado?.idGrupoImagenes_imagenes[0]));
+                  //console.log("PRODUCTO ENCONTRADO IMAGEN :: " + JSON.stringify(productoEncontrado?.idGrupoImagenes_imagenes[0]));
                   producto.imagen = localStorage.getItem(LocalStorageConstants.IMAGE_BASE_PATH) + productoEncontrado?.idGrupoImagenes_imagenes[0].ficheroUid + ".png";
                 }
               }
@@ -194,15 +216,16 @@ export class MainSalesComponent implements OnInit {
 
           familia.subfamilias.map( (subfamilia ) => {
             subfamilia.productos.map( (productosFila: ProuctoCPDTO[]) => {
-              console.log("PRODUCTOS FILA SF :: " + JSON.stringify(productosFila));
+              //console.log("PRODUCTOS FILA SF :: " + JSON.stringify(productosFila));
               productosFila.map( (producto) =>  {
-                console.log("PRODUCTO SF :: " +  JSON.stringify(producto));
+                //console.log("PRODUCTO SF :: " +  JSON.stringify(producto));
                 if(producto !== null && this.productosTodos != null) {
                   let productoEncontrado = this.productosTodos.find(prod => Number(prod.id) == producto.guardada);
                   producto.nombre = productoEncontrado?.nombre;
-                  console.log("PRODUCTO NOMBRE SF :: " + producto.nombre);
+                  producto.precio = this.findProductPrice(producto.guardada);
+                  //console.log("PRODUCTO NOMBRE SF :: " + producto.nombre);
                   if(productoEncontrado?.idGrupoImagenes_imagenes != undefined && productoEncontrado?.idGrupoImagenes_imagenes.length > 0) {
-                    console.log("PRODUCTO ENCONTRADO IMAGEN SF :: " + JSON.stringify(productoEncontrado?.idGrupoImagenes_imagenes[0]));
+                    //console.log("PRODUCTO ENCONTRADO IMAGEN SF :: " + JSON.stringify(productoEncontrado?.idGrupoImagenes_imagenes[0]));
                     producto.imagen = localStorage.getItem(LocalStorageConstants.IMAGE_BASE_PATH) + productoEncontrado?.idGrupoImagenes_imagenes[0].ficheroUid + ".png";
                   }
                 }
@@ -216,6 +239,18 @@ export class MainSalesComponent implements OnInit {
         return familia;
       });
     }
+  }
+
+  private findProductPrice(idProduct: number): string | undefined {
+    if(idProduct != null && idProduct != undefined) {
+      let productoEncontrado = this.precios?.find(precio => {
+        return Number(precio.idProducto_nombre.id) == idProduct;
+      });
+      return productoEncontrado?.precioGrupo_1.toFixed(2) + "€";
+    } else {
+      return undefined;
+    }
+
   }
 
   recibirCategoriaSelecionada(idCategory: any) {
@@ -263,6 +298,11 @@ export class MainSalesComponent implements OnInit {
         console.log('No se encontró la familia');
       }
     }
+  }
+
+  ngOnDestroy() {
+    this.sharedService.setTableName(undefined);
+    console.log('Componente destruido');
   }
 
   

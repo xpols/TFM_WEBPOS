@@ -1,0 +1,40 @@
+
+
+@import '~@angular/material/theming';
+@include mat-core();
+
+@import "./variables";
+
+.mat-flat-button.mat-primary, .mat-raised-button.mat-primary, .mat-fab.mat-primary, .mat-mini-fab.mat-primary {
+    background-color: $secondary-color;
+    color: $white;
+}
+
+.mat-flat-button.mat-primary:hover, .mat-raised-button.mat-primary:hover, .mat-fab.mat-primary:hover, .mat-mini-fab.mat-primary:hover {
+    background-color: $secondary-color-hover;
+    color: $white;
+}
+
+.mat-drawer.mat-drawer-push {
+    background-color: $main-color;
+}
+
+mat-sidenav {
+    .mat-list-base .mat-list-item .mat-list-item-content, .mat-list-base .mat-list-option .mat-list-item-content {
+        background: $secondary-color;
+        margin: 0 0.5rem;
+        border-radius: 10px;
+        color: $white;
+        max-height: 30px;
+    }
+
+    .mat-list-base .mat-list-item, .mat-list-base .mat-list-option {
+        max-height: 35px;
+    }
+
+    .mat-button:hover {
+        background: $secondary-color;
+        max-height: 30px;
+        line-height: 30px;
+    }
+}

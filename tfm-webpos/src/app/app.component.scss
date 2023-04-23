@@ -1,3 +1,18 @@
+@import "../assets/styles/variables";
+
+.mat-toolbar.mat-primary {
+    background: $main-color;
+    color: $white;
+}
+
+.mat-input-element {
+    caret-color: $main-color;
+}
+
+.mat-form-field.mat-warn .mat-input-element, .mat-form-field-invalid .mat-input-element {
+    caret-color: $red;
+}
+
 .wp-container {
     height: 100vh;
     display: flex;
@@ -31,6 +46,23 @@
     margin: 5px;
 }
 
-.example-spacer {
+.spacer {
     flex: 1 1 auto;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    padding-left: 5vw;
+
+    .button-qty {
+        margin: 0 .5rem;
+    }
+
+    .button-minus {
+        margin-left: 2rem;
+        background-color: $red;
+    }
+
+    .button-plus {
+        background-color: $blue;
+    }
 }

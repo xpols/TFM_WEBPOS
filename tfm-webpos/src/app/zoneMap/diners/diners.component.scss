@@ -1,3 +1,5 @@
+@import "../../../assets/styles/variables";
+
 .diners-title {
     text-align: center;
     border-bottom: 2px solid gray;
@@ -16,11 +18,19 @@
 }
 
 .button-plus {
-    background-color: green;
+    background-color: $blue;
 }
 
 .button-minus {
-    background-color: red;
+    background-color: $red;
+}
+
+.button-plus:hover {
+    background-color: $blue-hover;
+}
+
+.button-minus:hover {
+    background-color: $red-hover;
 }
 
 .qty {

@@ -1,10 +1,11 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AuthService } from './Services/auth.service';
 import { Router } from '@angular/router';
 import { TokenService } from './Services/token.service';
+import { SharedService } from './Services/shared.service';
 
 @Component({
   selector: 'app-root',
@@ -23,17 +24,7 @@ export class AppComponent {
     {
       'title': 'TPV',
       'path': '/sales',
-      'icon':'fa-cash-register'
-    },
-    {
-      'title': 'Cocina',
-      'path': '/kitchen',
-      'icon':'fa-stroopwafel'
-    },
-    {
-      'title': 'Tickets',
-      'path': '/tickets',
-      'icon':'fa-list'
+      'icon':'fa-television'
     },
     {
       'title': 'Mesas',
@@ -41,9 +32,14 @@ export class AppComponent {
       'icon':'fa-th'
     },
     {
+      'title': 'Tickets',
+      'path': '/tickets',
+      'icon':'fa-list'
+    },
+    {
       'title': 'Config',
       'path': '/config',
-      'icon':'fa-th'
+      'icon':'fa-gear'
     }
     
   ];
@@ -51,8 +47,14 @@ export class AppComponent {
   @Output() toggleSideNav = new EventEmitter();
 
   isLoggedIn$: Observable<boolean> | undefined;
+
+  numDiners: number = 0;
+  tableName: string | undefined;
+  private subscriptionTableName: Subscription | undefined;
+  private subscriptionNumDiners: Subscription | undefined;
+  emptySpacerShow: boolean = true;
   
-  constructor( changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public authService: AuthService, private router: Router, private tokenService: TokenService ) {
+  constructor( changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public authService: AuthService, private router: Router, private tokenService: TokenService, private sharedService: SharedService ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -64,6 +66,29 @@ export class AppComponent {
       this.authService.refreshToken(this.tokenService.getRefreshToken());
     }
     this.authService.updateloggedIn();
+    
+  }
+
+  ngAfterViewInit() {
+    this.subscriptionTableName = this.sharedService.tableName$.subscribe(valor => {
+      console.log("RECIBIMOS VALOR :: " + valor);
+      this.tableName = valor;
+      if(this.tableName != undefined && this.tableName != null) {
+        this.emptySpacerShow = false;
+      } else {
+        this.emptySpacerShow = true;
+      }
+    });
+
+    this.subscriptionNumDiners = this.sharedService.numDiners$.subscribe(valor => {
+      console.log("RECIBIMOS VALOR numDiners :: " + valor);
+      this.numDiners = valor;
+      if(this.numDiners != undefined && this.numDiners != null) {
+        this.emptySpacerShow = false;
+      } else {
+        this.emptySpacerShow = true;
+      }
+    });
   }
   
   toggleMobileNav(nav: MatSidenav) {
@@ -83,6 +108,16 @@ export class AppComponent {
   goToLogout() {
     this.authService.logout();
     this.router.navigate(['/login']).then(_ => console.log('Logout'));
+  }
+
+  plus(): void {
+    this.numDiners = Number(this.numDiners) + 1;
+  }
+
+  minus(): void {
+    if(this.numDiners > 0) {
+      this.numDiners = Number(this.numDiners) -1;
+    }
   }
 
 }

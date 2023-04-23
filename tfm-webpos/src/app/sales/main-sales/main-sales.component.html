@@ -1,9 +1,12 @@
 <div id="main-sales-conatiner">
-    <div id="main-sales-conatiner-left-column">
+    <div class="wp-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner color="#1d2939" *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+    <div id="main-sales-conatiner-left-column" *ngIf="!isLoadingResults">
         <categories [categorias]="familias" [filasFamilias]="filasFamilias"
             (categoriaSelecionada)="recibirCategoriaSelecionada($event)"></categories>
     </div>
-    <div id="main-sales-conatiner-right-column">
+    <div id="main-sales-conatiner-right-column" *ngIf="!isLoadingResults">
         <div id="main-sales-conatiner-right-column-subcategories">
             <subcategories [subcategorias]="subfamilias" [filasSubfamilias]="filasSubfamilias"
                 (subcategoriaSelecionada)="recibirSubategoriaSelecionada($event)" *ngIf="mostrarSubfamilias">

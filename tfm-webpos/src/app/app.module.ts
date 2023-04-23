@@ -20,7 +20,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatDialogModule } from '@angular/material/dialog';
-
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -30,6 +31,9 @@ import { MatDialogModule } from '@angular/material/dialog';
   ],
   imports: [
     BrowserModule,
+    FontAwesomeModule,
+    FormsModule, 
+    ReactiveFormsModule, 
     HttpClientModule,
     AppRoutingModule,
     AuthModule,

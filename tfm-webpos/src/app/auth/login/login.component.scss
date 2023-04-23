@@ -1,0 +1,11 @@
+@import "../../app.component.scss";
+
+
+::ng-deep .mat-button-wrapper {
+    display: flex;
+    align-items: center;
+    
+    p {
+        margin: 0;
+    }
+}

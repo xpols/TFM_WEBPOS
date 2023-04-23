@@ -18,7 +18,14 @@
         </button>
         {{title}}
         <div class="fill-space"></div>
-        <span class="example-spacer"></span>
+        <span class="spacer" *ngIf="emptySpacerShow"></span>
+        <span class="tableName spacer" *ngIf="tableName!=undefined">{{'Mesa' | translate}} {{tableName}} -
+          {{'Comensales' |
+          translate}}
+          <button mat-mini-fab class="mat-elevation-z0 button-qty button-minus" (click)="minus()">-</button>
+          <p>{{numDiners}}</p>
+          <button mat-mini-fab class="mat-elevation-z0 button-qty button-plus" (click)="plus()">+</button>
+        </span>
         <button *ngIf="this.authService.loggedIn.value" mat-icon-button class="" aria-label="" (click)="goToLogout()">
           <mat-icon>logout</mat-icon>
         </button>

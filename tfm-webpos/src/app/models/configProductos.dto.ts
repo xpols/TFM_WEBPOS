@@ -61,6 +61,7 @@ export class ProuctoCPDTO {
     nombre: string | undefined;
     guardada: number;
     imagen: string | undefined;
+    precio: string | undefined;
 
     constructor(
         id: string,

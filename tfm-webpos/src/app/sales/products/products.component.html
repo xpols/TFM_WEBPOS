@@ -3,12 +3,15 @@
         <mat-card class="card-product">
             <mat-card-content class="card-product-content">
                 <img class="product-icon" [src]="product?.imagen">
-                <p>{{product.nombre}}</p>
+                <div class="product-info">
+                    <p>{{product.nombre}}</p>
+                    <p class="precio">{{product.precio}}</p>
+                </div>
             </mat-card-content>
         </mat-card>
     </mat-grid-tile>
 </mat-grid-list>
-<div mat-dialog-actions align="center" class="paginator">
+<div mat-dialog-actions class="paginator">
     <button mat-stroked-button class="button-action button-minus mat-elevation-z0 button-w50"
         (click)="updatePage(false)"><mat-icon>arrow_back_ios</mat-icon></button>
     <button mat-stroked-button class="button-action button-minus mat-elevation-z0 button-w50"

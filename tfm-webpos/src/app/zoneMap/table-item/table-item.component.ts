@@ -29,7 +29,7 @@ export class TableItemComponent implements OnInit {
       console.log('The dialog was closed :: ' + result);
       if(result != undefined) {
         this.numDiners = result;
-        this.router.navigate(['/sales'], {queryParams: {tableTicketId: null, numDiners: this.numDiners }});
+        this.router.navigate(['/sales'], {queryParams: {tableTicketId: null, numDiners: this.numDiners, tableName: this.tableName, tableId: this.tableId }});
       } 
     });
   }
@@ -37,7 +37,7 @@ export class TableItemComponent implements OnInit {
   goToSaleScreen() {
     console.log("Go to sales screen");
     if(this.tableTicketId != null) {
-      this.router.navigate(['/sales'], {queryParams: {tableTicketId: this.tableTicketId, numDiners: this.numDiners }});
+      this.router.navigate(['/sales'], {queryParams: {tableTicketId: this.tableTicketId, numDiners: this.numDiners, tableName: this.tableName, tableId: this.tableId }});
     } else {
       this.openDinersDialog();
     }

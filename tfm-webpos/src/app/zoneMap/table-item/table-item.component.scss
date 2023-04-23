@@ -1,3 +1,5 @@
+@import "../../../assets/styles/variables";
+
 mat-card {
     width: inherit;
     height: inherit;
@@ -10,13 +12,22 @@ mat-card {
         box-sizing: border-box;
         text-align: center;
         font-size: 1.25rem;
+        color: $white;
     }
 }
 
 .mesa-libre {
-    background-color: rgb(0, 181, 24);
+    background-color: $secondary-color;
 }
 
 .mesa-ocupada {
-    background-color: rgb(181, 0, 0);
+    background-color: $red;
+}
+
+.mesa-libre:hover {
+    background-color: $secondary-color-hover;
+}
+
+.mesa-ocupada:hover {
+    background-color: $red-hover;
 }

@@ -1,3 +1,5 @@
+@import "../../../assets/styles/variables";
+
 .card-product {
     width: 100%;
     height: 100%;
@@ -6,23 +8,49 @@
     box-sizing: border-box;
     cursor: pointer;
     border: 1px solid rgba(0,0,0,.12);
+    padding: 0.5rem;
+    background-color: $secondary-color;
+
 
     .card-product-content {
         display: flex;
-        justify-content: center;
+        justify-content: space-around;
         align-items: center;
         height: 100%;
-
+        
         .product-icon {
             max-height: 50px;
+            margin-left: 1rem;
         }
 
         p {
             margin-top: 0;
         }
+
+        .product-info {
+            width: 100%;
+        }
+
+        .precio {
+            text-align: end;
+            margin-bottom: 0rem;
+            margin-right: 1rem;
+        }
     }
 }
 
 .card-product:hover {
-    background-color: rgba(0,0,0,.12);
+    background-color: $secondary-color-hover;
 }
+
+.paginator {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+
+    .button-action {
+        width: 25%;
+    }
+}
+

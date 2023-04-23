@@ -25,8 +25,11 @@
                 </mat-error>
             </mat-form-field>
             <div class="button-row" align="center">
-                <button type="submit" [disabled]="!loginForm.valid" mat-flat-button
-                    color="primary"><mat-icon>login</mat-icon>{{'Login' | translate}}</button>
+                <button type="submit" class="button-login" [disabled]="!loginForm.valid" mat-flat-button
+                    color="primary">
+                    <mat-icon>check_circle</mat-icon>
+                    <p>{{'Login' | translate}}</p>
+                </button>
             </div>
         </form>
     </mat-card>
