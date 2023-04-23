@@ -3,6 +3,7 @@ import {ErrorStateMatcher} from '@angular/material/core';
 import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import { AuthService } from 'src/app/Services/auth.service';
+import { SharedService } from 'src/app/Services/shared.service';
 
 @Component({
   selector: 'app-login',
@@ -17,13 +18,15 @@ export class LoginComponent implements OnInit {
   isLoadingResults = false;
   matcher = new MyErrorStateMatcher();
 
-  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder) { }
+  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder, private sharedService: SharedService) { }
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
       username : [null, Validators.required],
       password : [null, Validators.required]
     });
+    this.sharedService.setTableName(undefined);
+    this.sharedService.setNumDiners(0);
   }
 
   onFormSubmit(): void {

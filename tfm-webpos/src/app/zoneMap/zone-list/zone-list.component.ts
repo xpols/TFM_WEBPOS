@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { SharedService } from 'src/app/Services/shared.service';
 import { ZonaMesasService } from 'src/app/Services/zona-mesas.service';
 import { LocalStorageConstants } from 'src/app/constants/constants';
 import { MesaDTO } from 'src/app/models/mesa.dto';
@@ -16,9 +17,11 @@ export class ZoneListComponent implements OnInit {
 
   @Output() zoneChange = new EventEmitter<string>();
 
-  constructor(private zonaMesasService: ZonaMesasService) { }
+  constructor(private zonaMesasService: ZonaMesasService, private sharedService: SharedService) { }
 
   ngOnInit(): void {
+    this.sharedService.setTableName(undefined);
+    this.sharedService.setNumDiners(0);
     this.loadZones();
   }
 

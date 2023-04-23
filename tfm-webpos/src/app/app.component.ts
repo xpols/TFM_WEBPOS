@@ -83,7 +83,7 @@ export class AppComponent {
     this.subscriptionNumDiners = this.sharedService.numDiners$.subscribe(valor => {
       console.log("RECIBIMOS VALOR numDiners :: " + valor);
       this.numDiners = valor;
-      if(this.numDiners != undefined && this.numDiners != null) {
+      if(this.numDiners != undefined && this.numDiners != null && this.numDiners != 0) {
         this.emptySpacerShow = false;
       } else {
         this.emptySpacerShow = true;
