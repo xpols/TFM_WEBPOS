@@ -1,3 +1,5 @@
+@import "../../../assets/styles/variables";
+
 mat-card {
     width: 100%;
     height: inherit;
@@ -20,6 +22,14 @@ mat-card {
 
 mat-card:hover, .categoria-selecionada {
     background-color: rgba(0,0,0,.12);
+}
+
+.button-action {
+    background-color: $white;
+}
+
+.button-action:hover {
+    background-color: $white-hover;
 }
 
 .button-w50 {

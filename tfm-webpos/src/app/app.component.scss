@@ -1,5 +1,13 @@
 @import "../assets/styles/variables";
 
+.sidenav-content {
+    background-color: $grey;
+}
+
+.sidenav-container {
+    background-color: $grey;
+}
+
 .mat-toolbar.mat-primary {
     background: $main-color;
     color: $white;
@@ -63,6 +71,6 @@
     }
 
     .button-plus {
-        background-color: $blue;
+        background-color: $secondary-color;
     }
 }

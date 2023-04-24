@@ -1,3 +1,5 @@
+@import "../../../assets/styles/variables";
+
 .subcategories-container {
     display: inline-flex;
     width: 100%;
@@ -47,4 +49,12 @@ mat-card:hover, .categoria-selecionada {
 
 .button-w100 {
     width: 100%;
+}
+
+.button-action {
+    background-color: $white;
+}
+
+.button-action:hover {
+    background-color: $white-hover;
 }
