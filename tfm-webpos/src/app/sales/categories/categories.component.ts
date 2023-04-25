@@ -15,6 +15,7 @@ export class CategoriesComponent implements OnInit {
   pageIndex: number = 0;
   maxPageIndex: number = 0;
   categoriaSelecionadaActual: string | undefined;
+  primeraCarga: boolean = false;
 
 
 
@@ -54,6 +55,10 @@ export class CategoriesComponent implements OnInit {
     console.log("TO :: " + to);
     console.log("SLICE  :: " + this.categorias?.slice(from, to));
     this.categoriasCurrent = this.categorias?.slice(from, to);
+    if(this.categoriasCurrent != undefined && this.categoriasCurrent.length > 0 && this.primeraCarga == false) {
+      this.selectCategory(this.categoriasCurrent[0].id);
+      this.primeraCarga = true;
+    }
   }
 
   updatePage(incrementar: boolean): void {

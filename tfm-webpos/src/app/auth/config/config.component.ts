@@ -6,6 +6,7 @@ import { TiendaDTO } from '../../models/tienda.dto';
 import { TpvDTO } from 'src/app/models/tpv.dto';
 import { AuthService } from 'src/app/Services/auth.service';
 import { LoginlogicoService } from 'src/app/Services/loginlogico.service';
+import { LocalStorageConstants } from 'src/app/constants/constants';
 
 @Component({
   selector: 'app-config',
@@ -42,11 +43,20 @@ export class ConfigComponent implements OnInit {
     this.isLoadingResults = true;
     this.loadUserConfig();
     this.loadShops();
+    let idTiendaLS = localStorage.getItem(LocalStorageConstants.ID_TIENDA);
+    if(idTiendaLS!=null) {
+      this.tiendasFC.setValue(Number(idTiendaLS));
+      this.shopChange();
+    }
   }
 
   public async shopChange() {
     console.log("SHOP CHANGE :: " + this.tiendasFC.value);
     this.loadTPVs(this.tiendasFC.value);
+    let idTPVLS = localStorage.getItem(LocalStorageConstants.ID_TPV);
+    if(idTPVLS!=null) {
+      this.tpvsFC.setValue(Number(idTPVLS));
+    }
   }
 
   private async loadShops(): Promise<void> {

@@ -79,8 +79,7 @@ export class MainSalesComponent implements OnInit {
         this.ubicacion = await this.mainSalesService.getUbicacion(this.ubicaciones[0].id);
         if(this.ubicacion !== undefined) {
           this.ubicacionConfig = await this.mainSalesService.getRecuperarConfiguracion(this.ubicacion.idMedida.id, this.ubicaciones[0].id);
-          this.loadCategories();
-          
+          await this.loadCategories();
         }
       }
     } catch (error: any) {
