@@ -1,6 +1,6 @@
 <div id="main-sales-conatiner">
     <div class="wp-loading-shade" *ngIf="isLoadingResults">
-        <mat-spinner color="#1d2939" *ngIf="isLoadingResults"></mat-spinner>
+        <mat-spinner class="mat-spinner-green" *ngIf="isLoadingResults"></mat-spinner>
     </div>
     <div id="main-sales-conatiner-left-column" *ngIf="!isLoadingResults">
         <categories [categorias]="familias" [filasFamilias]="filasFamilias"
@@ -18,6 +18,7 @@
                     [columnasProductos]="columnasProductos"></products>
             </div>
             <div id="main-sales-conatiner-right-column-panel-ticket">
+                <ticket [idTicket]="tableTicketId"></ticket>
                 Ticket
             </div>
         </div>

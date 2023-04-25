@@ -19,7 +19,7 @@ import { UbicacionesDTO } from 'src/app/models/ubicaciones.dto';
 })
 export class MainSalesComponent implements OnInit {
 
-  tableTicketId: string | null = null;
+  tableTicketId: string | undefined;
   numDiners: number = 0;
   tableId: string | undefined;
   tableName: string | undefined;

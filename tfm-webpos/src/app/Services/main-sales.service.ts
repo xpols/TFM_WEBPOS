@@ -8,6 +8,8 @@ import { CategoriasDTO } from '../models/categorias.dto';
 import { ProductosDTO } from '../models/productos.dto';
 import { TarifasVentaDTO } from '../models/tarifasVenta.dto';
 import { TarifasVentaPreciosDTO } from '../models/tarifasVentaPrecios.dto';
+import { TicketCabeceraDTO } from '../models/ticketCabecera.dto';
+import { TicketDetalleDTO } from '../models/ticketDetalle.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -94,6 +96,27 @@ export class MainSalesService {
     
     return this.http
       .get<TarifasVentaPreciosDTO[]>(APIConstants.API_URL + 'tarifasPreciosVenta/', {params: params})
+      .toPromise();
+  }
+
+  getTicketCabecera(idTicket: string | undefined): Promise<TicketCabeceraDTO|undefined> {
+    let params = new HttpParams();
+    params = params.append('grupoTiendaSeleccionada', 'A');
+    params = params.append('max', 1000);
+    params = params.append('offset', 0);
+    return this.http
+      .get<TicketCabeceraDTO>(APIConstants.API_URL + 'pedidosVentaCabeceras/'+idTicket, {params: params})
+      .toPromise();
+  }
+
+  getTicketDetalles(idTicket: string | undefined): Promise<TicketDetalleDTO[]|undefined> {
+    let params = new HttpParams();
+    params = params.append('grupoTiendaSeleccionada', 'A');
+    params = params.append('filtrosComplementarios','[{"field":"idDocumentoComercial.id","type":"numeric","op":"equals","listValues":[{"value":'+idTicket+'}]},{"field":"idEstadoLinea.id","type":"numeric","op":"notequals","listValues":[{"value":"2"}]}]');
+    params = params.append('max', 1000);
+    params = params.append('offset', 0);
+    return this.http
+      .get<TicketDetalleDTO[]>(APIConstants.API_URL + 'pedidosVentaLineasDetalle/', {params: params})
       .toPromise();
   }
 

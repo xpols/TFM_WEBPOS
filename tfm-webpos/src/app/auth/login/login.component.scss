@@ -9,3 +9,7 @@
         margin: 0;
     }
 }
+
+::ng-deep .mat-spinner-green circle{
+    stroke: $secondary-color;
+}

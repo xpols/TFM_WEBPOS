@@ -1,6 +1,6 @@
 <div class="wp-container mat-elevation-z8">
     <div class="wp-loading-shade" *ngIf="isLoadingResults">
-        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+        <mat-spinner class="mat-spinner-green" *ngIf="isLoadingResults"></mat-spinner>
     </div>
     <mat-card class="wp-card" *ngIf="!isLoadingResults">
         <form [formGroup]="loginForm" (ngSubmit)="onFormSubmit()">

@@ -1,3 +1,5 @@
+@import "../../../assets/styles/variables";
+
 .item-zone {
     .mat-list-base .mat-list-item .mat-list-item-content {
         padding: 0px !important
@@ -5,9 +7,18 @@
 }
 
 .card-zone {
-    background: #dad6d6;
+    background: $blue;
+    color: $white;
+}
+
+.card-zone:hover {
+    background: $blue-dark;
 }
 
 .zona-seleccionada {
-    background-color: grey;
+    background-color: $blue-dark;
+}
+
+.mat-list-base .mat-list-item .mat-list-item-content, .mat-list-base .mat-list-option .mat-list-item-content {
+    padding: 0;
 }

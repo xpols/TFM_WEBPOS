@@ -1,8 +1,9 @@
 @import "../../../assets/styles/variables";
 
-.spinner {
-    color: red;
+::ng-deep .mat-spinner-green circle{
+    stroke: $secondary-color;
 }
+
 
 #main-sales-conatiner {
     content: "";
