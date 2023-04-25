@@ -1,1 +1,5 @@
-<p>ticket works!</p>
+<p *ngFor="let detalle of detalles">
+    {{detalle.idProducto_nombre.descripcion}} - {{detalle.cantidad}}
+</p>
+
+<p>TOTAL: {{ticket?.totalConImpuestos}}</p>

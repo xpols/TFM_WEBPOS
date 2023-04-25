@@ -58,6 +58,10 @@ export class MainSalesComponent implements OnInit {
         this.numDiners = params["numDiners"];
         this.tableId = params["tableId"];
         this.tableName = params["tableName"];
+
+        if(this.numDiners == null || this.numDiners == undefined) {
+          this.numDiners = 0;
+        }
         
         this.loadConfigUbicacion();
       }

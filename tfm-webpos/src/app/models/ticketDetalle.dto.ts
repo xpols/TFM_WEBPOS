@@ -17,6 +17,7 @@ export class TicketDetalleDTO {
   idLineaPadre_item: ObjectComboDTO;
   idPersonal_nombre: ObjectComboDTO
   idProducto_codigo: ObjectComboDTO;
+  idProducto_nombre: ObjectComboDTO;
   idPromocion_descripcion: ObjectComboDTO;
   idUnidadMedidaVenta_descripcion: ObjectComboDTO;
   precioUnitarioConImpuestos: number;
@@ -42,6 +43,7 @@ export class TicketDetalleDTO {
     idLineaPadre_item: ObjectComboDTO,
     idPersonal_nombre: ObjectComboDTO,
     idProducto_codigo: ObjectComboDTO,
+    idProducto_nombre: ObjectComboDTO,
     idPromocion_descripcion: ObjectComboDTO,
     idUnidadMedidaVenta_descripcion: ObjectComboDTO,
     precioUnitarioConImpuestos: number,
@@ -66,6 +68,7 @@ export class TicketDetalleDTO {
     this.idLineaPadre_item = idLineaPadre_item;
     this.idPersonal_nombre = idPersonal_nombre;
     this.idProducto_codigo = idProducto_codigo;
+    this.idProducto_nombre = idProducto_nombre;
     this.idPromocion_descripcion = idPromocion_descripcion;
     this.idUnidadMedidaVenta_descripcion = idUnidadMedidaVenta_descripcion;
     this.precioUnitarioConImpuestos = precioUnitarioConImpuestos;
