@@ -12,6 +12,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { TicketItemsComponent } from './ticket-items/ticket-items.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 
@@ -22,7 +25,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     CategoriesComponent,
     SubcategoriesComponent,
     ProductsComponent,
-    TicketComponent
+    TicketComponent,
+    TicketItemsComponent
   ],
   imports: [
     CommonModule,
@@ -32,7 +36,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatButtonModule,
     MatGridListModule,
     MatCardModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    FormsModule, 
+    ReactiveFormsModule,
+    TranslateModule
   ]
 })
 export class SalesModule { }

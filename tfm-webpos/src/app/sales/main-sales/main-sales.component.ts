@@ -183,6 +183,8 @@ export class MainSalesComponent implements OnInit {
             }
             return subfamilia;
           });
+        } else {
+          familia.nombre = undefined;
         }
         return familia;
       });

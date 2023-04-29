@@ -1,6 +1,6 @@
 <mat-grid-list cols="1" rowHeight="50px" gutterSize="5px">
     <mat-grid-tile *ngFor="let categoria of categoriasCurrent" (click)="selectCategory(categoria?.id)">
-        <mat-card class="card-category" *ngIf="categoria.guardada != null"
+        <mat-card class="card-category"
             [ngClass]="{'categoria-selecionada': categoriaSelecionadaActual == categoria?.id}">
             <mat-card-content class="card-category-content">
                 <img class="category-icon" [src]="categoria?.imagen">

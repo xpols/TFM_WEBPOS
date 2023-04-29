@@ -1,0 +1,21 @@
+<div class="product-line">
+    <div class="left-column">
+        <div class="product-name">
+            {{detalle.idProducto_nombre.descripcion}}
+        </div>
+        <div class="product-modifiers">
+            &nbsp;
+        </div>
+    </div>
+    <div class="right-column">
+        <div class="action-buttons">
+            <button mat-mini-fab class="mat-elevation-z0 button-qty button-minus" (click)="minus()">-</button>
+            <input class="qty" type="text" pattern="[0-9]*" maxlength="2" [(ngModel)]="detalle.cantidad">
+            <button mat-mini-fab class="mat-elevation-z0 button-qty button-plus" (click)="plus()">+</button>
+        </div>
+        <div class="price">
+            {{detalle.totalConImpuestos}}€
+        </div>
+    </div>
+
+</div>

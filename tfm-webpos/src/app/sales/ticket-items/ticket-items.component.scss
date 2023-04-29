@@ -1,0 +1,65 @@
+@import "../../../assets/styles/variables";
+
+.product-line {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    height: inherit;
+    box-sizing: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    padding: 0.5rem;
+    background-color: #fcfcfc;
+    transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 4px;
+    margin-bottom: .5rem;
+    font-size: 14px;
+
+    .left-column {
+        width: 70%;
+        .product-name {
+            
+        }
+    }
+    
+
+    .right-column {
+        width: 30%;
+
+        .action-buttons {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+
+            .qty{
+                max-width: 15%;
+                text-align: center;
+            }
+
+            .button-qty {
+                font-size: 1.5rem;
+                font-weight: bold;
+            }
+            
+            .button-plus {
+                background-color: $secondary-color;
+            }
+            
+            .button-minus {
+                background-color: $red;
+            }
+            
+            .button-plus:hover {
+                background-color: $secondary-color-hover;
+            }
+            
+            .button-minus:hover {
+                background-color: $red-hover;
+            }
+        }
+
+        .price {
+            text-align: center;
+            font-weight: bold;
+        }
+    }
+}

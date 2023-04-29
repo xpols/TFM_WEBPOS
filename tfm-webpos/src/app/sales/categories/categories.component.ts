@@ -78,7 +78,11 @@ export class CategoriesComponent implements OnInit {
 
   selectCategory(idCategory: string | undefined) {
     console.log("Categoria seleccionada :: " + idCategory);
-    this.categoriaSelecionada.emit(idCategory);
-    this.categoriaSelecionadaActual = idCategory;
+    let categoriaEncontrada = this.categorias?.find(categoria => categoria.id == idCategory);
+    if(categoriaEncontrada?.guardada != null) {
+      this.categoriaSelecionada.emit(idCategory);
+      this.categoriaSelecionadaActual = idCategory;
+    }
+    
   }
 }

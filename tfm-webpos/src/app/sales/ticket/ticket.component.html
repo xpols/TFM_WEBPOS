@@ -1,5 +1,23 @@
-<p *ngFor="let detalle of detalles">
-    {{detalle.idProducto_nombre.descripcion}} - {{detalle.cantidad}}
-</p>
+<div class="block-items">
+    <div *ngFor="let detalle of detalles">
+        <ticket-items [detalle]="detalle"></ticket-items>
+    </div>
+</div>
+<div class="block-total">
+    <div class="total total-bruto">
+        <span>{{'Subtotal' | translate}}</span>
+        <span>{{ ticket?.totalBruto | number:'1.2-2' }}{{'€' | translate}}</span>
+    </div>
+    <div class="total total-descuento">
+        <span>{{'Descuento' | translate}}</span>
+        <span>{{ ticket?.descuentoTotalConImpuestos | number:'1.2-2' }}{{'€' | translate}}</span>
+    </div>
+    <div class="total total-neto">
+        <span>{{'Total' | translate}}</span>
+        <span>{{ ticket?.totalConImpuestos | number:'1.2-2' }}{{'€' | translate}}</span>
+    </div>
 
-<p>TOTAL: {{ticket?.totalConImpuestos}}</p>
+</div>
+<div class="action-buttons">
+    X
+</div>

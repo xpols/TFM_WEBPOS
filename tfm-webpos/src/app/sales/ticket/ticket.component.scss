@@ -1,0 +1,27 @@
+.block-items {
+    height: calc(70vh - 64px);
+    overflow-y: scroll;
+}
+
+.block-total {
+    box-sizing: border-box;
+    border: 2px solid rgba(0, 0, 0, 0.12);
+    background-color: #fcfcfc;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    height: calc(5vh);
+    min-height: 80px;
+    font-size: 1.25rem;
+
+    .total {
+        display: grid;
+        text-align: center;
+        align-self: center;
+    }
+
+    .total-neto {
+        font-size: 1.35rem;
+        font-weight: bold;
+    }
+}

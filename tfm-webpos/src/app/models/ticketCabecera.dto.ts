@@ -30,7 +30,7 @@ export class TicketCabeceraDTO {
     idTienda_descripcion: object,
     totalBruto: number,
     totalConImpuestos: number,
-    totalSinImpuestos: number,
+    totalSinImpuestos: number
   ) {
     this.id = id;
     this.codigo = codigo;
