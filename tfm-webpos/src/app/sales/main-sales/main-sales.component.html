@@ -15,10 +15,12 @@
         <div id="main-sales-conatiner-right-column-panel">
             <div id="main-sales-conatiner-right-column-panel-products">
                 <products [productos]="productos" [filasProductos]="filasProductos"
-                    [columnasProductos]="columnasProductos"></products>
+                    [columnasProductos]="columnasProductos" (productoSelecionado)="recibirProductoSeleccionado($event)">
+                </products>
             </div>
             <div id="main-sales-conatiner-right-column-panel-ticket">
-                <ticket [idTicket]="tableTicketId"></ticket>
+                <ticket [idTicket]="tableTicketId" [tableName]="tableName"
+                    (productoSelecionado)="productoSelecionadoInput"></ticket>
             </div>
         </div>
     </div>

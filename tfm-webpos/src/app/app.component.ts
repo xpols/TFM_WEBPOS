@@ -92,9 +92,7 @@ export class AppComponent {
   }
   
   toggleMobileNav(nav: MatSidenav) {
-    if (this.mobileQuery.matches) {
-      nav.toggle();
-    }
+    nav.toggle();
   }
 
   isLogged(): Observable<boolean> | undefined{

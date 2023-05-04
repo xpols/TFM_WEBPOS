@@ -1,19 +1,22 @@
+import { ObjectComboDTO } from "./objectCombo.dto";
+
 export class TicketCabeceraDTO {
   id: string;
   codigo: string;
   descuentoTotalConImpuestos: number;
   fechaHora: Date;
   fechaJornada: Date;
-  idCanalVenta_descripcion: object;
-  idCliente_nombre: object;
-  idDivisa_descripcion: object;
-  idEmpleadoTPV_nombre: object;
-  idEstadoDocumento_descripcion: object;
-  idTPV_descripcion: object;
-  idTienda_descripcion: object;
+  idCanalVenta_descripcion: ObjectComboDTO;
+  idCliente_nombre: ObjectComboDTO;
+  idDivisa_descripcion: ObjectComboDTO;
+  idEmpleadoTPV_nombre: ObjectComboDTO;
+  idEstadoDocumento_descripcion: ObjectComboDTO;
+  idTPV_descripcion: ObjectComboDTO;
+  idTienda_descripcion: ObjectComboDTO;
   totalBruto: number;
   totalConImpuestos: number;
   totalSinImpuestos: number;
+  mesa: string;
 
   constructor(
     id: string,
@@ -21,16 +24,17 @@ export class TicketCabeceraDTO {
     descuentoTotalConImpuestos: number,
     fechaHora: Date,
     fechaJornada: Date,
-    idCanalVenta_descripcion: object,
-    idCliente_nombre: object,
-    idDivisa_descripcion: object,
-    idEmpleadoTPV_nombre: object,
-    idEstadoDocumento_descripcion: object,
-    idTPV_descripcion: object,
-    idTienda_descripcion: object,
+    idCanalVenta_descripcion: ObjectComboDTO,
+    idCliente_nombre: ObjectComboDTO,
+    idDivisa_descripcion: ObjectComboDTO,
+    idEmpleadoTPV_nombre: ObjectComboDTO,
+    idEstadoDocumento_descripcion: ObjectComboDTO,
+    idTPV_descripcion: ObjectComboDTO,
+    idTienda_descripcion: ObjectComboDTO,
     totalBruto: number,
     totalConImpuestos: number,
-    totalSinImpuestos: number
+    totalSinImpuestos: number,
+    mesa: string
   ) {
     this.id = id;
     this.codigo = codigo;
@@ -47,5 +51,6 @@ export class TicketCabeceraDTO {
     this.totalBruto = totalBruto;
     this.totalConImpuestos = totalConImpuestos;
     this.totalSinImpuestos = totalSinImpuestos;
+    this.mesa = mesa;
   }
 } 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MainSalesService } from 'src/app/Services/main-sales.service';
 import { SharedService } from 'src/app/Services/shared.service';
@@ -41,6 +41,8 @@ export class MainSalesComponent implements OnInit {
   filasProductos: number = 10;
   columnasProductos: number = 10;
   productosTodos: ProductosDTO[] | undefined = [];
+  productoSelecionadoInput: number | undefined;
+  @Output() productoSelecionadoOutput = new EventEmitter<number>();
 
   tarifa: TarifasVentaDTO | undefined;
   filteredTarifasArray: TarifasVentaDTO[] | undefined;
@@ -303,6 +305,17 @@ export class MainSalesComponent implements OnInit {
         console.log('No se encontró la familia');
       }
     }
+  }
+
+  recibirProductoSeleccionado(idProduct: any) {
+    console.log("MAIN SALE PRODUCTO SELECCIONADO :: " + idProduct);
+    this.productoSelecionadoInput = idProduct;
+    this.enviarProductoSeleccionado(this.productoSelecionadoInput);
+  }
+
+  enviarProductoSeleccionado(idProduct: any) {
+    console.log("MAIN SALE EMIT PRODUCTO SELECCIONADO");
+    this.productoSelecionadoOutput.emit(idProduct);
   }
 
   ngOnDestroy() {

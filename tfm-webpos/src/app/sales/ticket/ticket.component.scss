@@ -1,5 +1,5 @@
 .block-items {
-    height: calc(70vh - 64px);
+    height: calc(65vh - 64px);
     overflow-y: scroll;
 }
 
@@ -10,9 +10,10 @@
     padding: 0.5rem;
     display: flex;
     justify-content: space-between;
-    height: calc(5vh);
+    height: calc(5vh - .5rem);
     min-height: 80px;
     font-size: 1.25rem;
+    margin-top: .5rem;
 
     .total {
         display: grid;
@@ -23,5 +24,22 @@
     .total-neto {
         font-size: 1.35rem;
         font-weight: bold;
+    }
+}
+
+.action-buttons {
+    height: 20vh;
+    padding-top: 0.5rem;
+
+    ::ng-deep .mat-grid-tile-content{
+        display: grid;
+        align-items: flex-start;
+        justify-items: center;
+        grid-auto-rows: min-content;
+    }
+    .ticket-button {
+        .ticket-button-label {
+            font-size: .75rem;
+        }
     }
 }

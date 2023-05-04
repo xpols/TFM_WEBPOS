@@ -15,7 +15,7 @@
     font-size: 14px;
 
     .left-column {
-        width: 70%;
+        width: 65%;
         .product-name {
             
         }
@@ -23,7 +23,7 @@
     
 
     .right-column {
-        width: 30%;
+        width: 35%;
 
         .action-buttons {
             display: flex;
@@ -33,6 +33,8 @@
             .qty{
                 max-width: 15%;
                 text-align: center;
+                min-width: 30px;
+                margin: 0 0.25rem;
             }
 
             .button-qty {

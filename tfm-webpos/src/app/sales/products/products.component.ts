@@ -11,7 +11,7 @@ export class ProductsComponent implements OnInit {
   @Input() productos: ProuctoCPDTO[][] | undefined = [];
   @Input() filasProductos: number = 0;
   @Input() columnasProductos: number = 0;
-  @Output() productoSelecionado = new EventEmitter<string>();
+  @Output() productoSelecionado = new EventEmitter<number>();
   productosCurrent: ProuctoCPDTO[] | undefined = [];
   pageIndex: number = 0;
   maxPageIndex: number = 0;
@@ -77,8 +77,8 @@ export class ProductsComponent implements OnInit {
     }
   }
 
-  selectProduct(idProduct: string | undefined) {
-    console.log("Categoria seleccionada :: " + idProduct);
+  selectProduct(idProduct: number | undefined) {
+    console.log("Producto seleccionado :: " + idProduct);
     this.productoSelecionado.emit(idProduct);
   }
 
