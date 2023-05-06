@@ -10,6 +10,7 @@ import { TarifasVentaDTO } from '../models/tarifasVenta.dto';
 import { TarifasVentaPreciosDTO } from '../models/tarifasVentaPrecios.dto';
 import { TicketCabeceraDTO } from '../models/ticketCabecera.dto';
 import { TicketDetalleDTO } from '../models/ticketDetalle.dto';
+import { TicketDetalleUpdateDTO } from '../models/ticketDetalleUpdate.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -118,6 +119,22 @@ export class MainSalesService {
     return this.http
       .get<TicketDetalleDTO[]>(APIConstants.API_URL + 'pedidosVentaLineasDetalle/', {params: params})
       .toPromise();
+  }
+
+  createTicket(ticket: TicketCabeceraDTO): Promise<TicketCabeceraDTO|undefined> {
+    return this.http.post<TicketCabeceraDTO>(APIConstants.API_URL + 'pedidosVentaCabeceras', ticket).toPromise();
+  }
+
+  updateTicketDetail(detalle: TicketDetalleUpdateDTO): Promise<TicketDetalleDTO|undefined> {
+    return this.http.put<TicketDetalleDTO>(APIConstants.API_URL + 'pedidosVentaLineasDetalle/'+detalle.id, detalle).toPromise();
+  }
+
+  createTicketDetail(detalle: TicketDetalleDTO): Promise<TicketDetalleDTO|undefined> {
+    return this.http.post<TicketDetalleDTO>(APIConstants.API_URL + 'pedidosVentaLineasDetalle', detalle).toPromise();
+  }
+
+  deleteTicket(idTicket: string | undefined): Promise<any> {
+    return this.http.delete<TicketCabeceraDTO>(APIConstants.API_URL + 'pedidosVentaCabeceras/'+idTicket).toPromise();
   }
 
   

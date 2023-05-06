@@ -41,8 +41,8 @@ export class MainSalesComponent implements OnInit {
   filasProductos: number = 10;
   columnasProductos: number = 10;
   productosTodos: ProductosDTO[] | undefined = [];
-  productoSelecionadoInput: number | undefined;
-  @Output() productoSelecionadoOutput = new EventEmitter<number>();
+  productoSelecionadoInput: any;
+  @Output() productoSelecionadoOutput = new EventEmitter<any>();
 
   tarifa: TarifasVentaDTO | undefined;
   filteredTarifasArray: TarifasVentaDTO[] | undefined;
@@ -309,12 +309,13 @@ export class MainSalesComponent implements OnInit {
 
   recibirProductoSeleccionado(idProduct: any) {
     console.log("MAIN SALE PRODUCTO SELECCIONADO :: " + idProduct);
-    this.productoSelecionadoInput = idProduct;
+    let emitido = idProduct + "_" + new Date().getTime();
+    this.productoSelecionadoInput = emitido;
     this.enviarProductoSeleccionado(this.productoSelecionadoInput);
   }
 
   enviarProductoSeleccionado(idProduct: any) {
-    console.log("MAIN SALE EMIT PRODUCTO SELECCIONADO");
+    console.log("MAIN SALE EMIT PRODUCTO SELECCIONADO " + idProduct);
     this.productoSelecionadoOutput.emit(idProduct);
   }
 

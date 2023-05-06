@@ -21,39 +21,40 @@
 <div class="action-buttons">
     <mat-grid-list cols="4" rowHeight="10vh">
         <mat-grid-tile class="ticket-button">
-            <button mat-fab class="mat-elevation-z0" color="primary" aria-label="Fin ticket">
-                <mat-icon>delete</mat-icon>
+            <button mat-fab class="mat-elevation-z0" color="primary" aria-label="Fin ticket"
+                (click)="openPaymentsDialog()">
+                <mat-icon>assignment_turned_in</mat-icon>
             </button>
             <div class="ticket-button-label">
                 <span>{{'Fin ticket' | translate}}</span>
             </div>
         </mat-grid-tile>
         <mat-grid-tile class="ticket-button">
-            <button mat-fab class="mat-elevation-z0" color="primary" aria-label="Canal venta">
-                <mat-icon>delete</mat-icon>
+            <button mat-fab class="mat-elevation-z0 button-warn" color="primary" aria-label="Canal venta">
+                {{canalVenta}}
             </button>
             <div class="ticket-button-label">
                 <span>{{'Canal venta' | translate}}</span>
             </div>
         </mat-grid-tile>
         <mat-grid-tile class="ticket-button">
-            <button mat-fab class="mat-elevation-z0" color="primary" aria-label="Clientes">
-                <mat-icon>delete</mat-icon>
+            <button mat-fab class="mat-elevation-z0 button-grey" aria-label="Clientes">
+                <mat-icon>perm_identity</mat-icon>
             </button>
             <div class="ticket-button-label">
                 <span>{{'Clientes' | translate}}</span>
             </div>
         </mat-grid-tile>
         <mat-grid-tile class="ticket-button">
-            <button mat-fab class="mat-elevation-z0" color="primary" aria-label="Descuentos">
-                <mat-icon>delete</mat-icon>
+            <button mat-fab class="mat-elevation-z0 button-blue" color="primary" aria-label="Descuentos">
+                <mat-icon>redeem</mat-icon>
             </button>
             <div class="ticket-button-label">
                 <span>{{'Descuentos' | translate}}</span>
             </div>
         </mat-grid-tile>
         <mat-grid-tile class="ticket-button">
-            <button mat-fab class="mat-elevation-z0" color="primary" aria-label="Borrar">
+            <button mat-fab class="mat-elevation-z0 button-delete" color="primary" aria-label="Borrar">
                 <mat-icon>delete</mat-icon>
             </button>
             <div class="ticket-button-label">
@@ -61,17 +62,17 @@
             </div>
         </mat-grid-tile>
         <mat-grid-tile class="ticket-button">
-            <button mat-fab class="mat-elevation-z0" color="primary" aria-label="Abrir cajon">
+            <!--<button mat-fab class="mat-elevation-z0" color="primary" aria-label="Abrir cajon">
                 <mat-icon>delete</mat-icon>
             </button>
             <div class="ticket-button-label">
                 <span>{{'Abrir cajon' | translate}}</span>
-            </div>
+            </div>-->
         </mat-grid-tile>
         <mat-grid-tile></mat-grid-tile>
         <mat-grid-tile class="ticket-button">
             <button mat-fab class="mat-elevation-z0" color="primary" aria-label="Enviar Mesa">
-                <mat-icon>delete</mat-icon>
+                <mat-icon>send</mat-icon>
             </button>
             <div class="ticket-button-label">
                 <span>{{'Enviar Mesa' | translate}}</span>

@@ -4,6 +4,7 @@ import { Observable, catchError, firstValueFrom, throwError } from 'rxjs';
 import { TiendaDTO } from '../models/tienda.dto';
 import { TpvDTO } from '../models/tpv.dto';
 import { APIConstants, LocalStorageConstants } from '../constants/constants';
+import { CanalesVentaDTO } from '../models/canalesVenta.dto';
 
 const HTTP_OPTIONS = {
   headers: new HttpHeaders({
@@ -48,11 +49,21 @@ export class ConfigService {
       .toPromise();
   }
 
-  saveConfig(idTienda: string, idTPV: string, codigoTienda: string | undefined): void {
+  getCanalesVenta(): Promise<CanalesVentaDTO[]|undefined> {
+    let params = new HttpParams();
+    params = params.append('max', 1000);
+    params = params.append('offset', 0);
+    return this.http
+      .get<CanalesVentaDTO[]>(APIConstants.API_URL + 'canalesVenta', {params: params})
+      .toPromise();
+  }
+
+  saveConfig(idTienda: string, idTPV: string, codigoTienda: string | undefined, idCanalVenta: string): void {
     localStorage.setItem(LocalStorageConstants.ID_TIENDA, idTienda);
     if(codigoTienda != undefined) {
       localStorage.setItem(LocalStorageConstants.CODIGO_TIENDA, codigoTienda);
     }
     localStorage.setItem(LocalStorageConstants.ID_TPV, idTPV);
+    localStorage.setItem(LocalStorageConstants.ID_CANAL_VENTA, idCanalVenta);
   }
 }

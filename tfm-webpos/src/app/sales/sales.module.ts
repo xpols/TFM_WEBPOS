@@ -15,6 +15,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TicketItemsComponent } from './ticket-items/ticket-items.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { PaymentComponent } from './payment/payment.component';
 
 
 
@@ -26,7 +27,8 @@ import { TranslateModule } from '@ngx-translate/core';
     SubcategoriesComponent,
     ProductsComponent,
     TicketComponent,
-    TicketItemsComponent
+    TicketItemsComponent,
+    PaymentComponent
   ],
   imports: [
     CommonModule,

@@ -24,6 +24,17 @@
                     <span *ngIf="!configForm.get('tpvsFC')">{{'Please select TPV' | translate}}</span>
                 </mat-error>
             </mat-form-field>
+            <mat-form-field class="wp-full-width">
+                <mat-label>{{'Canal venta' | translate}}</mat-label>
+                <mat-select formControlName="canalesFC">
+                    <mat-option *ngFor="let canalVenta of canalesVenta" [value]="canalVenta.id">
+                        {{canalVenta.codigo}} - {{canalVenta.descripcion}}
+                    </mat-option>
+                </mat-select>
+                <mat-error>
+                    <span *ngIf="!configForm.get('canalesFC')">{{'Please select Canal' | translate}}</span>
+                </mat-error>
+            </mat-form-field>
             <div class="button-row" align="center">
                 <button type="submit" [disabled]="!configForm.valid" mat-flat-button
                     color="primary"><mat-icon>save</mat-icon>{{'Guardar' | translate}}</button>

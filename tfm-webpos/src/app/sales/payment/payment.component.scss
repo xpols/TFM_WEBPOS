@@ -1,0 +1,32 @@
+@import "../../../assets/styles/variables";
+
+.payment-container {
+    width: 50vw;
+    display: flex;
+
+    .left-column {
+        width: 60%;
+    }
+
+    .right-column {
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 10px;
+
+            .button-number {
+                button {
+                    font-size: 1.5rem;
+                }
+            }
+
+            .button-grey {
+                background-color: $grey-dark;
+            }
+            
+            .button-grey:hover {
+                background-color: $grey-dark-hover;
+            }
+        }
+    }
+}

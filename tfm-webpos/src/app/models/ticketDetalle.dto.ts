@@ -1,16 +1,17 @@
 import { ObjectComboDTO } from "./objectCombo.dto";
+import { ObjectIDDTO } from "./objectID.dto";
 
 export class TicketDetalleDTO {
   id: string;
   agrupacionPromociones: string;
   baseImponible: number;
   cantidad: number;
-  fechaHora: Date;
-  fechaHoraFinElaboracion: Date | null;
-  fechaHoraFinElaboracionTeorico: Date | null;
-  fechaHoraInicioElaboracion: Date | null;
-  fechaHoraSeleccionado: Date | null;
-  fechaHoraServido: Date | null;
+  fechaHora: Date | string;
+  fechaHoraFinElaboracion: Date | null | string;
+  fechaHoraFinElaboracionTeorico: Date | null | string;
+  fechaHoraInicioElaboracion: Date | null | string;
+  fechaHoraSeleccionado: Date | null | string;
+  fechaHoraServido: Date | null | string;
   idAlmacen_descripcion: ObjectComboDTO;
   idDocumentoComercial_codigo: ObjectComboDTO;
   idEleccionProducto_id: ObjectComboDTO;
@@ -25,18 +26,29 @@ export class TicketDetalleDTO {
   importeBrutoSinDescuentos: number;
   importeCobrado: number;
   totalConImpuestos: number;
+  totalPortesSinImpuestos: number;
+
+  idDocumentoComercial: ObjectIDDTO | undefined;
+  idProducto: ObjectIDDTO | undefined;
+  idPromocion: ObjectIDDTO | undefined;
+  idEleccionProducto: ObjectIDDTO | undefined;
+  idAlmacen: ObjectIDDTO | undefined;
+  idEstadoLinea: ObjectIDDTO | undefined;
+  precioManual: boolean = false;
+  importeRealMenuSinSuplemento: number = 0;
+  totalPortesConImpuestos: number = 0;
 
   constructor(
     id: string,
     agrupacionPromociones: string,
     baseImponible: number,
     cantidad: number,
-    fechaHora: Date,
-    fechaHoraFinElaboracion: Date | null,
-    fechaHoraFinElaboracionTeorico: Date | null,
-    fechaHoraInicioElaboracion: Date | null,
-    fechaHoraSeleccionado: Date | null,
-    fechaHoraServido: Date | null,
+    fechaHora: Date | string,
+    fechaHoraFinElaboracion: Date | null | string,
+    fechaHoraFinElaboracionTeorico: Date | null | string,
+    fechaHoraInicioElaboracion: Date | null | string,
+    fechaHoraSeleccionado: Date | null | string,
+    fechaHoraServido: Date | null | string,
     idAlmacen_descripcion: ObjectComboDTO,
     idDocumentoComercial_codigo: ObjectComboDTO,
     idEleccionProducto_id: ObjectComboDTO,
@@ -51,6 +63,7 @@ export class TicketDetalleDTO {
     importeBrutoSinDescuentos: number,
     importeCobrado: number,
     totalConImpuestos: number,
+    totalPortesSinImpuestos: number,
   ) {
     this.id = id;
     this.agrupacionPromociones = agrupacionPromociones;
@@ -76,5 +89,6 @@ export class TicketDetalleDTO {
     this.importeBrutoSinDescuentos = importeBrutoSinDescuentos;
     this.importeCobrado = importeCobrado;
     this.totalConImpuestos = totalConImpuestos;
+    this.totalPortesSinImpuestos = totalPortesSinImpuestos;
   }
 } 

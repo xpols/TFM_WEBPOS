@@ -35,6 +35,7 @@ export class TicketItemsComponent implements OnInit {
       0,
       0,
       0,
+      0,
       0);
   }
 

@@ -1,3 +1,5 @@
+@import "../../../assets/styles/variables";
+
 .block-items {
     height: calc(65vh - 64px);
     overflow-y: scroll;
@@ -41,5 +43,41 @@
         .ticket-button-label {
             font-size: .75rem;
         }
+
+        .button-delete {
+            background-color: $red;
+        }
+
+        .button-delete:hover {
+            background-color: $red-hover;
+        }
+
+        .button-warn {
+            background-color: $yellow;
+        }
+
+        .button-warn:hover {
+            background-color: $yellow-hover;
+        }
+
+        .button-blue {
+            background-color: $blue;
+        }
+
+        .button-blue:hover {
+            background-color: $blue-hover;
+        }
+
+        .button-grey {
+            background-color: $grey-dark;
+        }
+        
+        .button-grey:hover {
+            background-color: $grey-dark-hover;
+        }
+
+        
+
+        
     }
 }
