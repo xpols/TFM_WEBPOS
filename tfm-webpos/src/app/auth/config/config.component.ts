@@ -22,6 +22,8 @@ export class ConfigComponent implements OnInit {
   tpvs: TpvDTO[] | undefined = [];
   canalesVenta: CanalesVentaDTO[] | undefined = [];
 
+  tienda: TiendaDTO | undefined;
+
   configForm!: FormGroup;
   tiendasFC: FormControl;
   tpvsFC: FormControl;
@@ -58,6 +60,8 @@ export class ConfigComponent implements OnInit {
 
   public async shopChange() {
     console.log("SHOP CHANGE :: " + this.tiendasFC.value);
+    await this.loadShop();
+    console.log("SHOP COMPLETE :: " + this.tienda);
     this.loadTPVs(this.tiendasFC.value);
     let idTPVLS = localStorage.getItem(LocalStorageConstants.ID_TPV);
     if(idTPVLS!=null) {
@@ -83,6 +87,15 @@ export class ConfigComponent implements OnInit {
     }
   }
 
+  private async loadShop(): Promise<void> {
+    let errorResponse: any;
+    try {
+      this.tienda = await this.configService.getTienda(this.tiendasFC.value);
+    } catch (error: any) {
+      errorResponse = error.error;
+    }
+  }
+
   private async loadTPVs(idTienda: String): Promise<void> {
     let errorResponse: any;
     try {
@@ -100,6 +113,10 @@ export class ConfigComponent implements OnInit {
     let errorResponse: any;
     try {
       this.canalesVenta = await this.configService.getCanalesVenta();
+      this.canalesVenta = this.canalesVenta?.filter(canal => {
+        let canalEncontrado = this.tienda?.canalesVenta?.find(canalTienda => canal.id == canalTienda.id);
+        return canalEncontrado != undefined;
+      })
       if(this.canalesVenta?.length == 1) {
         this.canalesFC.setValue(this.canalesVenta[0].id);
       }
@@ -123,6 +140,7 @@ export class ConfigComponent implements OnInit {
   public saveConfig() {
     let tiendaSeleccionada = this.tiendas?.find(tienda => tienda.id == this.tiendasFC.value);
     this.configService.saveConfig(this.tiendasFC.value, this.tpvsFC.value, tiendaSeleccionada?.codigo, this.canalesFC.value);
+    this.configService.saveInfoComplementaria(this.tienda, this.canalesVenta);
     this.router.navigate(['/tables']).then(_ => console.log('Config finish'));
   }
 

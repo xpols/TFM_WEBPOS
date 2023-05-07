@@ -11,6 +11,7 @@ import { TarifasVentaPreciosDTO } from '../models/tarifasVentaPrecios.dto';
 import { TicketCabeceraDTO } from '../models/ticketCabecera.dto';
 import { TicketDetalleDTO } from '../models/ticketDetalle.dto';
 import { TicketDetalleUpdateDTO } from '../models/ticketDetalleUpdate.dto';
+import { FormasPagoDTO } from '../models/formasPago.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -135,6 +136,15 @@ export class MainSalesService {
 
   deleteTicket(idTicket: string | undefined): Promise<any> {
     return this.http.delete<TicketCabeceraDTO>(APIConstants.API_URL + 'pedidosVentaCabeceras/'+idTicket).toPromise();
+  }
+
+  getFormasDePago(): Promise<FormasPagoDTO[]|undefined> {
+    let params = new HttpParams();
+    params = params.append('max', 1000);
+    params = params.append('offset', 0);
+    return this.http
+      .get<FormasPagoDTO[]>(APIConstants.API_URL + 'formasPago', {params: params})
+      .toPromise();
   }
 
   

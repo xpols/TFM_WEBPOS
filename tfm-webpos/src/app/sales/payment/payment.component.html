@@ -1,76 +1,94 @@
 <div mat-dialog-content class="payment-container">
     <div class="left-column">
         <div class="payment-total">
-            Total
+            <div class="label-total">{{'Total a pagar' | translate}}</div>
+            <div class="qty-total">{{data.total}}€</div>
         </div>
         <div class="payment-methods">
-            X
+            <div *ngFor="let familiaFormaPago of familiasConvertidas" class="payment-method">
+                <button class="button-plus" mat-icon-button aria-label="Add other"
+                    (click)="duplicateFP(familiaFormaPago.id)">
+                    +
+                </button>
+                <select class="select-FP input-025" (focus)="onFocusInput(familiaFormaPago.id)">
+                    <option *ngFor="let formaPago of familiaFormaPago.formasPago" [value]="formaPago.id">{{
+                        formaPago.descripcion }}</option>
+                </select>
+                <input class="input-qty input-025" type="text" [(ngModel)]="familiaFormaPago.importe"
+                    id="qty-{{familiaFormaPago.id}}" (focus)="onFocusInput(familiaFormaPago.id)">
+                <button mat-icon-button aria-label="Add other">
+                    X
+                </button>
+            </div>
         </div>
     </div>
     <div class="right-column">
         <div class="grid-container">
             <div class="button-number">
-                <button mat-fab class="mat-elevation-z0 button-grey" aria-label="Clientes">
+                <button mat-fab class="mat-elevation-z0 button-grey" aria-label="7" (click)="addNumber('7')">
                     7
                 </button>
             </div>
             <div class="button-number">
-                <button mat-fab class="mat-elevation-z0 button-grey" aria-label="Clientes">
+                <button mat-fab class="mat-elevation-z0 button-grey" aria-label="8" (click)="addNumber('8')">
                     8
                 </button>
             </div>
             <div class="button-number">
-                <button mat-fab class="mat-elevation-z0 button-grey" aria-label="Clientes">
+                <button mat-fab class="mat-elevation-z0 button-grey" aria-label="9" (click)="addNumber('9')">
                     9
                 </button>
             </div>
             <div class="button-number">
-                <button mat-fab class="mat-elevation-z0 button-grey" aria-label="Clientes">
+                <button mat-fab class="mat-elevation-z0 button-grey" aria-label="4" (click)="addNumber('4')">
                     4
                 </button>
             </div>
             <div class="button-number">
-                <button mat-fab class="mat-elevation-z0 button-grey" aria-label="Clientes">
+                <button mat-fab class="mat-elevation-z0 button-grey" aria-label="5" (click)="addNumber('5')">
                     5
                 </button>
             </div>
             <div class="button-number">
-                <button mat-fab class="mat-elevation-z0 button-grey" aria-label="Clientes">
+                <button mat-fab class="mat-elevation-z0 button-grey" aria-label="6" (click)="addNumber('6')">
                     6
                 </button>
             </div>
             <div class="button-number">
-                <button mat-fab class="mat-elevation-z0 button-grey" aria-label="Clientes">
+                <button mat-fab class="mat-elevation-z0 button-grey" aria-label="1" (click)="addNumber('1')">
                     1
                 </button>
             </div>
             <div class="button-number">
-                <button mat-fab class="mat-elevation-z0 button-grey" aria-label="Clientes">
+                <button mat-fab class="mat-elevation-z0 button-grey" aria-label="2" (click)="addNumber('2')">
                     2
                 </button>
             </div>
             <div class="button-number">
-                <button mat-fab class="mat-elevation-z0 button-grey" aria-label="Clientes">
+                <button mat-fab class="mat-elevation-z0 button-grey" aria-label="3" (click)="addNumber('3')">
                     3
                 </button>
             </div>
             <div class="button-number">
-                <button mat-fab class="mat-elevation-z0 button-grey" aria-label="Clientes">
+                <button mat-fab class="mat-elevation-z0 button-grey" aria-label="," (click)="addNumber(',')">
                     ,
                 </button>
             </div>
             <div class="button-number">
-                <button mat-fab class="mat-elevation-z0 button-grey" aria-label="Clientes">
+                <button mat-fab class="mat-elevation-z0 button-grey" aria-label="0" (click)="addNumber('0')">
                     0
                 </button>
             </div>
             <div class="button-number">
-                <button mat-fab class="mat-elevation-z0 button-grey" aria-label="Clientes">
+                <button mat-fab class="mat-elevation-z0 button-grey" aria-label="Clear" (click)="addNumber('C')">
                     C
                 </button>
             </div>
         </div>
+        <div align="center" class="actions-container">
+            <button mat-fab class="button-action button-minus" (click)="onNoClick()"><mat-icon>close</mat-icon></button>
+            <button mat-fab class="button-action button-plus" [mat-dialog-close]="data.totalPagado"
+                cdkFocusInitial><mat-icon>check</mat-icon></button>
+        </div>
     </div>
-</div>
-<div mat-dialog-actions align="center" class="actions-container">
 </div>

@@ -198,8 +198,9 @@ export class TicketComponent implements OnInit {
   }
 
   openPaymentsDialog(): void {
+    console.log("Open payment dialag :: " + this.ticket?.totalConImpuestos);
     const dialogRef = this.dialog.open(PaymentComponent, {
-      data: {total: this.ticket?.totalConImpuestos},
+      data: {total: this.ticket?.totalConImpuestos, totalPagado: 0},
     });
 
     dialogRef.afterClosed().subscribe(result => {

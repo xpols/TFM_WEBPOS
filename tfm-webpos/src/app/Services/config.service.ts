@@ -37,6 +37,12 @@ export class ConfigService {
       .toPromise();
   }
 
+  getTienda(idTienda: string): Promise<TiendaDTO|undefined> {
+    return this.http
+      .get<TiendaDTO>(APIConstants.API_URL + 'tiendas/'+idTienda)
+      .toPromise();
+  }
+
 
 
   getTPVs(idTienda: String): Promise<TpvDTO[]|undefined> {
@@ -65,5 +71,16 @@ export class ConfigService {
     }
     localStorage.setItem(LocalStorageConstants.ID_TPV, idTPV);
     localStorage.setItem(LocalStorageConstants.ID_CANAL_VENTA, idCanalVenta);
+  }
+
+  saveInfoComplementaria(tiendaActual: TiendaDTO | undefined, canalesVenta: CanalesVentaDTO[] | undefined): void {
+    console.log("TIENDA ACTUAL :: TO STRING :: " + JSON.stringify(tiendaActual));
+    if(tiendaActual != undefined) {
+      localStorage.setItem(LocalStorageConstants.TIENDA_DTO, JSON.stringify(tiendaActual));
+    }
+    console.log("CANALES VENTA :: TO STRING :: " + JSON.stringify(canalesVenta));
+    if(canalesVenta != undefined) {
+      localStorage.setItem(LocalStorageConstants.CANALES_VENTA_DTO_ARRAY, JSON.stringify(canalesVenta));
+    }
   }
 }

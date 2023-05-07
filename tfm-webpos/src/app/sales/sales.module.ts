@@ -16,6 +16,7 @@ import { TicketItemsComponent } from './ticket-items/ticket-items.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { PaymentComponent } from './payment/payment.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 
@@ -41,7 +42,8 @@ import { PaymentComponent } from './payment/payment.component';
     MatProgressSpinnerModule,
     FormsModule, 
     ReactiveFormsModule,
-    TranslateModule
+    TranslateModule,
+    MatDialogModule
   ]
 })
 export class SalesModule { }

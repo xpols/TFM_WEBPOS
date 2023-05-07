@@ -6,6 +6,55 @@
 
     .left-column {
         width: 60%;
+        
+        .payment-total {
+            display: flex;
+            justify-content: space-between;
+            width: 90%;
+            height: auto;
+            box-sizing: border-box;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            padding: 0.5rem;
+            background-color: #fcfcfc;
+            transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            font-size: 1.25rem;
+            align-items: center;
+
+            .qty-total {
+                font-size: 1.5rem;
+                font-weight: bold;
+            }
+        }
+
+        .payment-methods{
+            width: 90%;
+
+            .payment-method {
+                display: flex;
+                align-items: center;
+
+                .select-FP {
+                    width: 45%;
+                    margin-right: 10px;
+                }
+
+                .input-qty {
+                    width: 30%;
+                    text-align: end;
+                }
+
+                .input-025 {
+                    padding: .25rem;
+                }
+
+                .button-plus {
+                    color: $secondary-color;
+                    font-size: 1.25rem;
+                }
+            }
+        }
     }
 
     .right-column {
@@ -26,6 +75,31 @@
             
             .button-grey:hover {
                 background-color: $grey-dark-hover;
+            }
+        }
+
+        .actions-container {
+            margin-top: 2rem;
+            padding-bottom: 1rem;
+        
+            .button-action {
+                margin: 0 2rem;
+            }
+
+            .button-plus {
+                background-color: $secondary-color;
+            }
+            
+            .button-minus {
+                background-color: $red;
+            }
+            
+            .button-plus:hover {
+                background-color: $secondary-color-hover;
+            }
+            
+            .button-minus:hover {
+                background-color: $red-hover;
             }
         }
     }

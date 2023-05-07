@@ -11,8 +11,10 @@ export class LocalStorageConstants {
     public static REFRESH_TOKEN = 'refresh_token';
     public static ID_TIENDA = 'id_tienda';
     public static CODIGO_TIENDA = 'codigo_tienda';
+    public static TIENDA_DTO = 'tienda_dto';
     public static ID_TPV = 'id_tpv';
     public static ID_CANAL_VENTA = 'id_canal_venta';
+    public static CANALES_VENTA_DTO_ARRAY = 'canales_venta_dto_array';
     public static DOMINIO_USUARIO = 'idDominioUsuario';
     public static IMAGE_BASE_PATH = 'imagenesWebBasePath';
 }
