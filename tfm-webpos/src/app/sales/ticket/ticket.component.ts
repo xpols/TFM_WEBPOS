@@ -26,7 +26,7 @@ export class TicketComponent implements OnInit {
   @Output() isLoading = new EventEmitter<boolean>();
 
   ticket: TicketCabeceraDTO | undefined;
-  detalles: TicketDetalleDTO[] | undefined;
+  detalles: TicketDetalleDTO[] | undefined = [];
 
   canalVenta: string = 'Terraza'
 
