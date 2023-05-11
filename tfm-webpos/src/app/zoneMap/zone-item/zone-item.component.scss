@@ -1,8 +1,8 @@
 @import "../../../assets/styles/variables";
 
 .item-zone {
-    .mat-list-base .mat-list-item .mat-list-item-content {
-        padding: 0px !important
+    span {
+        padding: 0 !important;
     }
 }
 
@@ -19,6 +19,3 @@
     background-color: $blue-dark;
 }
 
-.mat-list-base .mat-list-item .mat-list-item-content, .mat-list-base .mat-list-option .mat-list-item-content {
-    padding: 0;
-}

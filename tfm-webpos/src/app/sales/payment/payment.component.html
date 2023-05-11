@@ -1,12 +1,12 @@
 <div mat-dialog-content class="payment-container">
     <div class="left-column">
-        <div class="payment-total">
+        <div class="payment-total payment-total-box">
             <div class="label-total">{{'Total a pagar' | translate}}</div>
             <div class="qty-total">{{data.total}}€</div>
         </div>
         <div class="payment-methods">
             <div *ngFor="let familiaFormaPago of familiasConvertidas" class="payment-method">
-                <button class="button-plus" mat-icon-button aria-label="Add other"
+                <button class="button-plus text-green" mat-icon-button aria-label="Add other"
                     (click)="duplicateFP(familiaFormaPago.id)">
                     +
                 </button>
@@ -16,9 +16,19 @@
                 </select>
                 <input class="input-qty input-025" type="text" [(ngModel)]="familiaFormaPago.importe"
                     id="qty-{{familiaFormaPago.id}}" (focus)="onFocusInput(familiaFormaPago.id)">
-                <button mat-icon-button aria-label="Add other">
-                    X
+                <button mat-icon-button aria-label="Remove payment method" (click)="removeFP(familiaFormaPago.id)">
+                    <mat-icon class="text-red">close</mat-icon>
                 </button>
+            </div>
+        </div>
+        <div class="payment-totals">
+            <div class="total-pagado">
+                <span>{{'Total pagado' | translate}}</span><span class="text-green qty-total">{{data.totalPagado |
+                    number:'1.2-2'}}€</span>
+            </div>
+            <div class="cambio">
+                <span>{{'Cambio' | translate}}</span><span class="text-red qty-total">{{cambio |
+                    number:'1.2-2'}}€</span>
             </div>
         </div>
     </div>

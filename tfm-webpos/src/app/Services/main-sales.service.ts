@@ -12,6 +12,7 @@ import { TicketCabeceraDTO } from '../models/ticketCabecera.dto';
 import { TicketDetalleDTO } from '../models/ticketDetalle.dto';
 import { TicketDetalleUpdateDTO } from '../models/ticketDetalleUpdate.dto';
 import { FormasPagoDTO } from '../models/formasPago.dto';
+import { TicketCabeceraCanceladoDTO } from '../models/ticketCabeceraCancel.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -122,11 +123,15 @@ export class MainSalesService {
       .toPromise();
   }
 
-  createTicket(ticket: TicketCabeceraDTO): Promise<TicketCabeceraDTO|undefined> {
+  createTicket(ticket: TicketCabeceraDTO | undefined): Promise<TicketCabeceraDTO|undefined> {
     return this.http.post<TicketCabeceraDTO>(APIConstants.API_URL + 'pedidosVentaCabeceras', ticket).toPromise();
   }
 
   updateTicketDetail(detalle: TicketDetalleUpdateDTO): Promise<TicketDetalleDTO|undefined> {
+    return this.http.put<TicketDetalleDTO>(APIConstants.API_URL + 'pedidosVentaLineasDetalle/'+detalle.id, detalle).toPromise();
+  }
+
+  cancelTicketDetail(detalle: TicketDetalleUpdateDTO): Promise<TicketDetalleDTO|undefined> {
     return this.http.put<TicketDetalleDTO>(APIConstants.API_URL + 'pedidosVentaLineasDetalle/'+detalle.id, detalle).toPromise();
   }
 
@@ -136,6 +141,11 @@ export class MainSalesService {
 
   deleteTicket(idTicket: string | undefined): Promise<any> {
     return this.http.delete<TicketCabeceraDTO>(APIConstants.API_URL + 'pedidosVentaCabeceras/'+idTicket).toPromise();
+  }
+
+  cancelTicket(ticket: TicketCabeceraCanceladoDTO): Promise<TicketCabeceraDTO|undefined> {
+    console.log("SERVICE CANCELAMOS TICKET :: " + ticket.id);
+    return this.http.put<TicketCabeceraDTO>(APIConstants.API_URL + 'pedidosVentaCabeceras/'+ticket.id, ticket).toPromise();
   }
 
   getFormasDePago(): Promise<FormasPagoDTO[]|undefined> {

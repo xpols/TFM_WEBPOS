@@ -42,6 +42,8 @@ export class TicketCabeceraDTO {
   importePropina: number;
   numeroRepeticionesTicket: number;
   idDominio: ObjectIDDTO;
+  idEstadoDocumento: ObjectIDDTO | undefined;
+
 
   constructor(
     id: string,

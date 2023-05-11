@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MainSalesService } from 'src/app/Services/main-sales.service';
 import { ObjectComboDTO } from 'src/app/models/objectCombo.dto';
 import { ObjectIDDTO } from 'src/app/models/objectID.dto';
@@ -8,6 +8,9 @@ import { LocalStorageConstants } from 'src/app/constants/constants';
 import { TicketDetalleUpdateDTO } from 'src/app/models/ticketDetalleUpdate.dto';
 import { MatDialog } from '@angular/material/dialog';
 import { PaymentComponent } from '../payment/payment.component';
+import { productPriceDTO } from 'src/app/models/productPrice.dto';
+import { TicketCabeceraCanceladoDTO } from 'src/app/models/ticketCabeceraCancel.dto';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -19,14 +22,15 @@ export class TicketComponent implements OnInit {
 
   @Input() idTicket: string | undefined;
   @Input() tableName: string | undefined;
-  @Input() productoSelecionadoTicket: any;
+  @Input() productoSelecionadoTicket: productPriceDTO = new productPriceDTO(0,'', 0);
+  @Output() isLoading = new EventEmitter<boolean>();
 
   ticket: TicketCabeceraDTO | undefined;
   detalles: TicketDetalleDTO[] | undefined;
 
   canalVenta: string = 'Terraza'
 
-  constructor(public dialog: MatDialog, private mainSalesService: MainSalesService) { 
+  constructor(public dialog: MatDialog, private mainSalesService: MainSalesService, private router: Router) { 
     this.ticket = new TicketCabeceraDTO(
       '',
       '',
@@ -80,7 +84,7 @@ export class TicketComponent implements OnInit {
       let idDominioLS = localStorage.getItem(LocalStorageConstants.DOMINIO_USUARIO);
       this.ticket.idDominio = new ObjectIDDTO(idDominioLS != null ? idDominioLS : '');
       console.log("DEBEMOS CREAR UN TICKET NUEVO");
-      this.mainSalesService.createTicket(this.ticket);
+      this.createTicket();
     }
   }
 
@@ -123,30 +127,35 @@ export class TicketComponent implements OnInit {
     }
   }
 
-  private addProduct(idProduct: string) {
-    let idProductReal = idProduct.split("_")[0]
+  private async createTicket() {
+    this.ticket = await this.mainSalesService.createTicket(this.ticket);
+  }
+
+  private addProduct(productPrice: productPriceDTO) {
+    this.isLoading.emit(true);
+    let idProductReal = productPrice.idProduct?.toString();//idProduct.split("_")[0]
     console.log("AÑADIR PRODUCTO :: " + idProductReal);
     let encontrado = this.detalles?.find( detalle => detalle.idProducto_nombre.id == idProductReal);
     if(encontrado != undefined) {
       this.detalles = this.detalles?.map((detalle) => {
         if(detalle.idProducto_nombre.id == idProductReal) {
           detalle.cantidad++;
-          this.updateDetalle(detalle);
+          this.updateDetalle(detalle, productPrice);
         }
         return detalle;
       });
     } else {
       console.log("DETALLE NO ENCONTRADO :: CREAMOS NUEVO DETALLE");
-      this.createDetalle(idProductReal);
+      this.createDetalle(productPrice);
     }
+    this.isLoading.emit(false);
   }
 
-  private async updateDetalle(detalle: TicketDetalleDTO) {
-    console.log("UPDATE DETALLE :: " + detalle.idProducto_nombre.id);
-    console.log("UPDATE DETALLE CANTIDAD :: " + detalle.cantidad);
-    let detalleUpdate = await this.mainSalesService.updateTicketDetail(new TicketDetalleUpdateDTO(detalle.id, detalle.cantidad));
+  private async updateDetalle(detalle: TicketDetalleDTO, productPrice: productPriceDTO) {
+    let detalleUpdate = await this.mainSalesService.updateTicketDetail(new TicketDetalleUpdateDTO(detalle.id, detalle.cantidad, detalle.precioUnitarioConImpuestos * detalle.cantidad));
     this.detalles = this.detalles?.map((detalle) => {
       if(detalle.id == detalleUpdate?.id) {
+        detalleUpdate = this.assignarDescripcionProducto(detalle.idProducto_nombre.id, productPrice, detalleUpdate);
         return detalleUpdate;
       } else {
         return detalle;
@@ -154,12 +163,13 @@ export class TicketComponent implements OnInit {
     });
   }
 
-  private async createDetalle(idProduct: string) {
-    console.log("CREATE DETALLE :: " + idProduct);
+  private async createDetalle(productPrice: productPriceDTO) {
+    console.log("CREATE DETALLE :: " + productPrice.idProduct);
+    console.log("CREATE DETALLE :: PRECIO :: " + productPrice.precio);
     let newDetalle = new TicketDetalleDTO(
       '',
       '',
-      5.55,
+      Number(productPrice.precio),
       1,
       new Date().toLocaleDateString('en-GB'),
       null,
@@ -176,25 +186,70 @@ export class TicketComponent implements OnInit {
       new ObjectComboDTO('','',''), //idProducto_nombre: ObjectComboDTO,
       new ObjectComboDTO('','',''), //idPromocion_descripcion: ObjectComboDTO,
       new ObjectComboDTO('','',''), //idUnidadMedidaVenta_descripcion: ObjectComboDTO,
-      5.55, //precioUnitarioConImpuestos: number,
-      5.55, //precioUnitarioSinImpuestos: number,
-      5.55, //importeBrutoSinDescuentos: number,
-      5.55, //importeCobrado: number,
-      5.55, //totalConImpuestos: number,
+      Number(productPrice.precio), //precioUnitarioConImpuestos: number,
+      Number(productPrice.precio), //precioUnitarioSinImpuestos: number,
+      Number(productPrice.precio), //importeBrutoSinDescuentos: number,
+      0, //importeCobrado: number,
+      Number(productPrice.precio), //totalConImpuestos: number,
       0
     );
 
     if(this.ticket != undefined && this.ticket.id != undefined) {
       newDetalle.idDocumentoComercial = new ObjectIDDTO(this.ticket.id);
-      newDetalle.idProducto = new ObjectIDDTO(idProduct);
+      let idProducto = '';
+      if(productPrice.idProduct != undefined) {
+        idProducto = productPrice.idProduct?.toString();
+      }
+      newDetalle.idProducto = new ObjectIDDTO(idProducto);
       newDetalle.idAlmacen = new ObjectIDDTO('1');
       newDetalle.idEstadoLinea = new ObjectIDDTO('1');
       let detalleCreated = await this.mainSalesService.createTicketDetail(newDetalle);
       if(detalleCreated != undefined) {
+        detalleCreated = this.assignarDescripcionProducto(idProducto, productPrice, detalleCreated);
         this.detalles?.push(detalleCreated);
       }
     }
+  }
 
+  private async cancelDetalle(detalle: TicketDetalleDTO, productPrice: productPriceDTO) {
+    this.isLoading.emit(true);
+    let detalleCancelado = new TicketDetalleUpdateDTO(detalle.id, detalle.cantidad, detalle.precioUnitarioConImpuestos * detalle.cantidad);
+    detalleCancelado.idEstadoLinea = new ObjectIDDTO('2');
+    let cancelUpdate = await this.mainSalesService.cancelTicketDetail(detalleCancelado);
+
+    let index = this.detalles?.findIndex((detalleFind) => detalleFind.id == detalle.id);
+    if (index !== -1 && index != undefined) {
+      this.detalles?.splice(index, 1);
+    }
+    this.isLoading.emit(false);
+  }
+
+  private assignarDescripcionProducto(idProducto: string, productPrice: productPriceDTO, detalleCreated: TicketDetalleDTO): TicketDetalleDTO {
+    let productoDescripcion = '';
+        if(productPrice.descripcion != undefined) {
+          productoDescripcion = productPrice.descripcion;
+        }
+        detalleCreated.idProducto_nombre = new ObjectComboDTO(idProducto,'',productoDescripcion);
+        return detalleCreated;
+  }
+
+  recibirProductoModificado(productModify: productPriceDTO) {
+    this.isLoading.emit(true);
+    let detalle = this.detalles?.find(detalle => detalle.id == productModify.idDetalle);
+    if(detalle != undefined) {
+      if(productModify.accion == LocalStorageConstants.ACTION_PLUS) {
+        detalle.cantidad++;
+        this.updateDetalle(detalle, productModify);
+      } else if(productModify.accion == LocalStorageConstants.ACTION_MINUS) {
+        detalle.cantidad--;
+        this.updateDetalle(detalle, productModify);
+      } else if(productModify.accion == LocalStorageConstants.ACTION_DELETE) {
+        this.cancelDetalle(detalle, productModify);
+      }
+    } else {
+      console.log("Detalle no encontrado");
+    }
+    this.isLoading.emit(false);
   }
 
   openPaymentsDialog(): void {
@@ -210,6 +265,15 @@ export class TicketComponent implements OnInit {
         this.router.navigate(['/sales'], {queryParams: {tableTicketId: null, numDiners: this.numDiners, tableName: this.tableName, tableId: this.tableId }});
       } */
     });
+  }
+
+  public async cancelarTicket():Promise<void> {
+    if(this.ticket?.id != undefined) {
+      console.log("Cancelamos ticket :: " + this.ticket.id);
+      let ticketCancelado = new TicketCabeceraCanceladoDTO(this.ticket.id);
+      this.ticket = await this.mainSalesService.cancelTicket(ticketCancelado);
+      this.router.navigate(['/tables']).then(_ => console.log('Ticket canceled finish'));
+    }
   }
 
 }

@@ -1,6 +1,6 @@
 <div class="block-items">
     <div *ngFor="let detalle of detalles">
-        <ticket-items [detalle]="detalle"></ticket-items>
+        <ticket-items [detalle]="detalle" (productoModificado)="recibirProductoModificado($event)"></ticket-items>
     </div>
 </div>
 <div class="block-total">
@@ -54,7 +54,8 @@
             </div>
         </mat-grid-tile>
         <mat-grid-tile class="ticket-button">
-            <button mat-fab class="mat-elevation-z0 button-delete" color="primary" aria-label="Borrar">
+            <button mat-fab class="mat-elevation-z0 button-delete" color="primary" aria-label="Borrar"
+                (click)="cancelarTicket()">
                 <mat-icon>delete</mat-icon>
             </button>
             <div class="ticket-button-label">

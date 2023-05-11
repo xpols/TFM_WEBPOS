@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FamiliasCPDTO, ProuctoCPDTO } from 'src/app/models/configProductos.dto';
+import { productPriceDTO } from 'src/app/models/productPrice.dto';
 
 @Component({
   selector: 'products',
@@ -11,7 +12,7 @@ export class ProductsComponent implements OnInit {
   @Input() productos: ProuctoCPDTO[][] | undefined = [];
   @Input() filasProductos: number = 0;
   @Input() columnasProductos: number = 0;
-  @Output() productoSelecionado = new EventEmitter<number>();
+  @Output() productoSelecionado = new EventEmitter<productPriceDTO>();
   productosCurrent: ProuctoCPDTO[] | undefined = [];
   pageIndex: number = 0;
   maxPageIndex: number = 0;
@@ -77,9 +78,16 @@ export class ProductsComponent implements OnInit {
     }
   }
 
-  selectProduct(idProduct: number | undefined) {
+  selectProduct(idProduct: number | undefined, productName: string | undefined, productPrice: string | undefined) {
     console.log("Producto seleccionado :: " + idProduct);
-    this.productoSelecionado.emit(idProduct);
+    console.log("Producto seleccionado Precio :: " + productPrice);
+    productPrice?.replace('€', '');
+    let productEmit = new productPriceDTO(
+      idProduct,
+      productName,
+      Number(productPrice?.replace('€', ''))
+    );
+    this.productoSelecionado.emit(productEmit);
   }
 
 }

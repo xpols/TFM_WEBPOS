@@ -6,6 +6,7 @@ import { LocalStorageConstants } from 'src/app/constants/constants';
 import { CategoriasDTO } from 'src/app/models/categorias.dto';
 import { ConfigProductosDTO, FamiliasCPDTO, ProuctoCPDTO, SubfamiliasCPDTO } from 'src/app/models/configProductos.dto';
 import { GruposImagenesDTO } from 'src/app/models/gruposImagenes.dto';
+import { productPriceDTO } from 'src/app/models/productPrice.dto';
 import { ProductosDTO } from 'src/app/models/productos.dto';
 import { TarifasVentaDTO } from 'src/app/models/tarifasVenta.dto';
 import { TarifasVentaPreciosDTO } from 'src/app/models/tarifasVentaPrecios.dto';
@@ -42,7 +43,7 @@ export class MainSalesComponent implements OnInit {
   columnasProductos: number = 10;
   productosTodos: ProductosDTO[] | undefined = [];
   productoSelecionadoInput: any;
-  @Output() productoSelecionadoOutput = new EventEmitter<any>();
+  @Output() productoSelecionadoOutput = new EventEmitter<productPriceDTO>();
 
   tarifa: TarifasVentaDTO | undefined;
   filteredTarifasArray: TarifasVentaDTO[] | undefined;
@@ -74,6 +75,11 @@ export class MainSalesComponent implements OnInit {
     console.log("PONEMOS VALOR :: " + this.tableName);
     this.sharedService.setTableName(this.tableName);
     this.sharedService.setNumDiners(this.numDiners);
+  }
+
+  public recibirIsLoadingTicket(isLoading: boolean) {
+    console.log("IsLoading :: " + isLoading);
+    this.isLoadingResults = isLoading;
   }
 
   private async loadConfigUbicacion(): Promise<void> {
@@ -307,16 +313,16 @@ export class MainSalesComponent implements OnInit {
     }
   }
 
-  recibirProductoSeleccionado(idProduct: any) {
-    console.log("MAIN SALE PRODUCTO SELECCIONADO :: " + idProduct);
-    let emitido = idProduct + "_" + new Date().getTime();
-    this.productoSelecionadoInput = emitido;
+  recibirProductoSeleccionado(productPrice: productPriceDTO) {
+    console.log("MAIN SALE PRODUCTO SELECCIONADO :: " + productPrice.idProduct);
+    let emitido = productPrice.idProduct + "_" + new Date().getTime();
+    this.productoSelecionadoInput = productPrice;
     this.enviarProductoSeleccionado(this.productoSelecionadoInput);
   }
 
-  enviarProductoSeleccionado(idProduct: any) {
-    console.log("MAIN SALE EMIT PRODUCTO SELECCIONADO " + idProduct);
-    this.productoSelecionadoOutput.emit(idProduct);
+  enviarProductoSeleccionado(productPrice: productPriceDTO) {
+    console.log("MAIN SALE EMIT PRODUCTO SELECCIONADO " + productPrice.idProduct);
+    this.productoSelecionadoOutput.emit(productPrice);
   }
 
   ngOnDestroy() {

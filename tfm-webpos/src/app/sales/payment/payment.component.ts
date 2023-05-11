@@ -22,6 +22,7 @@ export class PaymentComponent implements OnInit {
   formasPagoLV: TicketFormasPagoDTO[] | undefined = [];
   familiasConvertidas: ObjectComboFamiliasFPDTO[] = [];
   ultimaFamiliaSeleccionada: string = '';
+  cambio: number = 0.00;
 
   constructor(
     public dialogRef: MatDialogRef<PaymentComponent>,
@@ -118,6 +119,9 @@ export class PaymentComponent implements OnInit {
           familia.importe = familia.importe + numero;
         }
       }
+      if(numero != ',') {
+        this.calcularTotales();
+      }
       return familia
     });
   }
@@ -144,6 +148,22 @@ export class PaymentComponent implements OnInit {
       if (index !== -1) {
         this.familiasConvertidas.splice(index + 1, 0, familiaDuplicar);
       }
+    }
+  }
+
+  public removeFP(identificadorFP: string) {
+    let familiaEncontradaIndex = this.familiasConvertidas.findIndex(familia => familia.id == identificadorFP);
+    if(familiaEncontradaIndex != undefined) {
+      this.familiasConvertidas.splice(familiaEncontradaIndex, 1);
+      this.calcularTotales();
+    }
+  }
+
+  private calcularTotales(){
+    this.data.totalPagado = this.familiasConvertidas.reduce((a, b) => a + Number(b.importe.replace(",", ".")), 0);
+    console.log("TOTAL PAGADO : " + this.data.totalPagado);
+    if(this.data.totalPagado - this.data.total > 0) {
+      this.cambio = this.data.totalPagado - this.data.total;
     }
   }
 

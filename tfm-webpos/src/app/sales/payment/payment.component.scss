@@ -7,17 +7,11 @@
     .left-column {
         width: 60%;
         
-        .payment-total {
+        .payment-total, .total-pagado, .cambio {
             display: flex;
             justify-content: space-between;
-            width: 90%;
             height: auto;
-            box-sizing: border-box;
-            border: 1px solid rgba(0, 0, 0, 0.12);
             padding: 0.5rem;
-            background-color: #fcfcfc;
-            transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 4px;
             margin-bottom: 0.5rem;
             font-size: 1.25rem;
             align-items: center;
@@ -28,20 +22,29 @@
             }
         }
 
-        .payment-methods{
+        .payment-total-box {
             width: 90%;
+            background-color: #fcfcfc;
+            transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 4px;
+            box-sizing: border-box;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+        }
+
+        .payment-methods{
+            width: 95%;
 
             .payment-method {
                 display: flex;
                 align-items: center;
 
                 .select-FP {
-                    width: 45%;
+                    width: 75%;
                     margin-right: 10px;
                 }
 
                 .input-qty {
-                    width: 30%;
+                    width: 15%;
                     text-align: end;
                 }
 
@@ -50,10 +53,23 @@
                 }
 
                 .button-plus {
-                    color: $secondary-color;
                     font-size: 1.25rem;
                 }
             }
+        }
+
+        .payment-totals {
+            width: 90%;
+            margin-top: 1rem;
+
+        }
+
+        .text-green {
+            color: $secondary-color;
+        }
+
+        .text-red {
+            color: $red;
         }
     }
 

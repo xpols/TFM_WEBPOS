@@ -1,5 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { LocalStorageConstants } from 'src/app/constants/constants';
 import { ObjectComboDTO } from 'src/app/models/objectCombo.dto';
+import { productPriceDTO } from 'src/app/models/productPrice.dto';
 import { TicketDetalleDTO } from 'src/app/models/ticketDetalle.dto';
 
 @Component({
@@ -10,6 +12,7 @@ import { TicketDetalleDTO } from 'src/app/models/ticketDetalle.dto';
 export class TicketItemsComponent implements OnInit {
 
   @Input() detalle: TicketDetalleDTO;
+  @Output() productoModificado = new EventEmitter<productPriceDTO>();
 
   constructor() { 
     this.detalle = new TicketDetalleDTO('',
@@ -43,8 +46,22 @@ export class TicketItemsComponent implements OnInit {
 
   }
 
-  plus() {}
+  plus() {
+    let accionSumar = new productPriceDTO(Number(this.detalle.idProducto_nombre.id), this.detalle.idProducto_nombre.descripcion, this.detalle.totalConImpuestos);
+    accionSumar.idDetalle = this.detalle.id;
+    accionSumar.accion = LocalStorageConstants.ACTION_PLUS;
+    this.productoModificado.emit(accionSumar);
+  }
 
-  minus() {}
+  minus() {
+    let accionRestar = new productPriceDTO(Number(this.detalle.idProducto_nombre.id), this.detalle.idProducto_nombre.descripcion, this.detalle.totalConImpuestos);
+    accionRestar.idDetalle = this.detalle.id;
+    if(this.detalle.cantidad > 1) {
+      accionRestar.accion = LocalStorageConstants.ACTION_MINUS;
+    } else {
+      accionRestar.accion = LocalStorageConstants.ACTION_DELETE;
+    }
+    this.productoModificado.emit(accionRestar);
+  }
 
 }
