@@ -168,7 +168,7 @@ export class MainSalesService {
     return this.http.delete<TicketCabeceraDTO>(APIConstants.API_URL + 'pedidosVentaCabeceras/'+idTicket).toPromise();
   }
 
-  cancelTicket(ticket: TicketCabeceraCanceladoDTO): Promise<TicketCabeceraDTO|undefined> {
+  changeStateTicket(ticket: TicketCabeceraCanceladoDTO): Promise<TicketCabeceraDTO|undefined> {
     console.log("SERVICE CANCELAMOS TICKET :: " + ticket.id);
     return this.http.put<TicketCabeceraDTO>(APIConstants.API_URL + 'pedidosVentaCabeceras/'+ticket.id, ticket).toPromise();
   }

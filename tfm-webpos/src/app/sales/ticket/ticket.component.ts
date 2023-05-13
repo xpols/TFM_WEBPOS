@@ -333,6 +333,11 @@ export class TicketComponent implements OnInit {
         console.log('Payment dialog was closed :: ' + JSON.stringify(result));
         this.pagos = result.pagos;
         this.processPayments();
+        if(this.ticket != undefined) {
+          if(result.totalPagado >= this.ticket?.totalConImpuestos) {
+            this.finishTicket();
+          }
+        }
         /*if(result != undefined) {
           this.numDiners = result;
           this.router.navigate(['/sales'], {queryParams: {tableTicketId: null, numDiners: this.numDiners, tableName: this.tableName, tableId: this.tableId }});
@@ -362,13 +367,26 @@ export class TicketComponent implements OnInit {
           console.log("CREATE PAYMENT");
           let paymentSave = await this.mainSalesService.createTickePayment(payment);
           if(paymentSave != undefined) {
-            console.log("Payment add to pagos");
+            console.log("Payment add to pagos :: " + paymentSave.id);
             pagosCopy.push(paymentSave);
           }
         }
       }
 
+      pagosCopy = pagosCopy.filter((payment) => payment.id != '' && payment.id != undefined);
+
       this.pagos = pagosCopy;
+      console.log("PAGOS TRAS PAYMENT :: " + JSON.stringify(this.pagos));
+      console.log("PAGOS TRAS PAYMENT LENGTH:: " + this.pagos.length);
+    }
+  }
+
+  private async finishTicket() {
+    if(this.ticket != undefined) {
+      let ticketPagado = new TicketCabeceraCanceladoDTO(this.ticket.id);
+      ticketPagado.idEstadoDocumento = new ObjectIDDTO('11');
+      this.ticket = await this.mainSalesService.changeStateTicket(ticketPagado);
+      this.router.navigate(['/tables']).then(_ => console.log('Ticket canceled finish'));
     }
   }
 
@@ -376,7 +394,7 @@ export class TicketComponent implements OnInit {
     if(this.ticket?.id != undefined) {
       console.log("Cancelamos ticket :: " + this.ticket.id);
       let ticketCancelado = new TicketCabeceraCanceladoDTO(this.ticket.id);
-      this.ticket = await this.mainSalesService.cancelTicket(ticketCancelado);
+      this.ticket = await this.mainSalesService.changeStateTicket(ticketCancelado);
       this.router.navigate(['/tables']).then(_ => console.log('Ticket canceled finish'));
     }
   }

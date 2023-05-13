@@ -32,6 +32,7 @@ export class PaymentComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log("PAGOS RECIBIDOS :: " + JSON.stringify(this.data.pagos));
     this.formasPagoRecibidas = this.data.pagos;
     this.loadFormasPago();
     
@@ -98,6 +99,7 @@ export class PaymentComponent implements OnInit {
             console.log("familia encontrada en pagos :: " + familia.id);
             familia.importe = this.formasPagoRecibidas[index].importe.toString();
             familia.idLineaGuardada = this.formasPagoRecibidas[index].id;
+            console.log("familia encontrada assignamos idLineaGuardada :: " + this.formasPagoRecibidas[index].id);
             let idFormaPagoBuscada = '';
             if(this.formasPagoRecibidas[index].idFormaPago_descripcion != undefined && this.formasPagoRecibidas[index].idFormaPago_descripcion.id != '') {
               idFormaPagoBuscada = this.formasPagoRecibidas[index].idFormaPago_descripcion.id;
@@ -196,6 +198,7 @@ export class PaymentComponent implements OnInit {
   }
 
   finishPayments():void {
+    console.log("FINISH PAYMENTS");
     for (let familiaFormaPago of this.familiasConvertidas) {
       if(Number(familiaFormaPago.importe) > 0) {
         if(familiaFormaPago.idLineaGuardada == undefined) {
