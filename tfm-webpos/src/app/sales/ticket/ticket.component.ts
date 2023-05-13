@@ -11,6 +11,8 @@ import { PaymentComponent } from '../payment/payment.component';
 import { productPriceDTO } from 'src/app/models/productPrice.dto';
 import { TicketCabeceraCanceladoDTO } from 'src/app/models/ticketCabeceraCancel.dto';
 import { Router } from '@angular/router';
+import { SharedService } from 'src/app/Services/shared.service';
+import { TicketPagoDTO } from 'src/app/models/ticketPago.dto';
 
 
 @Component({
@@ -22,15 +24,17 @@ export class TicketComponent implements OnInit {
 
   @Input() idTicket: string | undefined;
   @Input() tableName: string | undefined;
+  @Input() numDiners: number = 0;
   @Input() productoSelecionadoTicket: productPriceDTO = new productPriceDTO(0,'', 0);
   @Output() isLoading = new EventEmitter<boolean>();
 
   ticket: TicketCabeceraDTO | undefined;
   detalles: TicketDetalleDTO[] | undefined = [];
+  pagos: TicketPagoDTO[] | undefined = [];
 
   canalVenta: string = 'Terraza'
 
-  constructor(public dialog: MatDialog, private mainSalesService: MainSalesService, private router: Router) { 
+  constructor(public dialog: MatDialog, private mainSalesService: MainSalesService, private router: Router, private sharedService: SharedService) { 
     this.ticket = new TicketCabeceraDTO(
       '',
       '',
@@ -85,6 +89,7 @@ export class TicketComponent implements OnInit {
       this.ticket.idDominio = new ObjectIDDTO(idDominioLS != null ? idDominioLS : '');
       console.log("DEBEMOS CREAR UN TICKET NUEVO");
       this.createTicket();
+      this.loadCanalCurrent();
     }
   }
 
@@ -112,6 +117,16 @@ export class TicketComponent implements OnInit {
         }
       }
     }
+
+    if(changes["numDiners"] != undefined) {
+      if(changes["numDiners"].currentValue != changes["numDiners"].previousValue && changes["numDiners"].currentValue.length > 0) {
+        console.log("numDiners CHANGE " + changes["numDiners"].currentValue);
+        if(this.numDiners != undefined && changes["numDiners"].currentValue != undefined) {
+          console.log("Assignamos numDiners");
+          this.numDiners = changes["numDiners"].currentValue;
+        }
+      }
+    }
   }
 
   private async loadTicket(idTicket: string |undefined): Promise<void> {
@@ -122,14 +137,57 @@ export class TicketComponent implements OnInit {
       console.log("TICKET RECUPERADO :: " + JSON.stringify(this.ticket));
       this.detalles = await this.mainSalesService.getTicketDetalles(idTicket);
       console.log("TICKET DETALLES RECUPERADOS :: " + JSON.stringify(this.detalles));
+      this.pagos = await this.mainSalesService.getTicketPagos(idTicket);
+      console.log("TICKET PAGOS RECUPERADOS :: " + JSON.stringify(this.pagos));
+      if(this.ticket?.numeroComensales != undefined) {
+        this.sharedService.setNumDiners(this.ticket?.numeroComensales);
+      }
+      this.loadCanalCurrent();
     } catch (error: any) {
       errorResponse = error.error;
     }
   }
 
-  private async createTicket() {
-    this.ticket = await this.mainSalesService.createTicket(this.ticket);
+  private async getTotales(idTicket: string |undefined): Promise<void> {
+    console.log("GET TOTALES TICKET");
+    let errorResponse: any;
+    try {
+      let totalConImpuestos = this.detalles?.reduce((a, b) => a + b.totalConImpuestos, 0);
+      if(this.ticket != undefined && totalConImpuestos != undefined) {
+        this.ticket.totalConImpuestos = totalConImpuestos;
+        this.ticket.totalBruto = totalConImpuestos;
+        this.ticket = await this.mainSalesService.updateTicketCabecera(this.ticket);
+      }
+    } catch (error: any) {
+      errorResponse = error.error;
+    }
   }
+
+  private loadCanalCurrent() {
+    let canalesArray = localStorage.getItem(LocalStorageConstants.CANALES_VENTA_DTO_ARRAY);
+    let canalId = localStorage.getItem(LocalStorageConstants.ID_CANAL_VENTA);
+    if(this.ticket?.idCanalVenta != undefined) {
+      canalId = this.ticket?.idCanalVenta.id;
+    }
+    if(canalesArray != undefined) {
+      let canalesArrayParsed = JSON.parse(canalesArray);
+      for (let canal of canalesArrayParsed) {
+        if(canal.id == canalId) {
+          this.canalVenta = canal.descripcion;
+        }
+      }
+    }
+    
+  }
+
+  private async createTicket() {
+    if(this.ticket != undefined) {
+      this.ticket.numeroComensales = this.numDiners;
+      this.ticket = await this.mainSalesService.createTicket(this.ticket);
+    }
+  }
+
+  
 
   private addProduct(productPrice: productPriceDTO) {
     this.isLoading.emit(true);
@@ -161,6 +219,9 @@ export class TicketComponent implements OnInit {
         return detalle;
       }
     });
+    if(this.ticket != undefined) {
+      this.getTotales(this.ticket.id);
+    }
   }
 
   private async createDetalle(productPrice: productPriceDTO) {
@@ -208,6 +269,7 @@ export class TicketComponent implements OnInit {
         detalleCreated = this.assignarDescripcionProducto(idProducto, productPrice, detalleCreated);
         this.detalles?.push(detalleCreated);
       }
+      this.getTotales(this.ticket.id);
     }
   }
 
@@ -220,6 +282,9 @@ export class TicketComponent implements OnInit {
     let index = this.detalles?.findIndex((detalleFind) => detalleFind.id == detalle.id);
     if (index !== -1 && index != undefined) {
       this.detalles?.splice(index, 1);
+    }
+    if(this.ticket != undefined) {
+      this.getTotales(this.ticket.id);
     }
     this.isLoading.emit(false);
   }
@@ -254,17 +319,57 @@ export class TicketComponent implements OnInit {
 
   openPaymentsDialog(): void {
     console.log("Open payment dialag :: " + this.ticket?.totalConImpuestos);
-    const dialogRef = this.dialog.open(PaymentComponent, {
-      data: {total: this.ticket?.totalConImpuestos, totalPagado: 0},
-    });
+    if(this.ticket != undefined) {
+      const dialogRef = this.dialog.open(PaymentComponent, {
+        data: {
+          total: this.ticket?.totalConImpuestos, 
+          totalPagado: 0,
+          pagos: this.pagos,
+          idDocumentoComercial: new ObjectIDDTO(this.ticket.id)
+        },
+      });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed :: ' + result);
-      /*if(result != undefined) {
-        this.numDiners = result;
-        this.router.navigate(['/sales'], {queryParams: {tableTicketId: null, numDiners: this.numDiners, tableName: this.tableName, tableId: this.tableId }});
-      } */
-    });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('Payment dialog was closed :: ' + JSON.stringify(result));
+        this.pagos = result.pagos;
+        this.processPayments();
+        /*if(result != undefined) {
+          this.numDiners = result;
+          this.router.navigate(['/sales'], {queryParams: {tableTicketId: null, numDiners: this.numDiners, tableName: this.tableName, tableId: this.tableId }});
+        } */
+      });
+    }
+  }
+
+  private async processPayments() {
+    if(this.pagos != undefined) {
+      let pagosCopy = [...this.pagos];
+      for(let payment of this.pagos) {
+        console.log("Procesamos pago id :: " + payment.id);
+        console.log("Procesamos pago importe :: " + payment.importe);
+        if(payment.id != '') {
+          console.log("UPDATE PAYMENT");
+          let paymentSave = await this.mainSalesService.updateTickePayment(payment);
+          let index = pagosCopy.findIndex((pago) => pago.id == payment.id);
+          if (index !== -1 && index != undefined) {
+            pagosCopy?.splice(index, 1);
+            if(paymentSave != undefined) {
+              console.log("Payment modify in pagos");
+              pagosCopy.push(paymentSave);
+            }
+          }
+        } else {
+          console.log("CREATE PAYMENT");
+          let paymentSave = await this.mainSalesService.createTickePayment(payment);
+          if(paymentSave != undefined) {
+            console.log("Payment add to pagos");
+            pagosCopy.push(paymentSave);
+          }
+        }
+      }
+
+      this.pagos = pagosCopy;
+    }
   }
 
   public async cancelarTicket():Promise<void> {
@@ -272,6 +377,13 @@ export class TicketComponent implements OnInit {
       console.log("Cancelamos ticket :: " + this.ticket.id);
       let ticketCancelado = new TicketCabeceraCanceladoDTO(this.ticket.id);
       this.ticket = await this.mainSalesService.cancelTicket(ticketCancelado);
+      this.router.navigate(['/tables']).then(_ => console.log('Ticket canceled finish'));
+    }
+  }
+
+  public async sendTable() {
+    if(this.ticket != undefined) {
+      this.ticket = await this.mainSalesService.updateTicketCabecera(this.ticket);
       this.router.navigate(['/tables']).then(_ => console.log('Ticket canceled finish'));
     }
   }

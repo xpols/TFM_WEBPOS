@@ -7,7 +7,7 @@ import { FormasPagoDTO } from 'src/app/models/formasPago.dto';
 import { ObjectComboDTO } from 'src/app/models/objectCombo.dto';
 import { ObjectComboFamiliasFPDTO } from 'src/app/models/objectComboFamiliasFP.dto';
 import { ObjectIDDTO } from 'src/app/models/objectID.dto';
-import { TicketFormasPagoDTO } from 'src/app/models/ticketFormasPago.dto';
+import { TicketPagoDTO } from 'src/app/models/ticketPago.dto';
 import { TiendaDTO } from 'src/app/models/tienda.dto';
 
 @Component({
@@ -19,10 +19,11 @@ export class PaymentComponent implements OnInit {
 
   formasPago: FormasPagoDTO[] | undefined = [];
   formasPagoTiendaParsed: FormasPagoDTO[] = [];
-  formasPagoLV: TicketFormasPagoDTO[] | undefined = [];
   familiasConvertidas: ObjectComboFamiliasFPDTO[] = [];
   ultimaFamiliaSeleccionada: string = '';
   cambio: number = 0.00;
+
+  formasPagoRecibidas: TicketPagoDTO[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<PaymentComponent>,
@@ -31,6 +32,7 @@ export class PaymentComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.formasPagoRecibidas = this.data.pagos;
     this.loadFormasPago();
     
   }
@@ -48,8 +50,30 @@ export class PaymentComponent implements OnInit {
         let formaPagoEncontrada = this.formasPagoTiendaParsed.find(formaPagoTienda => formaPagoTienda.id == formaPago.id);
         return formaPagoEncontrada != null && formaPagoEncontrada != undefined;
       });
+
+      if(this.formasPagoRecibidas != undefined && this.formasPagoRecibidas.length > 0) {
+        for(let formaPagoRecibida of this.formasPagoRecibidas) {
+          if(formaPagoRecibida.idFamiliaFormaPago == undefined || formaPagoRecibida.idFamiliaFormaPago != '') {
+            let idFormaPagoBuscada = '';
+            if(formaPagoRecibida.idFormaPago_descripcion != undefined && formaPagoRecibida.idFormaPago_descripcion.id != '') {
+              idFormaPagoBuscada = formaPagoRecibida.idFormaPago_descripcion.id;
+            } else if(formaPagoRecibida.idFormaPago != undefined 
+                      && formaPagoRecibida.idFormaPago?.id != undefined 
+                      && formaPagoRecibida.idFormaPago?.id != '') {
+              idFormaPagoBuscada = formaPagoRecibida.idFormaPago?.id;
+            }
+            console.log("Buscamos familia para forma de pago :: " + idFormaPagoBuscada);
+            let formaPagoencontrada = this.formasPago?.find(formaPago => formaPago.id == idFormaPagoBuscada);
+            if(formaPagoencontrada != undefined) {
+              console.log("Assignamos familia :: " + formaPagoencontrada.idFamilia_descripcion.id + "  a la forma de pago :: " + formaPagoRecibida.id);
+              formaPagoRecibida.idFamiliaFormaPago = formaPagoencontrada.idFamilia_descripcion.id;
+            }
+          }
+        }
+      }
     }
     this.convertirFPenLV();
+    this.calcularTotales();
   }
 
   private convertirFPenLV() {
@@ -66,39 +90,43 @@ export class PaymentComponent implements OnInit {
         let formasPagoFamilia = this.formasPago?.filter(formaPago => formaPago.idFamilia_descripcion.id == familia.id);
         console.log("FAMILIA :: " + familia.descripcion + " ::: " + formasPagoFamilia);
         familia.formasPago = formasPagoFamilia;
-        familia.importe = '0,00';
+        if(this.formasPagoRecibidas != undefined && this.formasPagoRecibidas.length > 0) {
+          console.log("Buscamos familia guardada :: " + JSON.stringify(this.formasPagoRecibidas));
+          console.log("familia actual :: " + familia.id);
+          let index = this.formasPagoRecibidas.findIndex((pago) => pago.idFamiliaFormaPago == familia.id);
+          if (index !== -1 && index != undefined) {
+            console.log("familia encontrada en pagos :: " + familia.id);
+            familia.importe = this.formasPagoRecibidas[index].importe.toString();
+            familia.idLineaGuardada = this.formasPagoRecibidas[index].id;
+            let idFormaPagoBuscada = '';
+            if(this.formasPagoRecibidas[index].idFormaPago_descripcion != undefined && this.formasPagoRecibidas[index].idFormaPago_descripcion.id != '') {
+              idFormaPagoBuscada = this.formasPagoRecibidas[index].idFormaPago_descripcion.id;
+            } else if(this.formasPagoRecibidas[index].idFormaPago != undefined && this.formasPagoRecibidas[index].idFormaPago?.id != undefined && this.formasPagoRecibidas[index].idFormaPago?.id != '') {
+              idFormaPagoBuscada = this.formasPagoRecibidas[index].idFormaPago?.id;
+            }
+            console.log("BUSCAMOS FORMA DE PAGO :: " + idFormaPagoBuscada);
+            if(familia.formasPago != undefined 
+              && familia.formasPago?.length > 0 
+              && idFormaPagoBuscada != undefined) {
+              let formaPagoencontrada = familia.formasPago.find(familiaFP => familiaFP.id == idFormaPagoBuscada);
+              familia.formasPagoSelected = formaPagoencontrada?.id;
+            }
+          } else {
+            familia.importe = '0,00';
+            if(familia.formasPago != undefined && familia.formasPago?.length > 0) {
+              familia.formasPagoSelected = familia.formasPago[0].id;
+            }
+          }
+        } else {
+          familia.importe = '0,00';
+          if(familia.formasPago != undefined && familia.formasPago?.length > 0) {
+            familia.formasPagoSelected = familia.formasPago[0].id;
+          }
+        }
+        
+        
         return familia;
       });
-
-      
-      /*for(let i = 0; i < this.formasPago.length; i++) {
-        let newLV = new TicketFormasPagoDTO(
-          '',
-          0,//cantidadVale: number;
-          null,//codigoVale: string | null;
-          null,//comentarios: string | null;
-          true,//devuelveCambio: boolean;
-          new Date().toLocaleDateString('en-GB'), //fechaVencimiento: Date | string;
-          new ObjectComboDTO('','',''), //idDivisa_descripcion: ObjectComboDTO;
-          new ObjectIDDTO('1'),//idDivisa: ObjectIDDTO | undefined;
-          new ObjectComboDTO('','',''), //idDocumentoComercial_codigo: ObjectComboDTO;
-          new ObjectIDDTO('1'),//idDocumentoComercial: ObjectIDDTO | undefined;
-          new ObjectComboDTO('','',''), //idFormaPago_descripcion: ObjectComboDTO | undefined;
-          new ObjectIDDTO(this.formasPago[i].id),//idFormaPago: ObjectIDDTO | undefined;
-          new ObjectComboDTO('','',''), //idTipoVale_descripcion: ObjectComboDTO | undefined;
-          undefined, //idTipoVale: ObjectIDDTO | undefined;
-          0, //importe: number;
-          null, //importeCambioNoDevuelto: number | null;
-          null, //importeVale: number | null;
-          i, //item: number;
-          null, //modoLecturaValeAutomatico: number | null;
-          false, //pagadoOnline: boolean | null;
-          false, //permitePagoOnline: boolean | null;
-          this.formasPago[i].descripcion, // descripcion
-          []
-        );
-        this.formasPagoLV?.push(newLV);
-      }*/
     }    
   } 
 
@@ -165,6 +193,34 @@ export class PaymentComponent implements OnInit {
     if(this.data.totalPagado - this.data.total > 0) {
       this.cambio = this.data.totalPagado - this.data.total;
     }
+  }
+
+  finishPayments():void {
+    for (let familiaFormaPago of this.familiasConvertidas) {
+      if(Number(familiaFormaPago.importe) > 0) {
+        if(familiaFormaPago.idLineaGuardada == undefined) {
+          console.log("ADD forma pago a la respuesta :: " + familiaFormaPago.descripcion);
+          console.log("forma pago selected :: " + familiaFormaPago.formasPagoSelected);
+          let formaPago = new TicketPagoDTO('',
+                                            Number(familiaFormaPago.id),
+                                            new ObjectComboDTO('','',''), //Forma de pago
+                                            new ObjectComboDTO('','',''), //Divisa
+                                            Number(familiaFormaPago.importe),
+                                            new Date().toLocaleDateString('en-GB'), //fechaVencimiento
+                                            new ObjectComboDTO('','',''));
+          formaPago.idDocumentoComercial = this.data.idDocumentoComercial; 
+          formaPago.idDivisa = new ObjectIDDTO('1');
+          formaPago.idFamiliaFormaPago = familiaFormaPago.id;
+          if(familiaFormaPago.formasPagoSelected != undefined) {
+            formaPago.idFormaPago = new ObjectIDDTO(familiaFormaPago.formasPagoSelected);
+          }
+          this.data.pagos.push(formaPago);
+        } else {
+          
+        }
+      }
+    }
+    this.dialogRef.close(this.data);
   }
 
   onNoClick(): void {

@@ -13,6 +13,7 @@ import { TicketDetalleDTO } from '../models/ticketDetalle.dto';
 import { TicketDetalleUpdateDTO } from '../models/ticketDetalleUpdate.dto';
 import { FormasPagoDTO } from '../models/formasPago.dto';
 import { TicketCabeceraCanceladoDTO } from '../models/ticketCabeceraCancel.dto';
+import { TicketPagoDTO } from '../models/ticketPago.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -112,6 +113,15 @@ export class MainSalesService {
       .toPromise();
   }
 
+  getTicketTotales(idTicket: string | undefined): Promise<any> {
+    let params = new HttpParams();
+    params = params.append('max', 1000);
+    params = params.append('offset', 0);
+    return this.http
+      .get<any>(APIConstants.API_URL + 'pedidosVentaCabeceras/'+idTicket+'/getTotales', {params: params})
+      .toPromise();
+  }
+
   getTicketDetalles(idTicket: string | undefined): Promise<TicketDetalleDTO[]|undefined> {
     let params = new HttpParams();
     params = params.append('grupoTiendaSeleccionada', 'A');
@@ -123,8 +133,23 @@ export class MainSalesService {
       .toPromise();
   }
 
+  getTicketPagos(idTicket: string | undefined): Promise<TicketPagoDTO[]|undefined> {
+    let params = new HttpParams();
+    params = params.append('grupoTiendaSeleccionada', 'A');
+    params = params.append('filtrosComplementarios','[{"field":"idDocumentoComercial.id","type":"numeric","op":"equals","listValues":[{"value":'+idTicket+'}]}]');
+    params = params.append('max', 1000);
+    params = params.append('offset', 0);
+    return this.http
+      .get<TicketPagoDTO[]>(APIConstants.API_URL + 'pedidosVentaLineasVencimientos/', {params: params})
+      .toPromise();
+  }
+
   createTicket(ticket: TicketCabeceraDTO | undefined): Promise<TicketCabeceraDTO|undefined> {
     return this.http.post<TicketCabeceraDTO>(APIConstants.API_URL + 'pedidosVentaCabeceras', ticket).toPromise();
+  }
+
+  updateTicketCabecera(ticket: TicketCabeceraDTO): Promise<TicketCabeceraDTO|undefined> {
+    return this.http.put<TicketCabeceraDTO>(APIConstants.API_URL + 'pedidosVentaCabeceras/'+ticket.id, ticket).toPromise();
   }
 
   updateTicketDetail(detalle: TicketDetalleUpdateDTO): Promise<TicketDetalleDTO|undefined> {
@@ -146,6 +171,14 @@ export class MainSalesService {
   cancelTicket(ticket: TicketCabeceraCanceladoDTO): Promise<TicketCabeceraDTO|undefined> {
     console.log("SERVICE CANCELAMOS TICKET :: " + ticket.id);
     return this.http.put<TicketCabeceraDTO>(APIConstants.API_URL + 'pedidosVentaCabeceras/'+ticket.id, ticket).toPromise();
+  }
+
+  createTickePayment(pago: TicketPagoDTO): Promise<TicketPagoDTO|undefined> {
+    return this.http.post<TicketPagoDTO>(APIConstants.API_URL + 'pedidosVentaLineasVencimientos', pago).toPromise();
+  }
+
+  updateTickePayment(pago: TicketPagoDTO): Promise<TicketPagoDTO|undefined> {
+    return this.http.put<TicketPagoDTO>(APIConstants.API_URL + 'pedidosVentaLineasVencimientos/'+pago.id, pago).toPromise();
   }
 
   getFormasDePago(): Promise<FormasPagoDTO[]|undefined> {

@@ -6,6 +6,8 @@ export class ObjectComboFamiliasFPDTO {
     descripcion: string;
     formasPago: FormasPagoDTO[] | undefined = [];
     importe: string = '0,00';
+    formasPagoSelected: string | undefined;
+    idLineaGuardada: string | undefined;
 
     constructor(
         id: string,

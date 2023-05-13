@@ -1,5 +1,8 @@
 <div class="wp-container mat-elevation-z8">
-    <mat-card class="wp-card">
+    <div class="wp-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner class="mat-spinner-green" *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+    <mat-card class="wp-card" *ngIf="!isLoadingResults">
         <form [formGroup]="configForm" (ngSubmit)="saveConfig()">
             <h2>Configuracion</h2>
             <mat-form-field class="wp-full-width">

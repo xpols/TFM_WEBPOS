@@ -14,7 +14,8 @@
             <button mat-mini-fab class="mat-elevation-z0 button-qty button-plus" (click)="plus()">+</button>
         </div>
         <div class="price">
-            {{detalle.totalConImpuestos}}€
+            {{detalle.totalConImpuestos |
+            number:'1.2-2'}}€
         </div>
     </div>
 

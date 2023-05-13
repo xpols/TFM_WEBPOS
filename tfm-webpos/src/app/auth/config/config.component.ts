@@ -103,7 +103,7 @@ export class ConfigComponent implements OnInit {
       if(this.tpvs?.length == 1) {
         this.tpvsFC.setValue(this.tpvs[0].id);
       }
-      this.isLoadingResults = false;
+      //this.isLoadingResults = false;
     } catch (error: any) {
       errorResponse = error.error;
     }

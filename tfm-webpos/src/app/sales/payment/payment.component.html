@@ -10,7 +10,8 @@
                     (click)="duplicateFP(familiaFormaPago.id)">
                     +
                 </button>
-                <select class="select-FP input-025" (focus)="onFocusInput(familiaFormaPago.id)">
+                <select class="select-FP input-025" (focus)="onFocusInput(familiaFormaPago.id)"
+                    [(ngModel)]="familiaFormaPago.formasPagoSelected">
                     <option *ngFor="let formaPago of familiaFormaPago.formasPago" [value]="formaPago.id">{{
                         formaPago.descripcion }}</option>
                 </select>
@@ -97,7 +98,7 @@
         </div>
         <div align="center" class="actions-container">
             <button mat-fab class="button-action button-minus" (click)="onNoClick()"><mat-icon>close</mat-icon></button>
-            <button mat-fab class="button-action button-plus" [mat-dialog-close]="data.totalPagado"
+            <button mat-fab class="button-action button-plus" (click)="finishPayments()"
                 cdkFocusInitial><mat-icon>check</mat-icon></button>
         </div>
     </div>

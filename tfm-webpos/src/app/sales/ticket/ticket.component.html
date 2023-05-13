@@ -30,7 +30,8 @@
             </div>
         </mat-grid-tile>
         <mat-grid-tile class="ticket-button">
-            <button mat-fab class="mat-elevation-z0 button-warn" color="primary" aria-label="Canal venta">
+            <button mat-fab class="mat-elevation-z0 button-warn button-canal-venta" color="primary"
+                aria-label="Canal venta">
                 {{canalVenta}}
             </button>
             <div class="ticket-button-label">
@@ -72,7 +73,7 @@
         </mat-grid-tile>
         <mat-grid-tile></mat-grid-tile>
         <mat-grid-tile class="ticket-button">
-            <button mat-fab class="mat-elevation-z0" color="primary" aria-label="Enviar Mesa">
+            <button mat-fab class="mat-elevation-z0" color="primary" aria-label="Enviar Mesa" (click)="sendTable()">
                 <mat-icon>send</mat-icon>
             </button>
             <div class="ticket-button-label">
