@@ -13,6 +13,7 @@ import { TicketCabeceraCanceladoDTO } from 'src/app/models/ticketCabeceraCancel.
 import { Router } from '@angular/router';
 import { SharedService } from 'src/app/Services/shared.service';
 import { TicketPagoDTO } from 'src/app/models/ticketPago.dto';
+import { TicketPrintComponent } from '../ticket-print/ticket-print.component';
 
 
 @Component({
@@ -338,10 +339,6 @@ export class TicketComponent implements OnInit {
             this.finishTicket();
           }
         }
-        /*if(result != undefined) {
-          this.numDiners = result;
-          this.router.navigate(['/sales'], {queryParams: {tableTicketId: null, numDiners: this.numDiners, tableName: this.tableName, tableId: this.tableId }});
-        } */
       });
     }
   }
@@ -386,7 +383,26 @@ export class TicketComponent implements OnInit {
       let ticketPagado = new TicketCabeceraCanceladoDTO(this.ticket.id);
       ticketPagado.idEstadoDocumento = new ObjectIDDTO('11');
       this.ticket = await this.mainSalesService.changeStateTicket(ticketPagado);
-      this.router.navigate(['/tables']).then(_ => console.log('Ticket canceled finish'));
+      this.openPrintDialog();
+      //this.router.navigate(['/tables']).then(_ => console.log('Ticket canceled finish'));
+    }
+  }
+
+  openPrintDialog(): void {
+    console.log("Open print dialag :: " + this.ticket?.totalConImpuestos);
+    if(this.ticket != undefined) {
+      const dialogRef = this.dialog.open(TicketPrintComponent, {
+        data: {
+          ticket: this.ticket,
+          detalles: this.detalles,
+          pagos: this.pagos
+        },
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('Print dialog was closed :: ' + JSON.stringify(result));
+        //this.router.navigate(['/tables']).then(_ => console.log('Ticket canceled finish'));
+      });
     }
   }
 

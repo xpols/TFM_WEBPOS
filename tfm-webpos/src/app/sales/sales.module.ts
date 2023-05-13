@@ -17,6 +17,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { PaymentComponent } from './payment/payment.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { TicketPrintComponent } from './ticket-print/ticket-print.component';
 
 
 
@@ -29,7 +30,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     ProductsComponent,
     TicketComponent,
     TicketItemsComponent,
-    PaymentComponent
+    PaymentComponent,
+    TicketPrintComponent
   ],
   imports: [
     CommonModule,

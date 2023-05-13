@@ -1,0 +1,13 @@
+<div mat-dialog-content class="print-container">
+    <p>Print</p>
+    <div id="ticket-print-container">
+        <div class="ticket-cabecera">
+            {{'Num. ticket' | translate}}: {{data.ticket?.codigo}}
+            {{'Fecha/Hora' | translate}}: {{data.ticket?.fechaHora}}
+        </div>
+    </div>
+    <div align="center" class="actions-container">
+        <button mat-fab class="button-action" (click)="sendMail()"><mat-icon>send</mat-icon></button>
+        <button mat-fab class="button-action button-minus" (click)="onNoClick()"><mat-icon>close</mat-icon></button>
+    </div>
+</div>
