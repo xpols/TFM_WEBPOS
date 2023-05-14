@@ -7,7 +7,8 @@
         </div>
     </div>
     <div align="center" class="actions-container">
-        <button mat-fab class="button-action" (click)="sendMail()"><mat-icon>send</mat-icon></button>
-        <button mat-fab class="button-action button-minus" (click)="onNoClick()"><mat-icon>close</mat-icon></button>
+        <button class="button-action" mat-flat-button color="primary" (click)="sendMail()">{{'Enviar e-ticket' |
+            translate}}</button>
+        <button class="button-action" mat-flat-button color="primary">{{'Imprimir ticket' | translate}}</button>
     </div>
 </div>

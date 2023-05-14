@@ -190,5 +190,17 @@ export class MainSalesService {
       .toPromise();
   }
 
+  getConfiguracionTextos(codigoTienda: string | null): Promise<UbicacionesDTO[]|undefined> {
+    let params = new HttpParams();
+    params = params.append('filters', '[{"field":"idTipoAgrupacion.codigo","type":"codigo","op":"equals","listValues":[{"value":"001"}]}]');
+    params = params.append('filtersHijos', '[{"field":"tiendas.codigo","type":"codigo","op":"equals","listValues":[{"value":"'+codigoTienda+'"}]}]');
+    params = params.append('option','fields');
+    params = params.append('fields', 'id,idConfigTicket');
+    params = params.append('max', 1000);
+    params = params.append('offset', 0);
+    return this.http
+      .get<UbicacionesDTO[]>(APIConstants.API_URL + 'confTPVAgrupacionesLocales', {params: params})
+      .toPromise();
+  }
   
 }
