@@ -1,0 +1,108 @@
+.width-10 {
+    width: 10%;
+}
+
+.width-20 {
+    width: 20%;
+}
+
+.width-25 {
+    width: 20%;
+}
+
+.width-45 {
+    width: 45%;
+}
+
+.width-40 {
+    width: 40%;
+}
+
+.width-50 {
+    width: 50%;
+}
+
+.width-60 {
+    width: 60%;
+}
+
+.width-75 {
+    width: 75%;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.t-algin-end {
+    text-align: end;
+}
+
+.pad-r-025 {
+    padding-right: .25rem;
+} 
+
+#ticket-print-container {
+    min-width: 400px;
+    padding: 2rem 1rem;
+    margin-bottom: 2rem;
+
+    background: #f6f3f3;
+    -webkit-mask: conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) 50%/20px 100%;
+
+    .ticket-cabecera-empresa {
+        text-align: center;
+        margin: 3rem;
+    }
+
+    .ticket-products {
+        .ticket-products-headers {
+            pre {
+                margin-bottom: .25rem;
+            } 
+        }
+
+        .ticket-products-info {
+            pre {
+                margin: 0;
+            }
+        }
+    }
+
+    .ticket-payments {
+        margin-top: 1.5rem;
+
+        pre {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        .total-pagado {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+    }
+
+    .ticket-footer {
+        text-align: center;
+    }
+}
+
+.actions-container {
+    .email-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        input {
+            width: 100%;
+        }
+    }
+
+    .print-row {
+        margin: 2rem 0;
+    }
+}
+
+

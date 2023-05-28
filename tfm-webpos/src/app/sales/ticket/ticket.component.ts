@@ -32,6 +32,9 @@ export class TicketComponent implements OnInit {
   ticket: TicketCabeceraDTO | undefined;
   detalles: TicketDetalleDTO[] | undefined = [];
   pagos: TicketPagoDTO[] | undefined = [];
+  totalPagado: number = 0;
+  cambio: number = 0;
+  
 
   canalVenta: string = 'Terraza'
 
@@ -325,6 +328,7 @@ export class TicketComponent implements OnInit {
         data: {
           total: this.ticket?.totalConImpuestos, 
           totalPagado: 0,
+          cambio: 0,
           pagos: this.pagos,
           idDocumentoComercial: new ObjectIDDTO(this.ticket.id)
         },
@@ -333,6 +337,8 @@ export class TicketComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         console.log('Payment dialog was closed :: ' + JSON.stringify(result));
         this.pagos = result.pagos;
+        this.cambio = result.cambio;
+        this.totalPagado = result.totalPagado;
         this.processPayments();
         if(this.ticket != undefined) {
           if(result.totalPagado >= this.ticket?.totalConImpuestos) {
@@ -382,7 +388,7 @@ export class TicketComponent implements OnInit {
     if(this.ticket != undefined) {
       let ticketPagado = new TicketCabeceraCanceladoDTO(this.ticket.id);
       ticketPagado.idEstadoDocumento = new ObjectIDDTO('11');
-      this.ticket = await this.mainSalesService.changeStateTicket(ticketPagado);
+      //this.ticket = await this.mainSalesService.changeStateTicket(ticketPagado);
       this.openPrintDialog();
       //this.router.navigate(['/tables']).then(_ => console.log('Ticket canceled finish'));
     }
@@ -395,14 +401,25 @@ export class TicketComponent implements OnInit {
         data: {
           ticket: this.ticket,
           detalles: this.detalles,
-          pagos: this.pagos
+          pagos: this.pagos,
+          cambio: this.cambio,
+          totalPagado: this.totalPagado
         },
       });
 
       dialogRef.afterClosed().subscribe(result => {
         console.log('Print dialog was closed :: ' + JSON.stringify(result));
-        //this.router.navigate(['/tables']).then(_ => console.log('Ticket canceled finish'));
+        this.closeTicket();
       });
+    }
+  }
+
+  private async closeTicket() {
+    if(this.ticket != undefined) {
+      let ticketPagado = new TicketCabeceraCanceladoDTO(this.ticket.id);
+      ticketPagado.idEstadoDocumento = new ObjectIDDTO('11');
+      this.ticket = await this.mainSalesService.changeStateTicket(ticketPagado);
+      this.router.navigate(['/tables']).then(_ => console.log('Ticket canceled finish'));
     }
   }
 
@@ -417,7 +434,7 @@ export class TicketComponent implements OnInit {
 
   public async sendTable() {
     if(this.ticket != undefined) {
-      this.ticket = await this.mainSalesService.updateTicketCabecera(this.ticket);
+      //this.ticket = await this.mainSalesService.updateTicketCabecera(this.ticket);
       this.router.navigate(['/tables']).then(_ => console.log('Ticket canceled finish'));
     }
   }

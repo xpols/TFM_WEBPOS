@@ -43,6 +43,10 @@ export class TicketCabeceraDTO {
   numeroRepeticionesTicket: number;
   idDominio: ObjectIDDTO;
   idEstadoDocumento: ObjectIDDTO | undefined;
+  /*lineasDescuentos: any[] = [];
+  lineasDetalle: any[] = [];
+  lineasImpuestos: any[] = [];
+  lineasVencimeintos: any[] = [];*/
 
 
   constructor(

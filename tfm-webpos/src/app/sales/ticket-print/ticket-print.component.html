@@ -1,14 +1,124 @@
 <div mat-dialog-content class="print-container">
-    <p>Print</p>
     <div id="ticket-print-container">
         <div class="ticket-cabecera">
-            {{'Num. ticket' | translate}}: {{data.ticket?.codigo}}
-            {{'Fecha/Hora' | translate}}: {{data.ticket?.fechaHora}}
+            <div class="ticket-cabecera-empresa">
+                <pre>{{configuracionTextos?.cabeceraTicket_1}}</pre>
+            </div>
+            <div class="ticket-cabecera-info d-flex">
+                <div class="ticket-cabecera-info-num-ticket width-45">
+                    <div class="ticket-cabecera-info-label">
+                        <pre>{{configuracionTextos?.numeroTicket_1}}</pre>
+                    </div>
+                    <div class="ticket-cabecera-info-label-data">
+                        <pre>{{data.ticket?.codigo}}</pre>
+                    </div>
+                </div>
+                <div class="ticket-cabecera-info-fecha width-45">
+                    <div class="ticket-cabecera-info-label">
+                        <pre>{{configuracionTextos?.fechaTicket_1}}</pre>
+                    </div>
+                    <div class="ticket-cabecera-info-label-data">
+                        <pre>{{fechaTicket}}</pre>
+                    </div>
+                </div>
+                <div class="ticket-cabecera-info-hora width-10">
+                    <div class="ticket-cabecera-info-label">
+                        <pre>{{configuracionTextos?.horaTicket_1}}</pre>
+                    </div>
+                    <div class="ticket-cabecera-info-label-data">
+                        <pre>{{horaTicket}}</pre>
+                    </div>
+                </div>
+            </div>
+            <div class="ticket-products">
+                <div class="ticket-products-headers d-flex">
+                    <div class="ticket-products-headers width-10">
+                        <pre>{{configuracionTextos?.cantidadCuerpoTicket_1}}</pre>
+                    </div>
+                    <div class="ticket-products-headers width-50">
+                        <pre>{{configuracionTextos?.descripcionCuerpoTicket_1}}</pre>
+                    </div>
+                    <div class="ticket-products-headers width-20 t-algin-end">
+                        <pre>{{configuracionTextos?.precioCuerpoTicket_1}}</pre>
+                    </div>
+                    <div class="ticket-products-headers width-20 t-algin-end">
+                        <pre>{{configuracionTextos?.importeCuerpoTicket_1}}</pre>
+                    </div>
+                </div>
+                <div class="ticket-products-info">
+                    <div class="d-flex" *ngFor="let detalle of data.detalles">
+                        <div class="width-10 t-algin-end pad-r-025">
+                            <pre>{{detalle.cantidad}}</pre>
+                        </div>
+                        <div class="width-50">
+                            <pre>{{detalle.idProducto_nombre.descripcion}}</pre>
+                        </div>
+                        <div class="width-20 t-algin-end">
+                            <pre>{{detalle.precioUnitarioConImpuestos | number:'1.2-2'}}€</pre>
+                        </div>
+                        <div class="width-20 t-algin-end">
+                            <pre>{{detalle.totalConImpuestos | number:'1.2-2'}}€</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ticket-payments">
+                <div class="d-flex">
+                    <div class="width-50">
+                        <pre>{{'A COBRAR' | translate}}</pre>
+                    </div>
+                    <div class="width-50 t-algin-end">
+                        <pre>{{data.ticket?.totalConImpuestos| number:'1.2-2'}} €</pre>
+                    </div>
+                </div>
+                <div class="d-flex" *ngFor="let pago of data.pagos">
+                    <div class="width-50">
+                        <pre>{{pago.idFormaPago_descripcion.descripcion}}</pre>
+                    </div>
+                    <div class="width-50 t-algin-end">
+                        <pre>{{pago.importe | number:'1.2-2'}} €</pre>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="width-50">
+                        <pre>{{'CAMBIO' | translate}}</pre>
+                    </div>
+                    <div class="width-50 t-algin-end">
+                        <pre>{{data.cambio | number:'1.2-2'}} €</pre>
+                    </div>
+                </div>
+                <div class="total-pagado d-flex">
+                    <div class="width-50">
+                        <pre>{{configuracionTextos?.totalTicket_1}}</pre>
+                    </div>
+                    <div class="width-50 t-algin-end">
+                        <pre>{{data.totalPagado| number:'1.2-2'}} €</pre>
+                    </div>
+                </div>
+            </div>
+            <div class="ticket-footer">
+                <pre>{{configuracionTextos?.pieTicket_1}}</pre>
+            </div>
         </div>
     </div>
     <div align="center" class="actions-container">
-        <button class="button-action" mat-flat-button color="primary" (click)="sendMail()">{{'Enviar e-ticket' |
-            translate}}</button>
-        <button class="button-action" mat-flat-button color="primary">{{'Imprimir ticket' | translate}}</button>
+        <div class="actions-send-mail d-flex">
+            <div class="width-60 email-row">
+                <input type="email" placeholder="Email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}"
+                    [(ngModel)]="emailValue" (input)="onEmailChange($event)" (blur)="onEmailBlur()">
+            </div>
+            <div class="width-40">
+                <button class="button-action" [disabled]="sendMailActive" mat-flat-button color="primary"
+                    (click)="sendMail()">
+                    {{'Enviar e-ticket' | translate}}
+                </button>
+            </div>
+
+        </div>
+        <div class="print-row">
+            <button class="button-action" mat-flat-button color="primary" (click)="onNoClick()">{{'Imprimir ticket' |
+                translate}}</button>
+        </div>
+
     </div>
 </div>

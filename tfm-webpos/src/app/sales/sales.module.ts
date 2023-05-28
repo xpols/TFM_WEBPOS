@@ -18,6 +18,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PaymentComponent } from './payment/payment.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TicketPrintComponent } from './ticket-print/ticket-print.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 
 
@@ -45,7 +46,8 @@ import { TicketPrintComponent } from './ticket-print/ticket-print.component';
     FormsModule, 
     ReactiveFormsModule,
     TranslateModule,
-    MatDialogModule
+    MatDialogModule,
+    MatFormFieldModule
   ]
 })
 export class SalesModule { }

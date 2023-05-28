@@ -2,7 +2,7 @@
     <div class="left-column">
         <div class="payment-total payment-total-box">
             <div class="label-total">{{'Total a pagar' | translate}}</div>
-            <div class="qty-total">{{data.total}}€</div>
+            <div class="qty-total">{{data.total | number:'1.2-2'}}€</div>
         </div>
         <div class="payment-methods">
             <div *ngFor="let familiaFormaPago of familiasConvertidas" class="payment-method">

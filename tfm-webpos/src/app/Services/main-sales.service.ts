@@ -14,6 +14,10 @@ import { TicketDetalleUpdateDTO } from '../models/ticketDetalleUpdate.dto';
 import { FormasPagoDTO } from '../models/formasPago.dto';
 import { TicketCabeceraCanceladoDTO } from '../models/ticketCabeceraCancel.dto';
 import { TicketPagoDTO } from '../models/ticketPago.dto';
+import { ConfigTextosAgrupacionDTO } from '../models/configTextosAgrupacion.dto';
+import { ConfigTextosDTO } from '../models/configTextos.dto';
+import { PrintTicketDTO } from '../models/printTicket.dto';
+import { EleccionesProductoDTO } from '../models/eleccionesProducto.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -190,7 +194,7 @@ export class MainSalesService {
       .toPromise();
   }
 
-  getConfiguracionTextos(codigoTienda: string | null): Promise<UbicacionesDTO[]|undefined> {
+  getConfiguracionesTextos(codigoTienda: string | null): Promise<ConfigTextosAgrupacionDTO[]|undefined> {
     let params = new HttpParams();
     params = params.append('filters', '[{"field":"idTipoAgrupacion.codigo","type":"codigo","op":"equals","listValues":[{"value":"001"}]}]');
     params = params.append('filtersHijos', '[{"field":"tiendas.codigo","type":"codigo","op":"equals","listValues":[{"value":"'+codigoTienda+'"}]}]');
@@ -199,7 +203,43 @@ export class MainSalesService {
     params = params.append('max', 1000);
     params = params.append('offset', 0);
     return this.http
-      .get<UbicacionesDTO[]>(APIConstants.API_URL + 'confTPVAgrupacionesLocales', {params: params})
+      .get<ConfigTextosAgrupacionDTO[]>(APIConstants.API_URL + 'confTPVAgrupacionesLocales', {params: params})
+      .toPromise();
+  }
+
+  getConfiguracionTextos(idConfigTextos: string | null): Promise<ConfigTextosDTO[]|undefined> {
+    let params = new HttpParams();
+    params = params.append('max', 1000);
+    params = params.append('offset', 0);
+    return this.http
+      .get<ConfigTextosDTO[]>(APIConstants.API_URL + 'configTicket/'+idConfigTextos, {params: params})
+      .toPromise();
+  }
+
+  sendTicketEmail(printTicket:PrintTicketDTO): Promise<any|undefined> {
+    let params = new HttpParams();
+    params = params.append('max', 1000);
+    params = params.append('offset', 0);
+    return this.http.post<PrintTicketDTO>(APIConstants.API_URL + 'pedidosVentaCabeceras/sendMailTicket', printTicket).toPromise();
+  }
+
+  getEleccionesProducto(idProducto: string | null): Promise<EleccionesProductoDTO[]|undefined> {
+    let params = new HttpParams();
+    params = params.append('filtrosComplementarios', '[{"field":"idProducto.id","type":"numeric","op":"equals","listValues":[{"value":'+idProducto+'}]}]');
+    params = params.append('max', 1000);
+    params = params.append('offset', 0);
+    return this.http
+      .get<EleccionesProductoDTO[]>(APIConstants.API_URL + 'eleccionesProducto', {params: params})
+      .toPromise();
+  }
+
+  getSeleccionesProducto(idsElecciones: string | null): Promise<EleccionesProductoDTO[]|undefined> {
+    let params = new HttpParams();
+    params = params.append('filtrosComplementarios', '[{"field":"idEleccionProducto.id","type":"numeric","op":"equals","listValues":['+idsElecciones+']}]');
+    params = params.append('max', 1000);
+    params = params.append('offset', 0);
+    return this.http
+      .get<EleccionesProductoDTO[]>(APIConstants.API_URL + 'selecciones', {params: params})
       .toPromise();
   }
   

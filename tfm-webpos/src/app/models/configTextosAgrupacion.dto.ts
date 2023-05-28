@@ -1,12 +1,13 @@
+import { ConfigTextosDTO } from "./configTextos.dto";
 import { ObjectIDDTO } from "./objectID.dto";
 
 export class ConfigTextosAgrupacionDTO {
     id: string;
-    idConfigTicket: ObjectIDDTO;
+    idConfigTicket: ConfigTextosDTO;
 
     constructor(
         id: string,
-        idConfigTicket: ObjectIDDTO,
+        idConfigTicket: ConfigTextosDTO,
       ) {
         this.id = id;
         this.idConfigTicket = idConfigTicket;

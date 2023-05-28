@@ -7,4 +7,6 @@ export interface DataPrint {
     ticket: TicketCabeceraDTO | undefined;
     detalles: TicketDetalleDTO[] | undefined;
     pagos: TicketPagoDTO[] | undefined;
+    totalPagado: number;
+    cambio: number;
 }

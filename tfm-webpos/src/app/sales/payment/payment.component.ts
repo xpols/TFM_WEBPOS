@@ -206,7 +206,7 @@ export class PaymentComponent implements OnInit {
           console.log("forma pago selected :: " + familiaFormaPago.formasPagoSelected);
           let formaPago = new TicketPagoDTO('',
                                             Number(familiaFormaPago.id),
-                                            new ObjectComboDTO('','',''), //Forma de pago
+                                            new ObjectComboDTO(familiaFormaPago.id,'',familiaFormaPago.descripcion), //Forma de pago
                                             new ObjectComboDTO('','',''), //Divisa
                                             Number(familiaFormaPago.importe),
                                             new Date().toLocaleDateString('en-GB'), //fechaVencimiento
@@ -223,6 +223,7 @@ export class PaymentComponent implements OnInit {
         }
       }
     }
+    this.data.cambio = this.cambio;
     this.dialogRef.close(this.data);
   }
 
