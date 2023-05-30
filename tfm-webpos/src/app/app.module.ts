@@ -25,6 +25,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     LayoutModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatSortModule,
     TranslateModule.forRoot({
       defaultLanguage: 'es',
       loader: {
