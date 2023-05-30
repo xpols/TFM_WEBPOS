@@ -1,0 +1,32 @@
+@import "../../app.component.scss";
+
+.container-ticket-list {
+    margin: 2rem;
+
+    .datepicker-input {
+        margin-right: 2rem;
+    }
+
+    .button-row {
+        button {
+            background-color: $secondary-color;
+            
+            p {
+                display: inline;
+            }
+        }
+    }
+
+    .table-ticket-list {
+        table {
+            width: 100%;
+        }
+    }
+
+    .table-empty-ticket-list {
+        p {
+            text-align: center;
+            color: $red;
+        }
+    }
+}

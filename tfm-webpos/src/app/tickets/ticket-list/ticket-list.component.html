@@ -1,0 +1,53 @@
+<div class="container-ticket-list">
+    <h3>{{'Listado de tickets' | translate}}</h3>
+    <div class="botonera-ticket-list d-flex ">
+        <div class="datepicker-input button-row">
+            <mat-form-field>
+                <mat-label>Seleccionar fecha</mat-label>
+                <input matInput [matDatepicker]="datePicker" [formControl]="selectedDateControl"
+                    placeholder="Seleccionar fecha" readonly="readonly">
+                <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+                <mat-datepicker #datePicker></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div class="search-button button-row">
+            <button mat-button type="submit" color="primary" [disabled]="!selectedDateControl.valid" mat-flat-button
+                (click)="loadTickets()">
+                <mat-icon>search</mat-icon>
+                <p id="login-p">{{'Buscar' | translate}}</p>
+            </button>
+        </div>
+    </div>
+    <div class="table-ticket-list" *ngIf="dataSource.data.length > 0">
+        <table mat-table [dataSource]="dataSource" matSort>
+            <!-- Columna codigo -->
+            <ng-container matColumnDef="codigo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Codigo</th>
+                <td mat-cell *matCellDef="let element">{{ element.codigo }}</td>
+            </ng-container>
+
+            <!-- Columna fechaHora -->
+            <ng-container matColumnDef="fechaHora">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Hora</th>
+                <td mat-cell *matCellDef="let element">{{ element.fechaHora }}</td>
+            </ng-container>
+
+            <!-- Columna totalConImpuestos -->
+            <ng-container matColumnDef="totalConImpuestos">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Total CI</th>
+                <td mat-cell *matCellDef="let element">{{ element.totalConImpuestos }}</td>
+            </ng-container>
+
+            <!-- Encabezados de columna -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+            <!-- Filas de datos -->
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 50]" [pageSize]="10"
+            showFirstLastButtons></mat-paginator>
+    </div>
+    <div class="table-empty-ticket-list" *ngIf="dataSource.data.length == 0">
+        <p>{{'No hay tickets para la fecha seleccionada' | translate}}</p>
+    </div>
+</div>
