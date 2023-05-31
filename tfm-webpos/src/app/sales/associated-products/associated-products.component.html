@@ -1,0 +1,49 @@
+<div align="center" class="paginator d-flex">
+    <button mat-stroked-button class="button-action button-minus mat-elevation-z0 width-20"
+        (click)="updatePage(false)"><mat-icon>arrow_back_ios</mat-icon></button>
+    <div class="width-60">
+        <div class="botonera-title d-flex">
+            <p>{{gruposCurrent[0].idProducto_nombre.descripcion}}</p>
+            <button mat-mini-fab class="mat-elevation-z0 button-qty button-minus" (click)="minusQty()">-</button>
+            <p>{{qty}}</p>
+            <button mat-mini-fab class="mat-elevation-z0 button-qty button-plus" (click)="plusQty()">+</button>
+        </div>
+    </div>
+    <button mat-stroked-button class="button-action button-minus mat-elevation-z0 width-20"
+        (click)="updatePage(true)"><mat-icon>arrow_forward_ios</mat-icon></button>
+</div>
+<div class="container-grupos">
+    <div class="grupos-mostrar d-flex">
+        <mat-card class="grupo-mostrar mat-elevation-z8" *ngFor="let grupo of gruposCurrent">
+            <mat-card-header
+                [ngClass]="{'grupo-completo': grupo.grupoCompleto, 'grupo-incompleto': !grupo.grupoCompleto}">
+                <mat-card-title class="grupo-title">
+                    {{grupo.idNombreEleccionProducto_nombre.descripcion}}
+                </mat-card-title>
+                <mat-card-subtitle *ngIf="grupo.minProdAElegir > 0 && grupo.minProdAElegir != grupo.maxProdAElegir">
+                    {{grupo.idNombreEleccionProducto_nombre.descripcion}}>
+                    {{'Seleccione entre' | translate}}{{grupo.minProdAElegir}} {{'y' | translate}}
+                    {{grupo.maxProdAElegir}}</mat-card-subtitle>
+                <mat-card-subtitle *ngIf="grupo.minProdAElegir == 0">{{'Seleccione màximo ' |
+                    translate}}{{grupo.maxProdAElegir}}{{'(Opcional)' | translate}}</mat-card-subtitle>
+                <mat-card-subtitle *ngIf="grupo.minProdAElegir > 0 && grupo.minProdAElegir == grupo.maxProdAElegir">
+                    {{'Seleccione' | translate}} {{grupo.minProdAElegir}}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="grupo-selecciones">
+                    <div *ngFor="let selecciones of grupo.selecciones">
+                        <p>
+                            -{{selecciones.idProductoSeleccionado_nombre.descripcion}}
+                        </p>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+</div>
+<div align="center" class="actions-container">
+    <button mat-fab class="button-action button-minus" (click)="onNoClick()"><mat-icon>close</mat-icon></button>
+    <button mat-fab class="button-action button-plus" (click)="finishSelection()"
+        cdkFocusInitial><mat-icon>check</mat-icon></button>
+</div>

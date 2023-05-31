@@ -7,6 +7,7 @@ export class SeleccionesProductoDTO {
     activaConfiguracion: boolean;
     esSuplemento: boolean;
     orden: number;
+    cantidadSeleccionada: number = 0;
   
     constructor(
         id: string,

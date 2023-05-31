@@ -18,6 +18,7 @@ import { ConfigTextosAgrupacionDTO } from '../models/configTextosAgrupacion.dto'
 import { ConfigTextosDTO } from '../models/configTextos.dto';
 import { PrintTicketDTO } from '../models/printTicket.dto';
 import { EleccionesProductoDTO } from '../models/eleccionesProducto.dto';
+import { SeleccionesProductoDTO } from '../models/seleccionesProducto.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -233,13 +234,13 @@ export class MainSalesService {
       .toPromise();
   }
 
-  getSeleccionesProducto(idsElecciones: string | null): Promise<EleccionesProductoDTO[]|undefined> {
+  getSeleccionesProducto(idsElecciones: string | null): Promise<SeleccionesProductoDTO[]|undefined> {
     let params = new HttpParams();
     params = params.append('filtrosComplementarios', '[{"field":"idEleccionProducto.id","type":"numeric","op":"equals","listValues":['+idsElecciones+']}]');
     params = params.append('max', 1000);
     params = params.append('offset', 0);
     return this.http
-      .get<EleccionesProductoDTO[]>(APIConstants.API_URL + 'selecciones', {params: params})
+      .get<SeleccionesProductoDTO[]>(APIConstants.API_URL + 'selecciones', {params: params})
       .toPromise();
   }
   

@@ -1,4 +1,5 @@
 import { ObjectComboDTO } from "./objectCombo.dto";
+import { SeleccionesProductoDTO } from "./seleccionesProducto.dto";
 
 export class EleccionesProductoDTO {
     id: string;
@@ -11,6 +12,9 @@ export class EleccionesProductoDTO {
     sonFijos: boolean;
     sonIngredientes: boolean;
     sonModificadores: boolean;
+    selecciones: SeleccionesProductoDTO[] = [];
+    cantidadSeleccionada: number = 0;
+    grupoCompleto: boolean = false;
   
     constructor(
         id: string,

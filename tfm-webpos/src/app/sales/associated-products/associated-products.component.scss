@@ -1,0 +1,54 @@
+@import "../../app.component.scss";
+
+.paginator {
+    margin-bottom: 1rem;
+
+    .botonera-title {
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        font-size: 1.25rem;
+
+        p {
+            margin: 0 1rem;
+        }
+
+        .button-minus {
+            background-color: $red;
+        }
+
+        .button-plus {
+            background-color: $secondary-color;
+        }
+    }
+}
+
+.container-grupos {
+    min-width: 75vw;
+    min-height: 75vh;
+
+    .grupo-mostrar {
+        width: 25%;
+        //margin-left: 1%;
+        min-height: 60vh;
+
+        .grupo-completo {
+            color: $secondary-color;
+
+            mat-card-subtitle {
+                color: $secondary-color;
+            }
+        }
+
+        .grupo-incompleto{
+            color: $red;
+            mat-card-subtitle {
+                color: $red;
+            }
+        }
+    }
+
+    .grupo-mostrar:nth-child(1), .grupo-mostrar:nth-child(2), .grupo-mostrar:nth-child(3) {
+        margin-right: 1%;
+    }
+}

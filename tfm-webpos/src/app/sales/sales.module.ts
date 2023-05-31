@@ -19,6 +19,7 @@ import { PaymentComponent } from './payment/payment.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TicketPrintComponent } from './ticket-print/ticket-print.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { AssociatedProductsComponent } from './associated-products/associated-products.component';
 
 
 
@@ -32,7 +33,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     TicketComponent,
     TicketItemsComponent,
     PaymentComponent,
-    TicketPrintComponent
+    TicketPrintComponent,
+    AssociatedProductsComponent
   ],
   imports: [
     CommonModule,

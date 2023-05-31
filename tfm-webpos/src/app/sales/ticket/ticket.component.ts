@@ -14,6 +14,8 @@ import { Router } from '@angular/router';
 import { SharedService } from 'src/app/Services/shared.service';
 import { TicketPagoDTO } from 'src/app/models/ticketPago.dto';
 import { TicketPrintComponent } from '../ticket-print/ticket-print.component';
+import { EleccionesProductoDTO } from 'src/app/models/eleccionesProducto.dto';
+import { AssociatedProductsComponent } from '../associated-products/associated-products.component';
 
 
 @Component({
@@ -35,8 +37,9 @@ export class TicketComponent implements OnInit {
   totalPagado: number = 0;
   cambio: number = 0;
   
-
   canalVenta: string = 'Terraza'
+
+  grupos: EleccionesProductoDTO[] = [];
 
   constructor(public dialog: MatDialog, private mainSalesService: MainSalesService, private router: Router, private sharedService: SharedService) { 
     this.ticket = new TicketCabeceraDTO(
@@ -204,22 +207,34 @@ export class TicketComponent implements OnInit {
 
   
 
-  private addProduct(productPrice: productPriceDTO) {
-    this.isLoading.emit(true);
+  private async addProduct(productPrice: productPriceDTO) {
     let idProductReal = productPrice.idProduct?.toString();//idProduct.split("_")[0]
     console.log("AÑADIR PRODUCTO :: " + idProductReal);
-    let encontrado = this.detalles?.find( detalle => detalle.idProducto_nombre.id == idProductReal);
-    if(encontrado != undefined) {
-      this.detalles = this.detalles?.map((detalle) => {
-        if(detalle.idProducto_nombre.id == idProductReal) {
-          detalle.cantidad++;
-          this.updateDetalle(detalle, productPrice);
+    if(idProductReal != undefined) {
+      await this.isProductWithGroups(idProductReal);
+      console.log("Productos con associados recuperados");
+      if(this.grupos.length > 0) {
+        console.log("GRUPOS > 0");
+        this.openAssociatedProductDialog();
+      } else {
+        this.isLoading.emit(true);
+        console.log("GRUPOS = 0");
+        let encontrado = this.detalles?.find( detalle => detalle.idProducto_nombre.id == idProductReal);
+        if(encontrado != undefined) {
+          this.detalles = this.detalles?.map((detalle) => {
+            if(detalle.idProducto_nombre.id == idProductReal) {
+              detalle.cantidad++;
+              this.updateDetalle(detalle, productPrice);
+            }
+            return detalle;
+          });
+        } else {
+          console.log("DETALLE NO ENCONTRADO :: CREAMOS NUEVO DETALLE");
+          this.createDetalle(productPrice);
         }
-        return detalle;
-      });
-    } else {
-      console.log("DETALLE NO ENCONTRADO :: CREAMOS NUEVO DETALLE");
-      this.createDetalle(productPrice);
+        this.isLoading.emit(false);
+      }
+      
     }
     this.isLoading.emit(false);
   }
@@ -269,7 +284,7 @@ export class TicketComponent implements OnInit {
       Number(productPrice.precio), //totalConImpuestos: number,
       0
     );
-    
+
     const currentDate = new Date();
     const currentTime = currentDate.toLocaleTimeString('en-US', { hour12: false });
     newDetalle.fechaHoraSeleccionado += ' ' + currentTime;
@@ -290,6 +305,75 @@ export class TicketComponent implements OnInit {
       }
       this.getTotales(this.ticket.id);
     }
+  }
+
+  private async isProductWithGroups(idProducto: string) {
+    let elecciones = await this.mainSalesService.getEleccionesProducto(idProducto);
+    console.log("ELECCIONES :: " + JSON.stringify(elecciones));
+    elecciones?.sort(function (a, b) {
+      if (a.orden < b.orden)
+          return -1;
+      else if (a.orden > b.orden)
+          return 1;
+      else 
+          return 0;
+    });
+    if(elecciones != undefined) {
+      const idsElecciones = elecciones.reduce((acumulador, eleccion, index) => {
+        if (index === 0) {
+          return eleccion.id;
+        } else {
+          return acumulador + ', ' + eleccion.id;
+        }
+      }, '');
+      let selecciones = await this.mainSalesService.getSeleccionesProducto(idsElecciones);
+      console.log("SELECCIONES :: " + JSON.stringify(selecciones));
+
+      let existenSelecciones = false;
+      elecciones = elecciones?.map((eleccion) => {
+        let seleccionesGrupo = selecciones?.filter(seleccion => seleccion.idEleccionProducto_idNombreEleccionProducto_nombre.toString() === eleccion.id.toString());
+        if(seleccionesGrupo != undefined) {
+          seleccionesGrupo?.sort(function (a, b) {
+            if (a.orden < b.orden)
+                return -1;
+            else if (a.orden > b.orden)
+                return 1;
+            else 
+                return 0;
+          });
+          eleccion.selecciones = seleccionesGrupo;
+          if(eleccion.minProdAElegir == 0) {
+            eleccion.grupoCompleto = true;
+          }
+          if(seleccionesGrupo?.length > 0) {
+            existenSelecciones = true;
+          }
+        }
+        
+        return eleccion;
+      });
+
+      console.log("ELECCIONES CON PRODUCTOS :: " + JSON.stringify(elecciones));
+
+      this.grupos = elecciones;
+      if(!existenSelecciones) {
+        this.grupos = [];
+      }
+    }
+
+  }
+
+  openAssociatedProductDialog(): void {
+    console.log("Open associated product dialog :: " + this.grupos);
+    const dialogRef = this.dialog.open(AssociatedProductsComponent, {
+      data: {
+          grupos: this.grupos
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('associated product dialog was closed :: ' + JSON.stringify(result));
+    });
   }
 
   private async cancelDetalle(detalle: TicketDetalleDTO, productPrice: productPriceDTO) {
