@@ -1,7 +1,34 @@
 @import "../../app.component.scss";
 
+::ng-deep .mat-spinner-green circle{
+    stroke: $secondary-color;
+}
+
+.align-right {
+    text-align: right;
+    padding-right: 1rem;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.mat-sort-header-container {
+    justify-content: center;
+}
+
+.header-align th {
+    text-align: center; /* Alineación centrada */
+}
+
+
+
 .container-ticket-list {
     margin: 2rem;
+
+    mat-datepicker-toggle {
+        color: $secondary-color; /* Cambia el color del texto a tu elección */
+    }
 
     .datepicker-input {
         margin-right: 2rem;
@@ -18,12 +45,49 @@
     }
 
     .table-ticket-list {
+        min-height: 75vh;
+
         table {
             width: 100%;
         }
+
+        .ticket-table .mat-row:nth-child(even) {
+            background-color: $grey; /* Color gris o el que desees */
+        }
+
+        .ticket-table .mat-row:hover {
+            background-color: $secondary-color-trans; /* Color de fondo al hacer hover */
+            cursor: pointer; /* Cambia el cursor al estilo de puntero */
+        }
+
+        .loading-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+          }
+          
+          .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 75vh;
+            background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          
+          .loading-spinner {
+            position: relative;
+            z-index: 2;
+          }
     }
 
     .table-empty-ticket-list {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
         p {
             text-align: center;
             color: $red;

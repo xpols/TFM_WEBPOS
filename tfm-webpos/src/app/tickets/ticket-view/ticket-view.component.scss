@@ -1,0 +1,28 @@
+@import "../../app.component.scss";
+
+.label {
+    font-weight: bold;
+}
+
+.block-divider {
+    margin-bottom: 1rem;
+}
+
+.ticket-cabecera {
+    min-width: 450px;
+}
+
+table {
+    width: 100%;
+}
+
+.action-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem 0 0;
+
+    button {
+        background-color: $red;
+    }
+}

@@ -8,6 +8,9 @@ import { TicketCabeceraDTO } from 'src/app/models/ticketCabecera.dto';
 import { DateAdapter } from '@angular/material/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
+import { TicketViewComponent } from '../ticket-view/ticket-view.component';
+import { SharedService } from 'src/app/Services/shared.service';
 
 
 @Component({
@@ -26,32 +29,19 @@ export class TicketListComponent implements OnInit {
   @ViewChild(MatDatepicker) datePicker!: MatDatepicker<Date>;
   selectedDateControl: FormControl = new FormControl();
   hoy: Date;
+  isLoadingResults = false;
 
-
-  length = 50;
-  pageSize = 5;
-  pageIndex = 0;
-  pageSizeOptions = [5, 10, 25];
-
-  hidePageSize = false;
-  showPageSizeOptions = true;
-  showFirstLastButtons = true;
-  disabled = false;
-
-  pageEvent!: PageEvent;
-
-  constructor(private ticketsService: TicketsService, private dateAdapter: DateAdapter<Date>) { 
+  constructor(private ticketsService: TicketsService, private dateAdapter: DateAdapter<Date>, public dialog: MatDialog, private sharedService: SharedService) { 
+    this.sharedService.setTableName(undefined);
+    this.sharedService.setNumDiners(0);
     this.dateAdapter.setLocale('es-ES');
     this.hoy = new Date();
     this.dataSource = new MatTableDataSource<TicketCabeceraDTO>([]);
-    //this.dataSource.paginator = this.paginator;
   }
 
   ngAfterViewInit() {
     this.dateAdapter.setLocale('es'); // Establece el idioma a español
     this.datePicker.select(this.hoy); // Autoselecciona el día de hoy
-    
-    //this.dataSource.paginator = this.paginator;
     this.loadTickets();
   }
 
@@ -74,6 +64,7 @@ export class TicketListComponent implements OnInit {
   }
 
   async loadTickets(): Promise<void> {
+    this.isLoadingResults = true;
     let errorResponse: any;
     try {
       const selectedDate: Date | null = this.datePicker?.startAt;
@@ -85,54 +76,32 @@ export class TicketListComponent implements OnInit {
         this.tickets = await this.ticketsService.getTicket(idTienda, idTPV, this.formatDate(selectedDate));
         if(this.tickets != null) {
           this.tickets?.shift();
-          console.log("this.tickets?.length :: " + this.tickets?.length);
-          this.length = this.tickets?.length;
           this.dataSource = new MatTableDataSource(this.tickets);
           this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
         }
+        this.isLoadingResults = false;
       }
     } catch (error: any) {
       errorResponse = error.error;
+      this.isLoadingResults = false;
     }
   }
 
-  /*handlePageEvent(e: PageEvent) {
-    console.log("HANDLE PAGE EVENT");
-    console.log("HANDLE PAGE EVENT :: e.length " + e.length);
-    console.log("HANDLE PAGE EVENT :: e.pageSize " + e.pageSize);
-    console.log("HANDLE PAGE EVENT :: e.pageIndex " + e.pageIndex);
-    this.pageEvent = e;
-    this.length = e.length;
-    this.pageSize = e.pageSize;
-    this.pageIndex = e.pageIndex;
-    this.setPageData();
-  }*/
+  ticketClick(row: any) {
+    console.log("Fila seleccionada:", row);
+    // Realizar acciones adicionales con los datos de la fila seleccionada
+    if(row != undefined) {
+      const dialogRef = this.dialog.open(TicketViewComponent, {
+        data: row,
+      });
 
-  /*setPageSizeOptions(setPageSizeOptionsInput: string) {
-    if (setPageSizeOptionsInput) {
-      this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('Ticket view dialog was closed :: ' + JSON.stringify(result));
+      });
     }
-  }*/
+  }
 
-  /*setPageData() {
-    let from: number = this.pageIndex * this.pageSize;
-    let to: number = from + this.pageSize;
-    console.log("FROM :: " + from);
-    console.log("TO :: " + to);
-    if(this.tickets != null) {
-      let ticketsPreMostrar = this.tickets?.slice();
-      let ticketsMostrar = this.tickets?.slice();
-      let ticketsPosMostrar = this.tickets?.slice();
-      console.log("SLICE  PRE :: " + ticketsPreMostrar.slice(0, from));
-      console.log("SLICE  MOSTRAR :: " + ticketsMostrar.slice(from, to));
-      console.log("SLICE  POST :: " + ticketsPosMostrar.slice(to, ticketsPosMostrar.length-1));
-      let newDatasource = ticketsMostrar.concat(ticketsPosMostrar, ticketsPreMostrar);
-      this.length = this.tickets?.length;
-      this.dataSource = new MatTableDataSource(newDatasource);
-      this.dataSource.paginator = this.paginator;
-    }
-
-  }*/
 
   formatDate(date: Date) {
     const day = String(date.getDate()).padStart(2, '0');

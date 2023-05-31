@@ -23,7 +23,7 @@ export class TicketCabeceraDTO {
   totalSinImpuestos: number;
   mesa: string;
   horaInicioCreacionDocumento: Date | string;
-  horaFinCreacionDocumento: Date | string;
+  horaFinCreacionDocumento: Date | string | undefined;
   importeCambioNoDevuelto: number;
   importeCambioDevuelto: number;
   esDefintivo: boolean;

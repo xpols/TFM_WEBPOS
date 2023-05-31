@@ -18,74 +18,83 @@
             </button>
         </div>
     </div>
-    <div class="table-ticket-list" *ngIf="dataSource.data.length > 0">
-        <table mat-table class="mat-elevation-z8" [dataSource]="dataSource" #tickettable matSort>
-            <!-- Encabezados de columna -->
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <div class="table-ticket-list">
+        <div class="loading-container" *ngIf="isLoadingResults">
+            <div class="loading-overlay">
+                <mat-progress-spinner class="loading-spinner mat-spinner-green"
+                    mode="indeterminate"></mat-progress-spinner>
+            </div>
+        </div>
+        <div class="table-empty-ticket-list" *ngIf="dataSource.data.length == 0">
+            <p>{{'No hay tickets para la fecha seleccionada' | translate}}</p>
+        </div>
+        <div>
+            <table mat-table class="mat-elevation-z8 ticket-table header-align" [dataSource]="dataSource" #tickettable
+                matSort>
+                <!-- Encabezados de columna -->
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
 
-            <!-- Filas de datos -->
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            <!-- Columna codigo -->
-            <ng-container matColumnDef="codigo">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Codigo</th>
-                <td mat-cell *matCellDef="let element">{{ element.codigo }}</td>
-            </ng-container>
+                <!-- Filas de datos -->
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="ticketClick(row)"></tr>
+                <!-- Columna codigo -->
+                <ng-container matColumnDef="codigo">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="align-center">Codigo</th>
+                    <td mat-cell *matCellDef="let element">{{ element.codigo }}</td>
+                </ng-container>
 
-            <!-- Columna fechaHora -->
-            <ng-container matColumnDef="fechaHora">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Hora</th>
-                <td mat-cell *matCellDef="let element">{{ element.fechaHora }}</td>
-            </ng-container>
+                <!-- Columna fechaHora -->
+                <ng-container matColumnDef="fechaHora">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="align-center">Fecha Hora</th>
+                    <td mat-cell *matCellDef="let element" class="align-center">{{ element.fechaHora }}</td>
+                </ng-container>
 
-            <!-- Columna fechaJornada -->
-            <ng-container matColumnDef="fechaJornada">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Jornada</th>
-                <td mat-cell *matCellDef="let element">{{ element.fechaJornada }}</td>
-            </ng-container>
+                <!-- Columna fechaJornada -->
+                <ng-container matColumnDef="fechaJornada">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="align-center">Fecha Jornada</th>
+                    <td mat-cell *matCellDef="let element" class="align-center">{{ element.fechaJornada }}</td>
+                </ng-container>
 
-            <!-- Columna idCanalVenta_descripcion -->
-            <ng-container matColumnDef="idCanalVenta_descripcion">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Canal Venta</th>
-                <td mat-cell *matCellDef="let element">{{ element.idCanalVenta_descripcion.descripcion }}</td>
-            </ng-container>
+                <!-- Columna idCanalVenta_descripcion -->
+                <ng-container matColumnDef="idCanalVenta_descripcion">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="align-center">Canal Venta</th>
+                    <td mat-cell *matCellDef="let element">{{ element.idCanalVenta_descripcion.descripcion }}</td>
+                </ng-container>
 
-            <!-- Columna totalBruto -->
-            <ng-container matColumnDef="totalBruto">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Bruto</th>
-                <td mat-cell *matCellDef="let element">{{ element.totalBruto |
-                    number:'1.2-2'}}€</td>
-            </ng-container>
-
-
-            <!-- Columna totalSinImpuestos -->
-            <ng-container matColumnDef="totalSinImpuestos">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Total SI</th>
-                <td mat-cell *matCellDef="let element">{{ element.totalSinImpuestos |
-                    number:'1.2-2'}}€</td>
-            </ng-container>
-
-
-            <!-- Columna totalConImpuestos -->
-            <ng-container matColumnDef="totalConImpuestos">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Total CI</th>
-                <td mat-cell *matCellDef="let element">{{ element.totalConImpuestos |
-                    number:'1.2-2'}}€</td>
-            </ng-container>
-
-            <!-- Columna idEstadoDocumento_descripcion -->
-            <ng-container matColumnDef="idEstadoDocumento_descripcion">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado documento</th>
-                <td mat-cell *matCellDef="let element">{{ element.idEstadoDocumento_descripcion.descripcion }}</td>
-            </ng-container>
+                <!-- Columna totalBruto -->
+                <ng-container matColumnDef="totalBruto">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="align-center">Total Bruto</th>
+                    <td mat-cell *matCellDef="let element" class="align-right">{{ element.totalBruto |
+                        number:'1.2-2'}}€</td>
+                </ng-container>
 
 
-        </table>
-        <!--<mat-paginator #paginator class="demo-paginator" (page)="handlePageEvent($event)" [length]="length"
-            [pageSize]="pageSize" [disabled]="disabled" [showFirstLastButtons]="showFirstLastButtons"
-            [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []" [hidePageSize]="hidePageSize"
-            [pageIndex]="pageIndex" aria-label="Select page"></mat-paginator>-->
+                <!-- Columna totalSinImpuestos -->
+                <ng-container matColumnDef="totalSinImpuestos">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="align-center">Total SI</th>
+                    <td mat-cell *matCellDef="let element" class="align-right">{{ element.totalSinImpuestos |
+                        number:'1.2-2'}}€</td>
+                </ng-container>
+
+
+                <!-- Columna totalConImpuestos -->
+                <ng-container matColumnDef="totalConImpuestos">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="align-center">Total CI</th>
+                    <td mat-cell *matCellDef="let element" class="align-right">{{ element.totalConImpuestos |
+                        number:'1.2-2'}}€</td>
+                </ng-container>
+
+                <!-- Columna idEstadoDocumento_descripcion -->
+                <ng-container matColumnDef="idEstadoDocumento_descripcion" class="align-center">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="align-center">Estado documento</th>
+                    <td mat-cell *matCellDef="let element">{{
+                        element.idEstadoDocumento_descripcion.descripcion }}</td>
+                </ng-container>
+
+
+            </table>
+            <mat-paginator [pageSizeOptions]="[10, 25, 100]" [pageSize]="25" showFirstLastButtons></mat-paginator>
+        </div>
+
     </div>
-    <div class="table-empty-ticket-list" *ngIf="dataSource.data.length == 0">
-        <p>{{'No hay tickets para la fecha seleccionada' | translate}}</p>
-    </div>
+
 </div>

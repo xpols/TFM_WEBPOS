@@ -76,6 +76,10 @@ export class TicketComponent implements OnInit {
       0,
       new ObjectComboDTO('','',''),
     );
+    console.log("HORA TICKET :: " + this.ticket.fechaHora);
+    const currentDate = new Date();
+    const currentTime = currentDate.toLocaleTimeString('en-US', { hour12: false });
+    console.log(currentTime);
   }
 
   ngOnInit(): void {
@@ -187,6 +191,13 @@ export class TicketComponent implements OnInit {
   private async createTicket() {
     if(this.ticket != undefined) {
       this.ticket.numeroComensales = this.numDiners;
+      //console.log("HORA TICKET :: " + this.ticket.fechaHora);
+      const currentDate = new Date();
+      const currentTime = currentDate.toLocaleTimeString('en-US', { hour12: false });
+      console.log(currentTime);
+      this.ticket.fechaHora += ' ' + currentTime;
+      this.ticket.horaInicioCreacionDocumento += ' ' + currentTime;
+      this.ticket.horaFinCreacionDocumento = undefined;
       this.ticket = await this.mainSalesService.createTicket(this.ticket);
     }
   }
@@ -258,6 +269,10 @@ export class TicketComponent implements OnInit {
       Number(productPrice.precio), //totalConImpuestos: number,
       0
     );
+    
+    const currentDate = new Date();
+    const currentTime = currentDate.toLocaleTimeString('en-US', { hour12: false });
+    newDetalle.fechaHoraSeleccionado += ' ' + currentTime;
 
     if(this.ticket != undefined && this.ticket.id != undefined) {
       newDetalle.idDocumentoComercial = new ObjectIDDTO(this.ticket.id);
