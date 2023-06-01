@@ -1,0 +1,30 @@
+<mat-card class="grupo-mostrar mat-elevation-z8">
+    <mat-card-header [ngClass]="{'grupo-completo': grupo.grupoCompleto, 'grupo-incompleto': !grupo.grupoCompleto}">
+        <mat-card-title class="grupo-title">
+            {{grupo.idNombreEleccionProducto_nombre.descripcion}}
+        </mat-card-title>
+        <mat-card-subtitle *ngIf="grupo.minProdAElegir > 0 && grupo.minProdAElegir != grupo.maxProdAElegir">
+            {{grupo.idNombreEleccionProducto_nombre.descripcion}}>
+            {{'Seleccione entre' | translate}}{{grupo.minProdAElegir}} {{'y' | translate}}
+            {{grupo.maxProdAElegir}}</mat-card-subtitle>
+        <mat-card-subtitle *ngIf="grupo.minProdAElegir == 0">{{'Seleccione màximo ' |
+            translate}}{{grupo.maxProdAElegir}}{{'(Opcional)' | translate}}</mat-card-subtitle>
+        <mat-card-subtitle *ngIf="grupo.minProdAElegir > 0 && grupo.minProdAElegir == grupo.maxProdAElegir">
+            {{'Seleccione' | translate}} {{grupo.minProdAElegir}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="grupo-selecciones">
+            <div *ngFor="let seleccion of seleccionesCurrent">
+                <associated-products-item [seleccion]="seleccion"
+                    (productoModificado)="recibirSeleccionModificada($event)">
+                </associated-products-item>
+            </div>
+        </div>
+        <div align="center" class="paginator">
+            <button mat-stroked-button class="button-action button-minus mat-elevation-z0 width-50"
+                (click)="updatePage(false)"><mat-icon>arrow_back_ios</mat-icon></button>
+            <button mat-stroked-button class="button-action button-minus mat-elevation-z0 width-50"
+                (click)="updatePage(true)"><mat-icon>arrow_forward_ios</mat-icon></button>
+        </div>
+    </mat-card-content>
+</mat-card>

@@ -20,6 +20,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { TicketPrintComponent } from './ticket-print/ticket-print.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AssociatedProductsComponent } from './associated-products/associated-products.component';
+import { AssociatedProductsItemComponent } from './associated-products-item/associated-products-item.component';
+import { AssociatedProductsGroupComponent } from './associated-products-group/associated-products-group.component';
 
 
 
@@ -34,7 +36,9 @@ import { AssociatedProductsComponent } from './associated-products/associated-pr
     TicketItemsComponent,
     PaymentComponent,
     TicketPrintComponent,
-    AssociatedProductsComponent
+    AssociatedProductsComponent,
+    AssociatedProductsItemComponent,
+    AssociatedProductsGroupComponent
   ],
   imports: [
     CommonModule,

@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MainSalesService } from 'src/app/Services/main-sales.service';
 import { DataAssociatedProduct } from 'src/app/models/data-associated-product';
 import { EleccionesProductoDTO } from 'src/app/models/eleccionesProducto.dto';
+import { SeleccionesProductoDTO } from 'src/app/models/seleccionesProducto.dto';
 
 @Component({
   selector: 'app-associated-products',
@@ -71,6 +72,10 @@ export class AssociatedProductsComponent implements OnInit {
     if(this.qty > 1) {
       this.qty = Number(this.qty) -1;
     }
+  }
+
+  recibirSeleccionModificada(selectionModify: SeleccionesProductoDTO) {
+    console.log("SELECCION MOIDIFCADA :: " + JSON.stringify(selectionModify));
   }
 
   finishSelection():void {

@@ -1,0 +1,32 @@
+@import "../../app.component.scss";
+
+.grupo-mostrar {
+    //height: 60vh;
+    flex: 1;
+
+    .grupo-selecciones {
+        padding-bottom: 2.25rem;
+    }
+
+    .paginator {
+        position: absolute;
+        bottom: 16px;
+        width: calc(100% - 32px);
+    }
+
+}
+
+.grupo-completo {
+    color: $secondary-color;
+
+    mat-card-subtitle {
+        color: $secondary-color;
+    }
+}
+
+.grupo-incompleto{
+    color: $red;
+    mat-card-subtitle {
+        color: $red;
+    }
+}

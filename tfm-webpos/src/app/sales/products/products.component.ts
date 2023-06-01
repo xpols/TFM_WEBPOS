@@ -87,6 +87,7 @@ export class ProductsComponent implements OnInit {
       productName,
       Number(productPrice?.replace('€', ''))
     );
+
     this.productoSelecionado.emit(productEmit);
   }
 

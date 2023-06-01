@@ -6,7 +6,7 @@ import { TicketCabeceraDTO } from 'src/app/models/ticketCabecera.dto';
 import { TicketDetalleDTO } from 'src/app/models/ticketDetalle.dto';
 import { LocalStorageConstants } from 'src/app/constants/constants';
 import { TicketDetalleUpdateDTO } from 'src/app/models/ticketDetalleUpdate.dto';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { PaymentComponent } from '../payment/payment.component';
 import { productPriceDTO } from 'src/app/models/productPrice.dto';
 import { TicketCabeceraCanceladoDTO } from 'src/app/models/ticketCabeceraCancel.dto';
@@ -29,6 +29,7 @@ export class TicketComponent implements OnInit {
   @Input() tableName: string | undefined;
   @Input() numDiners: number = 0;
   @Input() productoSelecionadoTicket: productPriceDTO = new productPriceDTO(0,'', 0);
+  @Input() productosImagenes: ObjectComboDTO[] = [];
   @Output() isLoading = new EventEmitter<boolean>();
 
   ticket: TicketCabeceraDTO | undefined;
@@ -333,6 +334,10 @@ export class TicketComponent implements OnInit {
       elecciones = elecciones?.map((eleccion) => {
         let seleccionesGrupo = selecciones?.filter(seleccion => seleccion.idEleccionProducto_idNombreEleccionProducto_nombre.toString() === eleccion.id.toString());
         if(seleccionesGrupo != undefined) {
+          seleccionesGrupo = seleccionesGrupo.map(seleccion => {
+            seleccion.cantidadSeleccionada = 0;
+            return seleccion
+          });
           seleccionesGrupo?.sort(function (a, b) {
             if (a.orden < b.orden)
                 return -1;
@@ -365,10 +370,12 @@ export class TicketComponent implements OnInit {
 
   openAssociatedProductDialog(): void {
     console.log("Open associated product dialog :: " + this.grupos);
+
     const dialogRef = this.dialog.open(AssociatedProductsComponent, {
       data: {
           grupos: this.grupos
       },
+      minWidth: '90vw'
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -536,6 +543,18 @@ export class TicketComponent implements OnInit {
       //this.ticket = await this.mainSalesService.updateTicketCabecera(this.ticket);
       this.router.navigate(['/tables']).then(_ => console.log('Ticket canceled finish'));
     }
+  }
+
+  public findProductImage(idProduct: string) : string {
+    console.log("PRODUCT IMAGE FIND :: " + idProduct);
+    let imageURL = 'NOT_FIND';
+    let imagenEncontrada = this.productosImagenes.find(productoImagen => productoImagen.id == idProduct);
+    console.log("this.productosImagenes :: " + JSON.stringify(this.productosImagenes));
+    if(imagenEncontrada != null && imagenEncontrada != undefined) {
+      console.log("imagenEncontrada :: " + imagenEncontrada);
+      imageURL = imagenEncontrada.descripcion;
+    }
+    return imageURL;
   }
 
 }

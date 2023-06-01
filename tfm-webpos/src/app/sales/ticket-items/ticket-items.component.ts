@@ -12,6 +12,7 @@ import { TicketDetalleDTO } from 'src/app/models/ticketDetalle.dto';
 export class TicketItemsComponent implements OnInit {
 
   @Input() detalle: TicketDetalleDTO;
+  @Input() imagenProducto: string = 'NOT_FIND';
   @Output() productoModificado = new EventEmitter<productPriceDTO>();
 
   constructor() { 

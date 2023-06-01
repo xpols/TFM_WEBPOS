@@ -1,11 +1,17 @@
 <div class="product-line">
     <div class="left-column">
-        <div class="product-name">
-            {{detalle.idProducto_nombre.descripcion}}
+        <div class="product-image-name">
+            <div class="product-image">
+                <img *ngIf="imagenProducto!='NOT_FIND'" src="{{imagenProducto}}"
+                    alt="{{detalle.idProducto_nombre.descripcion}}" />
+            </div>
+            <div class="product-name">
+                {{detalle.idProducto_nombre.descripcion}}
+            </div>
         </div>
-        <div class="product-modifiers">
+        <!--<div class="product-modifiers">
             &nbsp;
-        </div>
+        </div>-->
     </div>
     <div class="right-column">
         <div class="action-buttons">

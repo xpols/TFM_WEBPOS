@@ -14,31 +14,8 @@
 </div>
 <div class="container-grupos">
     <div class="grupos-mostrar d-flex">
-        <mat-card class="grupo-mostrar mat-elevation-z8" *ngFor="let grupo of gruposCurrent">
-            <mat-card-header
-                [ngClass]="{'grupo-completo': grupo.grupoCompleto, 'grupo-incompleto': !grupo.grupoCompleto}">
-                <mat-card-title class="grupo-title">
-                    {{grupo.idNombreEleccionProducto_nombre.descripcion}}
-                </mat-card-title>
-                <mat-card-subtitle *ngIf="grupo.minProdAElegir > 0 && grupo.minProdAElegir != grupo.maxProdAElegir">
-                    {{grupo.idNombreEleccionProducto_nombre.descripcion}}>
-                    {{'Seleccione entre' | translate}}{{grupo.minProdAElegir}} {{'y' | translate}}
-                    {{grupo.maxProdAElegir}}</mat-card-subtitle>
-                <mat-card-subtitle *ngIf="grupo.minProdAElegir == 0">{{'Seleccione màximo ' |
-                    translate}}{{grupo.maxProdAElegir}}{{'(Opcional)' | translate}}</mat-card-subtitle>
-                <mat-card-subtitle *ngIf="grupo.minProdAElegir > 0 && grupo.minProdAElegir == grupo.maxProdAElegir">
-                    {{'Seleccione' | translate}} {{grupo.minProdAElegir}}</mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-content>
-                <div class="grupo-selecciones">
-                    <div *ngFor="let selecciones of grupo.selecciones">
-                        <p>
-                            -{{selecciones.idProductoSeleccionado_nombre.descripcion}}
-                        </p>
-                    </div>
-                </div>
-            </mat-card-content>
-        </mat-card>
+        <associated-products-group *ngFor="let grupo of gruposCurrent" [grupo]="grupo"
+            (productoModificado)="recibirSeleccionModificada($event)"></associated-products-group>
     </div>
 
 </div>

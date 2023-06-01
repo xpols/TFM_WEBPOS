@@ -1,6 +1,7 @@
 <div class="block-items">
     <div *ngFor="let detalle of detalles">
-        <ticket-items [detalle]="detalle" (productoModificado)="recibirProductoModificado($event)"></ticket-items>
+        <ticket-items [detalle]="detalle" [imagenProducto]="findProductImage(detalle.idProducto_nombre.id)"
+            (productoModificado)="recibirProductoModificado($event)"></ticket-items>
     </div>
 </div>
 <div class="block-total">

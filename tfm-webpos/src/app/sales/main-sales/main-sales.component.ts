@@ -6,6 +6,7 @@ import { LocalStorageConstants } from 'src/app/constants/constants';
 import { CategoriasDTO } from 'src/app/models/categorias.dto';
 import { ConfigProductosDTO, FamiliasCPDTO, ProuctoCPDTO, SubfamiliasCPDTO } from 'src/app/models/configProductos.dto';
 import { GruposImagenesDTO } from 'src/app/models/gruposImagenes.dto';
+import { ObjectComboDTO } from 'src/app/models/objectCombo.dto';
 import { productPriceDTO } from 'src/app/models/productPrice.dto';
 import { ProductosDTO } from 'src/app/models/productos.dto';
 import { TarifasVentaDTO } from 'src/app/models/tarifasVenta.dto';
@@ -42,6 +43,7 @@ export class MainSalesComponent implements OnInit {
   filasProductos: number = 10;
   columnasProductos: number = 10;
   productosTodos: ProductosDTO[] | undefined = [];
+  productosImagenes: ObjectComboDTO[] = [];
   productoSelecionadoInput: any;
   @Output() productoSelecionadoOutput = new EventEmitter<productPriceDTO>();
 
@@ -220,6 +222,7 @@ export class MainSalesComponent implements OnInit {
                 if(productoEncontrado?.idGrupoImagenes_imagenes != undefined && productoEncontrado?.idGrupoImagenes_imagenes.length > 0) {
                   //console.log("PRODUCTO ENCONTRADO IMAGEN :: " + JSON.stringify(productoEncontrado?.idGrupoImagenes_imagenes[0]));
                   producto.imagen = localStorage.getItem(LocalStorageConstants.IMAGE_BASE_PATH) + productoEncontrado?.idGrupoImagenes_imagenes[0].ficheroUid + ".png";
+                  this.productosImagenes.push(new ObjectComboDTO(productoEncontrado.id, producto.imagen, producto.imagen));
                 }
               }
               return producto;
@@ -240,6 +243,7 @@ export class MainSalesComponent implements OnInit {
                   if(productoEncontrado?.idGrupoImagenes_imagenes != undefined && productoEncontrado?.idGrupoImagenes_imagenes.length > 0) {
                     //console.log("PRODUCTO ENCONTRADO IMAGEN SF :: " + JSON.stringify(productoEncontrado?.idGrupoImagenes_imagenes[0]));
                     producto.imagen = localStorage.getItem(LocalStorageConstants.IMAGE_BASE_PATH) + productoEncontrado?.idGrupoImagenes_imagenes[0].ficheroUid + ".png";
+                    this.productosImagenes.push(new ObjectComboDTO(productoEncontrado.id, producto.imagen, producto.imagen));
                   }
                 }
                 return producto;

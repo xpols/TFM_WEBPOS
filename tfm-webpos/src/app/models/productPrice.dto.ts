@@ -4,6 +4,7 @@ export class productPriceDTO {
     precio: number | undefined;
     accion: string = '';
     idDetalle: string = '';
+    
 
     constructor(
         idProduct: number | undefined,

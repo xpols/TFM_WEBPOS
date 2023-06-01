@@ -24,31 +24,27 @@
 }
 
 .container-grupos {
-    min-width: 75vw;
-    min-height: 75vh;
+    margin-bottom: 2rem;
 
-    .grupo-mostrar {
-        width: 25%;
-        //margin-left: 1%;
-        min-height: 60vh;
-
-        .grupo-completo {
-            color: $secondary-color;
-
-            mat-card-subtitle {
-                color: $secondary-color;
-            }
-        }
-
-        .grupo-incompleto{
-            color: $red;
-            mat-card-subtitle {
-                color: $red;
-            }
-        }
+    associated-products-group {
+        width: 24.25%;
+        display: flex;
+        align-items: stretch;
     }
 
-    .grupo-mostrar:nth-child(1), .grupo-mostrar:nth-child(2), .grupo-mostrar:nth-child(3) {
+    associated-products-group:nth-child(1), associated-products-group:nth-child(2), associated-products-group:nth-child(3) {
         margin-right: 1%;
+    }
+}
+
+.actions-container {
+    .button-minus{
+        background-color: $red;
+        margin-right: 2rem;
+    }
+
+    .button-plus{
+        background-color: $secondary-color;
+        margin-left: 2rem;
     }
 }
