@@ -46,18 +46,27 @@
                     </div>
                 </div>
                 <div class="ticket-products-info">
-                    <div class="d-flex" *ngFor="let detalle of data.detalles">
-                        <div class="width-10 t-algin-end pad-r-025">
-                            <pre>{{detalle.cantidad}}</pre>
+                    <div *ngFor="let detalle of data.detalles">
+                        <div class="d-flex">
+                            <div class="width-10 t-algin-end pad-r-025">
+                                <pre>{{detalle.cantidad}}</pre>
+                            </div>
+                            <div class="width-50">
+                                <pre>{{detalle.idProducto_nombre.descripcion}}</pre>
+                            </div>
+                            <div class="width-20 t-algin-end">
+                                <pre>{{detalle.precioUnitarioConImpuestos | number:'1.2-2'}}€</pre>
+                            </div>
+                            <div class="width-20 t-algin-end">
+                                <pre>{{detalle.totalConImpuestos | number:'1.2-2'}}€</pre>
+                            </div>
                         </div>
-                        <div class="width-50">
-                            <pre>{{detalle.idProducto_nombre.descripcion}}</pre>
-                        </div>
-                        <div class="width-20 t-algin-end">
-                            <pre>{{detalle.precioUnitarioConImpuestos | number:'1.2-2'}}€</pre>
-                        </div>
-                        <div class="width-20 t-algin-end">
-                            <pre>{{detalle.totalConImpuestos | number:'1.2-2'}}€</pre>
+                        <div class="associados d-flex" *ngFor="let detalleHijo of detalle.detallesAsociados">
+                            <div class="width-10 t-algin-end pad-r-025"></div>
+                            <div class="width-50">
+                                <pre>{{detalleHijo.idProducto_nombre.descripcion}}<span *ngIf="detalleHijo.cantidad>1">(x{{detalleHijo.cantidad}})</span></pre>
+                            </div>
+                            <div class="width-40"></div>
                         </div>
                     </div>
                 </div>
@@ -92,7 +101,7 @@
                         <pre>{{configuracionTextos?.totalTicket_1}}</pre>
                     </div>
                     <div class="width-50 t-algin-end">
-                        <pre>{{data.totalPagado| number:'1.2-2'}} €</pre>
+                        <pre>{{data.ticket?.totalConImpuestos| number:'1.2-2'}} €</pre>
                     </div>
                 </div>
             </div>

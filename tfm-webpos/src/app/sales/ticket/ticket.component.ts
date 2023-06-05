@@ -148,6 +148,15 @@ export class TicketComponent implements OnInit {
       this.ticket = await this.mainSalesService.getTicketCabecera(idTicket);
       console.log("TICKET RECUPERADO :: " + JSON.stringify(this.ticket));
       this.detalles = await this.mainSalesService.getTicketDetalles(idTicket);
+      let detallesHijos = this.detalles?.filter(detalle => detalle.idLineaPadre_item != null);
+      this.detalles = this.detalles?.filter(detalle => detalle.idLineaPadre_item == null);
+      this.detalles = this.detalles?.map(detalle => {
+        let hijos = detallesHijos?.filter(detalleHijo => detalleHijo.idLineaPadre_item.id == detalle.id);
+        if(hijos != undefined) {
+          detalle.detallesAsociados = hijos;
+        }
+        return detalle;
+      });
       console.log("TICKET DETALLES RECUPERADOS :: " + JSON.stringify(this.detalles));
       this.pagos = await this.mainSalesService.getTicketPagos(idTicket);
       console.log("TICKET PAGOS RECUPERADOS :: " + JSON.stringify(this.pagos));
@@ -216,7 +225,7 @@ export class TicketComponent implements OnInit {
       console.log("Productos con associados recuperados");
       if(this.grupos.length > 0) {
         console.log("GRUPOS > 0");
-        this.openAssociatedProductDialog();
+        this.openAssociatedProductDialog(productPrice);
       } else {
         this.isLoading.emit(true);
         console.log("GRUPOS = 0");
@@ -245,6 +254,9 @@ export class TicketComponent implements OnInit {
     this.detalles = this.detalles?.map((detalle) => {
       if(detalle.id == detalleUpdate?.id) {
         detalleUpdate = this.assignarDescripcionProducto(detalle.idProducto_nombre.id, productPrice, detalleUpdate);
+        if(detalle.detallesAsociados.length > 0) {
+          detalleUpdate.detallesAsociados = detalle.detallesAsociados;
+        }
         return detalleUpdate;
       } else {
         return detalle;
@@ -255,7 +267,7 @@ export class TicketComponent implements OnInit {
     }
   }
 
-  private async createDetalle(productPrice: productPriceDTO) {
+  private async createDetalle(productPrice: productPriceDTO): Promise<TicketDetalleDTO>  {
     console.log("CREATE DETALLE :: " + productPrice.idProduct);
     console.log("CREATE DETALLE :: PRECIO :: " + productPrice.precio);
     let newDetalle = new TicketDetalleDTO(
@@ -296,16 +308,47 @@ export class TicketComponent implements OnInit {
       if(productPrice.idProduct != undefined) {
         idProducto = productPrice.idProduct?.toString();
       }
+      if(productPrice.idPadre != undefined && productPrice.idPadre != '') {
+        newDetalle.idLineaPadre = new ObjectIDDTO(productPrice.idPadre);
+      }
+      if(productPrice.idEleccionProducto_id != undefined && productPrice.idEleccionProducto_id != '') {
+        newDetalle.idEleccionProducto = new ObjectIDDTO(productPrice.idEleccionProducto_id);
+      }
+
+      if(productPrice.cantidad != undefined && productPrice.cantidad > 1) {
+        newDetalle.cantidad = productPrice.cantidad;
+      }
       newDetalle.idProducto = new ObjectIDDTO(idProducto);
       newDetalle.idAlmacen = new ObjectIDDTO('1');
       newDetalle.idEstadoLinea = new ObjectIDDTO('1');
       let detalleCreated = await this.mainSalesService.createTicketDetail(newDetalle);
-      if(detalleCreated != undefined) {
+      if(detalleCreated != undefined && newDetalle.idEleccionProducto == undefined) {
         detalleCreated = this.assignarDescripcionProducto(idProducto, productPrice, detalleCreated);
         this.detalles?.push(detalleCreated);
+        newDetalle = detalleCreated;
+      } else if(detalleCreated != undefined && newDetalle.idEleccionProducto != undefined) {
+        detalleCreated = this.assignarDescripcionProducto(idProducto, productPrice, detalleCreated);
+        this.detalles = this.detalles?.map(detalle => {
+          if(detalleCreated != undefined) {
+            console.log("Buscamos detalle PADRE -- " + detalle.id);
+            console.log("Buscamos detalle PADRE PARA HIJO -- " + newDetalle.idLineaPadre?.id);
+            if(detalle.id == newDetalle.idLineaPadre?.id) {
+              if(detalleCreated != undefined) {
+                console.log("Añadir hijo !!!!!!");
+                if(detalle.detallesAsociados == undefined) {
+                  detalle.detallesAsociados = [];
+                }
+                detalle.detallesAsociados.push(detalleCreated);
+              }
+            }
+          }
+          return detalle;
+        });
+        newDetalle = detalleCreated;
       }
       this.getTotales(this.ticket.id);
     }
+    return newDetalle;
   }
 
   private async isProductWithGroups(idProducto: string) {
@@ -368,7 +411,7 @@ export class TicketComponent implements OnInit {
 
   }
 
-  openAssociatedProductDialog(): void {
+  openAssociatedProductDialog(productPrice: productPriceDTO): void {
     console.log("Open associated product dialog :: " + this.grupos);
 
     const dialogRef = this.dialog.open(AssociatedProductsComponent, {
@@ -380,6 +423,23 @@ export class TicketComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('associated product dialog was closed :: ' + JSON.stringify(result));
+      if(result != undefined) {
+        this.createDetalle(productPrice).then(async detallePadre => {
+          console.log("NUEVO DETALLE MENU :: " + JSON.stringify(detallePadre));
+          if(detallePadre != undefined && detallePadre.id != undefined && detallePadre.id != null && detallePadre.id != '') {
+            for(let grupo of result) {
+              for(let seleccion of grupo.selecciones) {
+                console.log("CREAR DETALLE HIJO :: " + seleccion.idProductoSeleccionado_nombre.descripcion);
+                let productPriceHijo = new productPriceDTO(seleccion.idProductoSeleccionado_nombre.id, seleccion.idProductoSeleccionado_nombre.descripcion, 0);
+                productPriceHijo.idPadre = detallePadre.id;
+                productPriceHijo.idEleccionProducto_id = seleccion.idEleccionProducto_idNombreEleccionProducto_nombre.toString();
+                productPriceHijo.cantidad = seleccion.cantidadSeleccionada;
+                await this.createDetalle(productPriceHijo);
+              }
+            }
+          }
+        });
+      }
     });
   }
 
@@ -546,12 +606,12 @@ export class TicketComponent implements OnInit {
   }
 
   public findProductImage(idProduct: string) : string {
-    console.log("PRODUCT IMAGE FIND :: " + idProduct);
+    //console.log("PRODUCT IMAGE FIND :: " + idProduct);
     let imageURL = 'NOT_FIND';
     let imagenEncontrada = this.productosImagenes.find(productoImagen => productoImagen.id == idProduct);
-    console.log("this.productosImagenes :: " + JSON.stringify(this.productosImagenes));
+    //console.log("this.productosImagenes :: " + JSON.stringify(this.productosImagenes));
     if(imagenEncontrada != null && imagenEncontrada != undefined) {
-      console.log("imagenEncontrada :: " + imagenEncontrada);
+      //console.log("imagenEncontrada :: " + imagenEncontrada);
       imageURL = imagenEncontrada.descripcion;
     }
     return imageURL;

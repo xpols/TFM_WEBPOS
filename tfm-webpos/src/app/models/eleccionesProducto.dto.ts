@@ -15,6 +15,7 @@ export class EleccionesProductoDTO {
     selecciones: SeleccionesProductoDTO[] = [];
     cantidadSeleccionada: number = 0;
     grupoCompleto: boolean = false;
+    grupoValido: boolean = false;
   
     constructor(
         id: string,

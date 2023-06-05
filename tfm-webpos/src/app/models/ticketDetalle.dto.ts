@@ -29,6 +29,7 @@ export class TicketDetalleDTO {
   totalPortesSinImpuestos: number;
 
   idDocumentoComercial: ObjectIDDTO | undefined;
+  idLineaPadre: ObjectIDDTO | undefined;
   idProducto: ObjectIDDTO | undefined;
   idPromocion: ObjectIDDTO | undefined;
   idEleccionProducto: ObjectIDDTO | undefined;
@@ -37,6 +38,7 @@ export class TicketDetalleDTO {
   precioManual: boolean = false;
   importeRealMenuSinSuplemento: number = 0;
   totalPortesConImpuestos: number = 0;
+  detallesAsociados: TicketDetalleDTO[] = [];
 
   constructor(
     id: string,

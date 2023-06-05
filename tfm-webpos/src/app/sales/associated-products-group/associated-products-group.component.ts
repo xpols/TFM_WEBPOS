@@ -78,5 +78,4 @@ export class AssociatedProductsGroupComponent implements OnInit {
     console.log("SELECCION MOIDIFCADA GRUPO :: " + JSON.stringify(selectionModify));
     this.productoModificado.emit(selectionModify);
   }
-
 }

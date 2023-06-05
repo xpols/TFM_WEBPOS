@@ -10,6 +10,7 @@ import { SeleccionesProductoDTO } from 'src/app/models/seleccionesProducto.dto';
 export class AssociatedProductsItemComponent implements OnInit {
 
   @Input() seleccion: SeleccionesProductoDTO;
+  @Input() grupoValido: boolean = false;
   @Output() productoModificado = new EventEmitter<SeleccionesProductoDTO>();
 
   constructor() { 
@@ -28,8 +29,10 @@ export class AssociatedProductsItemComponent implements OnInit {
   }
 
   plus() {
-    this.seleccion.cantidadSeleccionada++
-    this.productoModificado.emit(this.seleccion);
+    if(!this.grupoValido) {
+      this.seleccion.cantidadSeleccionada++
+      this.productoModificado.emit(this.seleccion);
+    }
   }
 
   minus() {

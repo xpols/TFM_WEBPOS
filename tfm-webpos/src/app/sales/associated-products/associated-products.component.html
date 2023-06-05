@@ -21,6 +21,6 @@
 </div>
 <div align="center" class="actions-container">
     <button mat-fab class="button-action button-minus" (click)="onNoClick()"><mat-icon>close</mat-icon></button>
-    <button mat-fab class="button-action button-plus" (click)="finishSelection()"
+    <button mat-fab class="button-action button-plus" (click)="finishSelection()" [disabled]="!permitirEnviar"
         cdkFocusInitial><mat-icon>check</mat-icon></button>
 </div>

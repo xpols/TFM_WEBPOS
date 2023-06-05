@@ -6,7 +6,15 @@
                     alt="{{detalle.idProducto_nombre.descripcion}}" />
             </div>
             <div class="product-name">
-                {{detalle.idProducto_nombre.descripcion}}
+                <div>{{detalle.idProducto_nombre.descripcion}}</div>
+                <div class="associados">
+                    <span *ngFor="let detalleHijo of detalle.detallesAsociados; let last = last">
+                        {{detalleHijo.idProducto_nombre.descripcion}}<span
+                            *ngIf="detalleHijo.cantidad > 1">(x{{detalleHijo.cantidad}})</span><span
+                            *ngIf="!last">,</span>
+                    </span>
+
+                </div>
             </div>
         </div>
         <!--<div class="product-modifiers">
