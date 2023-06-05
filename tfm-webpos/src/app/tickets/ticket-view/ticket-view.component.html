@@ -1,175 +1,177 @@
-<div class="ticket-cabecera">
-    <div class="ticket-cabecera-datos d-flex block-divider">
-        <div class="ticket-cabecera-datos-tienda width-50">
-            <div class="label">
-                {{'Tienda' | translate}}
+<div class="ticket-view">
+    <div class="ticket-cabecera">
+        <div class="ticket-cabecera-datos d-flex block-divider">
+            <div class="ticket-cabecera-datos-tienda width-50">
+                <div class="label">
+                    {{'Tienda' | translate}}
+                </div>
+                <div class="valor">
+                    <span>{{this.data.idTienda_descripcion.descripcion}}</span>
+                </div>
             </div>
-            <div class="valor">
-                <span>{{this.data.idTienda_descripcion.descripcion}}</span>
+            <div class="ticket-cabecera-datos-codigo width-50">
+                <div class="label">
+                    {{'Codigo' | translate}}
+                </div>
+                <div class="valor">
+                    <span>{{this.data.codigo}}</span>
+                </div>
             </div>
         </div>
-        <div class="ticket-cabecera-datos-codigo width-50">
-            <div class="label">
-                {{'Codigo' | translate}}
+        <div class="ticket-cabecera-datos-2 d-flex block-divider">
+            <div class="ticket-cabecera-datos-tpv width-33">
+                <div class="label">
+                    {{'TPV' | translate}}
+                </div>
+                <div class="valor">
+                    <span>{{this.data.idTPV_descripcion.descripcion}}</span>
+                </div>
             </div>
-            <div class="valor">
-                <span>{{this.data.codigo}}</span>
+            <div class="ticket-cabecera-datos-2-jornada width-33">
+                <div class="label">
+                    {{'Jornada' | translate}}
+                </div>
+                <div class="valor">
+                    <span>{{this.data.fechaJornada}}</span>
+                </div>
+            </div>
+            <div class="ticket-cabecera-datos-2-hora width-33">
+                <div class="label">
+                    {{'Fecha/Hora' | translate}}
+                </div>
+                <div class="valor">
+                    <span>{{this.data.fechaHora}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="ticket-cabecera-importes d-flex block-divider">
+            <div class="ticket-cabecera-importes-T-B width-33">
+                <div class="label">
+                    {{'Total Bruto' | translate}}
+                </div>
+                <div class="valor">
+                    <span>{{this.data.totalBruto|
+                        number:'1.2-2'}}€</span>
+                </div>
+            </div>
+            <div class="ticket-cabecera-importes-T-I width-33">
+                <div class="label">
+                    {{'Total C/I' | translate}}
+                </div>
+                <div class="valor">
+                    <span>{{this.data.totalConImpuestos|
+                        number:'1.2-2'}}€</span>
+                </div>
+            </div>
+            <div class="ticket-cabecera-importes-T-S width-33">
+                <div class="label">
+                    {{'Total S/I' | translate}}
+                </div>
+                <div class="valor">
+                    <span>{{this.data.totalSinImpuestos|
+                        number:'1.2-2'}}€</span>
+                </div>
+            </div>
+        </div>
+        <div class="ticket-cabecera-estado d-flex block-divider">
+            <div class="ticket-cabecera-estado-canal width-50">
+                <div class="label">
+                    {{'Canal Venta' | translate}}
+                </div>
+                <div class="valor">
+                    <span>{{this.data.idCanalVenta_descripcion.descripcion}}</span>
+                </div>
+            </div>
+            <div class="ticket-cabecera-estado-estado width-50">
+                <div class="label">
+                    {{'Estado' | translate}}
+                </div>
+                <div class="valor">
+                    <span>{{this.data.idEstadoDocumento_descripcion.descripcion}}</span>
+                </div>
             </div>
         </div>
     </div>
-    <div class="ticket-cabecera-datos-2 d-flex block-divider">
-        <div class="ticket-cabecera-datos-tpv width-33">
-            <div class="label">
-                {{'TPV' | translate}}
-            </div>
-            <div class="valor">
-                <span>{{this.data.idTPV_descripcion.descripcion}}</span>
-            </div>
-        </div>
-        <div class="ticket-cabecera-datos-2-jornada width-33">
-            <div class="label">
-                {{'Jornada' | translate}}
-            </div>
-            <div class="valor">
-                <span>{{this.data.fechaJornada}}</span>
-            </div>
-        </div>
-        <div class="ticket-cabecera-datos-2-hora width-33">
-            <div class="label">
-                {{'Fecha/Hora' | translate}}
-            </div>
-            <div class="valor">
-                <span>{{this.data.fechaHora}}</span>
-            </div>
-        </div>
+
+    <div class="ticket-detalles">
+        <h4>Detalles</h4>
+        <table mat-table class="mat-elevation-z8 ticket-table" [dataSource]="dataSource" matSort>
+            <!-- Encabezados de columna -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+            <!-- Filas de datos -->
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            <!-- Columna idProducto_nombre -->
+            <ng-container matColumnDef="idProducto_nombre">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Producto</th>
+                <td mat-cell *matCellDef="let element">{{ element.idProducto_nombre.codigo }} - {{
+                    element.idProducto_nombre.descripcion }}</td>
+            </ng-container>
+
+            <!-- Columna fechaJornada -->
+            <ng-container matColumnDef="cantidad">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Cantidad</th>
+                <td mat-cell *matCellDef="let element">{{ element.cantidad }}</td>
+            </ng-container>
+
+            <!-- Columna idCanalVenta_descripcion -->
+            <ng-container matColumnDef="precioUnitarioConImpuestos">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Precio unitario</th>
+                <td mat-cell *matCellDef="let element">{{ element.precioUnitarioConImpuestos |
+                    number:'1.2-2'}}€</td>
+            </ng-container>
+
+            <!-- Columna totalConImpuestos -->
+            <ng-container matColumnDef="totalConImpuestos">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Total C/I</th>
+                <td mat-cell *matCellDef="let element">{{ element.totalConImpuestos |
+                    number:'1.2-2'}}€</td>
+            </ng-container>
+
+
+            <!-- Columna totalSinImpuestos -->
+            <ng-container matColumnDef="totalSinImpuestos">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Total SI</th>
+                <td mat-cell *matCellDef="let element">{{ element.totalSinImpuestos |
+                    number:'1.2-2'}}€</td>
+            </ng-container>
+
+
+            <!-- Columna totalConImpuestos -->
+            <ng-container matColumnDef="fechaHoraSeleccionado">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha/Hora seleccion</th>
+                <td mat-cell *matCellDef="let element">{{ element.fechaHoraSeleccionado }}</td>
+            </ng-container>
+        </table>
     </div>
-    <div class="ticket-cabecera-importes d-flex block-divider">
-        <div class="ticket-cabecera-importes-T-B width-33">
-            <div class="label">
-                {{'Total Bruto' | translate}}
-            </div>
-            <div class="valor">
-                <span>{{this.data.totalBruto|
-                    number:'1.2-2'}}€</span>
-            </div>
-        </div>
-        <div class="ticket-cabecera-importes-T-I width-33">
-            <div class="label">
-                {{'Total C/I' | translate}}
-            </div>
-            <div class="valor">
-                <span>{{this.data.totalConImpuestos|
-                    number:'1.2-2'}}€</span>
-            </div>
-        </div>
-        <div class="ticket-cabecera-importes-T-S width-33">
-            <div class="label">
-                {{'Total S/I' | translate}}
-            </div>
-            <div class="valor">
-                <span>{{this.data.totalSinImpuestos|
-                    number:'1.2-2'}}€</span>
-            </div>
-        </div>
+
+    <div class="ticket-pagos">
+        <h4>Pagos</h4>
+        <table mat-table class="mat-elevation-z8 ticket-table" [dataSource]="dataSourcePagos" matSort>
+            <!-- Encabezados de columna -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsPagos"></tr>
+
+            <!-- Filas de datos -->
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsPagos;"></tr>
+
+            <!-- Columna idFormaPago_descripcion -->
+            <ng-container matColumnDef="idFormaPago_descripcion">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Formas de pago</th>
+                <td mat-cell *matCellDef="let element">{{ element.idFormaPago_descripcion.codigo }} - {{
+                    element.idFormaPago_descripcion.descripcion }}</td>
+            </ng-container>
+
+            <!-- Columna importe -->
+            <ng-container matColumnDef="importe">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Importe</th>
+                <td mat-cell *matCellDef="let element">{{ element.importe |
+                    number:'1.2-2'}}€</td>
+            </ng-container>
+        </table>
     </div>
-    <div class="ticket-cabecera-estado d-flex block-divider">
-        <div class="ticket-cabecera-estado-canal width-50">
-            <div class="label">
-                {{'Canal Venta' | translate}}
-            </div>
-            <div class="valor">
-                <span>{{this.data.idCanalVenta_descripcion.descripcion}}</span>
-            </div>
-        </div>
-        <div class="ticket-cabecera-estado-estado width-50">
-            <div class="label">
-                {{'Estado' | translate}}
-            </div>
-            <div class="valor">
-                <span>{{this.data.idEstadoDocumento_descripcion.descripcion}}</span>
-            </div>
-        </div>
+
+    <div class="action-buttons">
+        <button mat-fab class="button-action button-minus" (click)="onNoClick()"><mat-icon>close</mat-icon></button>
     </div>
-</div>
-
-<div class="ticket-detalles">
-    <h4>Detalles</h4>
-    <table mat-table class="mat-elevation-z8 ticket-table" [dataSource]="dataSource" matSort>
-        <!-- Encabezados de columna -->
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-
-        <!-- Filas de datos -->
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-        <!-- Columna idProducto_nombre -->
-        <ng-container matColumnDef="idProducto_nombre">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Producto</th>
-            <td mat-cell *matCellDef="let element">{{ element.idProducto_nombre.codigo }} - {{
-                element.idProducto_nombre.descripcion }}</td>
-        </ng-container>
-
-        <!-- Columna fechaJornada -->
-        <ng-container matColumnDef="cantidad">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Cantidad</th>
-            <td mat-cell *matCellDef="let element">{{ element.cantidad }}</td>
-        </ng-container>
-
-        <!-- Columna idCanalVenta_descripcion -->
-        <ng-container matColumnDef="precioUnitarioConImpuestos">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Precio unitario</th>
-            <td mat-cell *matCellDef="let element">{{ element.precioUnitarioConImpuestos |
-                number:'1.2-2'}}€</td>
-        </ng-container>
-
-        <!-- Columna totalConImpuestos -->
-        <ng-container matColumnDef="totalConImpuestos">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Total C/I</th>
-            <td mat-cell *matCellDef="let element">{{ element.totalConImpuestos |
-                number:'1.2-2'}}€</td>
-        </ng-container>
-
-
-        <!-- Columna totalSinImpuestos -->
-        <ng-container matColumnDef="totalSinImpuestos">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Total SI</th>
-            <td mat-cell *matCellDef="let element">{{ element.totalSinImpuestos |
-                number:'1.2-2'}}€</td>
-        </ng-container>
-
-
-        <!-- Columna totalConImpuestos -->
-        <ng-container matColumnDef="fechaHoraSeleccionado">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha/Hora seleccion</th>
-            <td mat-cell *matCellDef="let element">{{ element.fechaHoraSeleccionado }}</td>
-        </ng-container>
-    </table>
-</div>
-
-<div class="ticket-pagos">
-    <h4>Pagos</h4>
-    <table mat-table class="mat-elevation-z8 ticket-table" [dataSource]="dataSourcePagos" matSort>
-        <!-- Encabezados de columna -->
-        <tr mat-header-row *matHeaderRowDef="displayedColumnsPagos"></tr>
-
-        <!-- Filas de datos -->
-        <tr mat-row *matRowDef="let row; columns: displayedColumnsPagos;"></tr>
-
-        <!-- Columna idFormaPago_descripcion -->
-        <ng-container matColumnDef="idFormaPago_descripcion">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Formas de pago</th>
-            <td mat-cell *matCellDef="let element">{{ element.idFormaPago_descripcion.codigo }} - {{
-                element.idFormaPago_descripcion.descripcion }}</td>
-        </ng-container>
-
-        <!-- Columna importe -->
-        <ng-container matColumnDef="importe">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Importe</th>
-            <td mat-cell *matCellDef="let element">{{ element.importe |
-                number:'1.2-2'}}€</td>
-        </ng-container>
-    </table>
-</div>
-
-<div class="action-buttons">
-    <button mat-fab class="button-action button-minus" (click)="onNoClick()"><mat-icon>close</mat-icon></button>
 </div>

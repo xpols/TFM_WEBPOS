@@ -4,6 +4,10 @@
     stroke: $secondary-color;
 }
 
+.cdk-overlay-pane {
+    overflow: auto;
+}
+
 .align-right {
     text-align: right;
     padding-right: 1rem;
