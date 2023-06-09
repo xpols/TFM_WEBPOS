@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MainSalesService } from 'src/app/Services/main-sales.service';
 import { DataPrint } from 'src/app/models/data-print';
@@ -9,6 +9,7 @@ import { LocalStorageConstants } from 'src/app/constants/constants';
 import { ConfigTextosAgrupacionDTO } from 'src/app/models/configTextosAgrupacion.dto';
 import { ConfigTextosDTO } from 'src/app/models/configTextos.dto';
 import { PrintTicketDTO } from 'src/app/models/printTicket.dto';
+import * as printJS from 'print-js';
 
 @Component({
   selector: 'ticket-print',
@@ -23,6 +24,8 @@ export class TicketPrintComponent implements OnInit {
   emailValue: string = '';
   sendMailActive: boolean = true;
   emailTouched: boolean = false;
+
+  @ViewChild('contentToPrint', { static: false }) contentToPrint: ElementRef | undefined;
 
   constructor(
     public dialogRef: MatDialogRef<TicketPrintComponent>,
@@ -80,6 +83,47 @@ export class TicketPrintComponent implements OnInit {
       });
     }
   }
+
+  printTicket():void {
+    console.log("PRINT TICKET");
+    const componente = document.querySelector('#ticket-print-container') as HTMLElement;
+    if(componente != null && componente!= undefined) {
+      console.log("Existe Componente");
+      html2canvas(componente).then(canvas => {
+        // Convierte la imagen a un archivo PNG en base64
+        let imagen = canvas.toDataURL('image/png').split(',')[1];
+        imagen = 'data:image/png;base64,'+imagen;
+        console.log("IMAGEN BASE 64 :: " + imagen);
+        const options = {
+          printable: imagen,
+          type: 'image',
+          base64: true,
+          
+        };
+
+        printJS({printable: imagen, type: 'image', base64: true, showModal: false})
+      });
+    }
+  }
+
+  printContent() {
+    const printContents = this.contentToPrint?.nativeElement.innerHTML;
+    const printWindow = window.open('', '_blank');
+    printWindow?.document.write(`
+      <html>
+        <head>
+          <title>Imprimir</title>
+          <style>
+            /* Estilos adicionales para la impresión */
+          </style>
+        </head>
+        <body onload="window.print();window.close()">${printContents}</body>
+      </html>`
+    );
+    printWindow?.document.close();
+  }
+
+  
 
   onNoClick(): void {
     this.dialogRef.close();
