@@ -1,5 +1,5 @@
 <mat-grid-list cols="4" rowHeight="85px" gutterSize="5px">
-    <mat-grid-tile *ngFor="let product of productosCurrent">
+    <mat-grid-tile *ngFor="let product of productosCurrent" [ngClass]="{ 'd-none': product?.guardada == null}">
         <mat-card class="card-product" (click)="selectProduct(product?.guardada, product.nombre, product.precio)">
             <mat-card-content class="card-product-content">
                 <img class="product-icon" [src]="product?.imagen">

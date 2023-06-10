@@ -39,6 +39,10 @@ export class TicketDetalleDTO {
   importeRealMenuSinSuplemento: number = 0;
   totalPortesConImpuestos: number = 0;
   detallesAsociados: TicketDetalleDTO[] = [];
+  importeDescuentoPromocionPedido: number = 0;
+  importeDescuentoPromocionLinea: number = 0;
+  importeDescuentoPromocionAgrupacion: number = 0;
+  importeSuplemento: number = 0;
 
   constructor(
     id: string,

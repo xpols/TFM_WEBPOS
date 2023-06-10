@@ -37,7 +37,8 @@
               "src/styles.scss"
             ],
             "scripts": [
-              "./node_modules/print-js/dist/print.js"
+              "./node_modules/print-js/dist/print.js",
+              "./node_modules/highcharts/highcharts.js"
             ],
             "serviceWorker": true,
             "ngswConfigPath": "ngsw-config.json"

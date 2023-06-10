@@ -254,7 +254,7 @@ export class TicketComponent implements OnInit {
     this.detalles = this.detalles?.map((detalle) => {
       if(detalle.id == detalleUpdate?.id) {
         detalleUpdate = this.assignarDescripcionProducto(detalle.idProducto_nombre.id, productPrice, detalleUpdate);
-        if(detalle.detallesAsociados.length > 0) {
+        if(detalle.detallesAsociados?.length > 0) {
           detalleUpdate.detallesAsociados = detalle.detallesAsociados;
         }
         return detalleUpdate;
