@@ -1,5 +1,5 @@
 <div mat-dialog-content class="print-container">
-    <div id="ticket-print-container">
+    <div #contentToPrint id="ticket-print-container">
         <div class="ticket-cabecera">
             <div class="ticket-cabecera-empresa">
                 <pre>{{configuracionTextos?.cabeceraTicket_1}}</pre>
@@ -125,7 +125,7 @@
 
         </div>
         <div class="print-row">
-            <button class="button-action" mat-flat-button color="primary" (click)="onNoClick()">{{'Imprimir ticket' |
+            <button class="button-action" mat-flat-button color="primary" (click)="printTicket()">{{'Imprimir ticket' |
                 translate}}</button>
         </div>
 
