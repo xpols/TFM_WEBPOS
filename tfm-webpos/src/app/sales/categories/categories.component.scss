@@ -1,5 +1,9 @@
 @import "../../../assets/styles/variables";
 
+.d-none {
+    display: none;
+}
+
 mat-card {
     width: 100%;
     height: inherit;
