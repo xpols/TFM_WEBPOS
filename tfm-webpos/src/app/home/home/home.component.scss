@@ -1,3 +1,17 @@
+@import "../../app.component.scss";
+
+::ng-deep .mat-spinner-green circle{
+    stroke: $secondary-color;
+}
+
+.loading-container {
+    width: 100vw;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .grafico {
     margin: 2rem;
 }

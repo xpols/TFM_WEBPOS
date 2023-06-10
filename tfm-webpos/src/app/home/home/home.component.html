@@ -1,2 +1,10 @@
-<div class="grafico mat-elevation-z8" id="chart-tickets-ultima-semana"></div>
-<div class="grafico mat-elevation-z8" id="chart-importe-ultima-semana"></div>
+<div class="loading-container" *ngIf="isLoadingResults">
+    <div class="loading-overlay">
+        <mat-progress-spinner class="loading-spinner mat-spinner-green" mode="indeterminate"></mat-progress-spinner>
+    </div>
+</div>
+
+<div>
+    <div class="grafico mat-elevation-z8" id="chart-tickets-ultima-semana"></div>
+    <div class="grafico mat-elevation-z8" id="chart-importe-ultima-semana"></div>
+</div>

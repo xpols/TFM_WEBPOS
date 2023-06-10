@@ -3,6 +3,7 @@ import * as Highcharts from 'highcharts';
 import { DatePipe } from '@angular/common';
 import { TicketsService } from 'src/app/Services/tickets.service';
 import { LocalStorageConstants } from 'src/app/constants/constants';
+import { SharedService } from 'src/app/Services/shared.service';
 
 @Component({
   selector: 'app-home',
@@ -25,9 +26,11 @@ export class HomeComponent implements OnInit {
   dataG2: any[] = [];
   dataG3: any[] = [];
 
-  constructor(private datePipe: DatePipe, private ticketsService: TicketsService) { }
+  constructor(private datePipe: DatePipe, private ticketsService: TicketsService, private sharedService: SharedService) { }
 
   ngOnInit(): void {
+    this.sharedService.setTableName(undefined);
+    this.sharedService.setNumDiners(0);
     this.initGraficos();
   }
 
@@ -58,17 +61,13 @@ export class HomeComponent implements OnInit {
     this.categoriesG1.push(this.hoy);
     await this.loadTickets(this.hoy);
     
-    
-    
-    
-    
-    
     console.log("RENDER CHARTS");
     console.log("RENDER CHARTS - data " + this.dataG1);
     console.log("RENDER CHARTS - data2 " + this.dataG2);
     console.log("RENDER CHARTS - data3 " + this.dataG3);
     console.log("RENDER CHARTS - categories " + this.categoriesG1);
     this.renderChart();
+    this.isLoadingResults = false;
   }
 
   async loadTickets(fecha: string | null): Promise<void> {
@@ -94,7 +93,6 @@ export class HomeComponent implements OnInit {
             this.dataG3.push(0);
           }
         }
-        this.isLoadingResults = false;
       }
     } catch (error: any) {
       errorResponse = error.error;
