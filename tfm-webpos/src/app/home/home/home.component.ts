@@ -6,7 +6,7 @@ import { LocalStorageConstants } from 'src/app/constants/constants';
 import { SharedService } from 'src/app/Services/shared.service';
 
 @Component({
-  selector: 'app-home',
+  selector: 'home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
   providers: [DatePipe]

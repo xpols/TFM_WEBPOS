@@ -37,6 +37,11 @@ export class AppComponent {
       'icon':'fa-list'
     },
     {
+      'title': 'NexttDirector',
+      'path': '/redirectND/productos',
+      'icon':'fa-pencil'
+    },
+    {
       'title': 'Config',
       'path': '/config',
       'icon':'fa-gear'

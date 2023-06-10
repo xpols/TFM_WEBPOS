@@ -9,6 +9,7 @@ import { TablesMapComponent } from './zoneMap/tables-map/tables-map.component';
 import { MainSalesComponent } from './sales/main-sales/main-sales.component';
 import { TicketListComponent } from './tickets/ticket-list/ticket-list.component';
 import { HomeComponent } from './home/home/home.component';
+import { RedirectndComponent } from './home/redirectnd/redirectnd.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -24,6 +25,9 @@ const routes: Routes = [
     loadChildren: () => import('./tickets/tickets.module').then(m => m.TicketsModule)
   },
   { path: 'home', canActivate: [ AuthGuard ], component: HomeComponent,
+    loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
+  },
+  { path: 'redirectND/:mtoND', canActivate: [ AuthGuard ], component: RedirectndComponent,
     loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
   },
   { path: 'login', component: LoginComponent },
