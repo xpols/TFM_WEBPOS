@@ -55,6 +55,8 @@ export class ConfigComponent implements OnInit {
     if(idTiendaLS!=null) {
       this.tiendasFC.setValue(Number(idTiendaLS));
       this.shopChange();
+    } else {
+      this.isLoadingResults = false;
     }
   }
 
@@ -66,6 +68,8 @@ export class ConfigComponent implements OnInit {
     let idTPVLS = localStorage.getItem(LocalStorageConstants.ID_TPV);
     if(idTPVLS!=null) {
       this.tpvsFC.setValue(Number(idTPVLS));
+    } else {
+      this.isLoadingResults = false;
     }
 
     this.loadCanales();
